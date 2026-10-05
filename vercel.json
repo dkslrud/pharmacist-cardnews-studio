@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "api/analyze.js": { "maxDuration": 300 },
+    "api/compose.js": { "maxDuration": 300 }
+  }
+}
