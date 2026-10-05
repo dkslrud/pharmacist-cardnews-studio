@@ -62,6 +62,13 @@
   .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -2px; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   #pwBox { display: none; }
+  .preview { position: relative; container-type: inline-size; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 10px; }
+  .preview img { display: block; width: 100%; }
+  .preview .tx { position: absolute; display: flex; align-items: center; overflow: hidden; line-height: 1.1; white-space: pre-wrap; word-break: keep-all; font-family: 'Noto Sans KR', sans-serif; }
+  .slide details { margin-top: 6px; font-size: 13px; }
+  .slide details summary { cursor: pointer; color: var(--muted); }
+  .slide .chg { margin: 4px 0 0; color: var(--muted); }
+  .slide .chg s { color: #9aa19c; }
   .canva-box { margin-top: 20px; border: 1px solid var(--brand); background: var(--brand-soft); border-radius: 12px; padding: 16px 18px; }
   .canva-box h4 { margin: 0 0 4px; font-size: 15px; }
   .canva-box p { margin: 0; color: var(--muted); font-size: 14px; }
@@ -148,6 +155,7 @@
 const $ = s => document.querySelector(s);
 const MAX_IMG = 8;
 let images = [];        // {media_type, data, url}
+let refImages = [];     // 분석에 쓴 레퍼런스 이미지(올린 것 + 주소에서 가져온 것) {data, w, h, url}
 let analysis = null;
 let stage = 'conversion';
 
@@ -210,13 +218,31 @@ drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
 drop.ondragleave = () => drop.classList.remove('over');
 drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); addFiles(e.dataTransfer.files); };
 
+// 레퍼런스 이미지를 긴 변 1080px JPEG로 맞추고 크기를 기록한다(미리보기와 Canva 디자인 배경용)
+async function prepRefImages(list) {
+  const out = [];
+  for (const im of list.slice(0, MAX_IMG)) {
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = im.url; });
+      const s = Math.min(1, 1080 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      const url = c.toDataURL('image/jpeg', 0.85);
+      out.push({ data: url.split(',')[1], w: c.width, h: c.height, url });
+    } catch { /* 읽을 수 없는 이미지 */ }
+  }
+  return out;
+}
+
 function renderAnalysis(a, note, used) {
   const pal = (a.palette || []).map(h => `<span class="sw" style="background:${esc(h)}"></span>${esc(h)}`).join(' ');
   $('#analysisOut').innerHTML = `<div class="analysis">
     <b>분석 결과</b> (이미지 ${used}장) · 비율 ${esc(a.aspect)} · ${esc(a.slideCount)}장<br>
     ${pal ? ' 색상 ' + pal + '<br>' : ''}
     분위기: ${esc(a.mood)}<br>
-    구성 공식: ${esc(a.reusablePattern)}
+    구성 공식: ${esc(a.reusablePattern)}<br>
+    찾은 글자: ${(a.slides || []).map(sl => `${esc(sl.no)}장 ${(sl.texts || []).length}곳`).join(' · ')} → 이 자리에 내 문구를 넣어요
     ${note ? `<br><span class="hint">${esc(note)}</span>` : ''}
   </div>`;
 }
@@ -229,6 +255,9 @@ $('#analyzeBtn').onclick = async () => {
   try {
     const r = await api('analyze', { url: url || undefined, images: images.map(({ media_type, data }) => ({ media_type, data })) });
     analysis = r.analysis;
+    refImages = await prepRefImages(images.concat((r.fetchedImages || []).map(i => ({ ...i, url: `data:${i.media_type};base64,${i.data}` }))));
+    const n = (analysis.slides || []).length;
+    if (n) { $('#count').value = n; $('#count').disabled = true; $('#count').title = '레퍼런스 장 수를 그대로 써요'; }
     renderAnalysis(analysis, r.note, r.usedImages);
     setMsg($('#msg1'), '');
     $('#step2').setAttribute('aria-disabled', 'false');
@@ -246,20 +275,37 @@ let lastResult = null;
 function renderResult(r) {
   lastResult = r;
   try { sessionStorage.setItem('lastResult', JSON.stringify({ r, analysis, stage, form: formValues() })); } catch { /* 저장 불가 */ }
+  try { sessionStorage.setItem('refImages', JSON.stringify(refImages)); } catch { /* 용량 초과 */ }
   setMsg($('#msgCanva'), '');
-  $('#slides').innerHTML = (r.slides || []).map(s => `<div class="slide">
+  $('#slides').innerHTML = (r.slides || []).map((s, i) => {
+    const ref = (analysis?.slides || [])[i];
+    const im = refImages[Math.min(i, refImages.length - 1)];
+    const rep = Object.fromEntries((s.replacements || []).map(x => [x.id, x.text]));
+    const changed = (ref?.texts || []).filter(t => rep[t.id] !== undefined && String(rep[t.id]).trim() !== String(t.text).trim());
+    return `<div class="slide">
+    ${im && ref ? preview(im, changed, rep) : ''}
     <div class="no">${esc(s.no)}장 · ${esc(s.role)}</div>
     <h3>${esc(s.headline)}</h3>
     <p>${esc(s.body)}</p>
-    <small>배치: ${esc(s.layoutRef)}</small>
-    <small>비주얼: ${esc(s.visual)}</small>
-  </div>`).join('');
+    ${changed.length ? `<details><summary>바뀐 문구 ${changed.length}곳</summary>${changed.map(t => `<p class="chg"><s>${esc(t.text)}</s><br>→ ${esc(rep[t.id])}</p>`).join('')}</details>` : ''}
+    ${s.visual ? `<small>이미지 제안: ${esc(s.visual)}</small>` : ''}
+  </div>`;
+  }).join('');
   $('#canva').textContent = r.canvaPrompt || '';
   $('#caption').textContent = [r.caption, (r.hashtags || []).join(' ')].filter(Boolean).join('\n\n');
   const notes = r.complianceNotes || [];
   $('#notes').innerHTML = notes.length ? notes.map(n => `<li>${esc(n)}</li>`).join('') : '<li>특별히 지적할 표현이 없어요.</li>';
   $('#step3').hidden = false;
   $('#step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// 레퍼런스 이미지 위에 바꿀 자리를 배경색으로 덮고 새 문구를 얹은 미리보기 (Canva 디자인과 같은 방식)
+function preview(im, changed, rep) {
+  const ratio = im.h / im.w;
+  const cl = v => Math.max(0, Math.min(100, +v || 0));
+  const col = c => /^#?[0-9a-f]{6}$/i.test(String(c || '').trim()) ? '#' + String(c).trim().replace('#', '') : '';
+  const boxes = changed.map(t => `<div class="tx" style="left:${cl(t.x)}%;top:${cl(t.y)}%;width:${cl(t.w)}%;height:${cl(t.h)}%;background:${col(t.bg) || '#fff'};color:${col(t.color) || '#1d2320'};font-size:${((+t.lineHeight || 4) * ratio * 0.78).toFixed(2)}cqw;font-weight:${t.bold ? 700 : 400};justify-content:${{ left: 'flex-start', center: 'center', right: 'flex-end' }[t.align] || 'flex-start'};text-align:${esc(t.align || 'left')}">${esc(rep[t.id])}</div>`).join('');
+  return `<div class="preview"><img src="${im.url}" alt="">${boxes}</div>`;
 }
 
 const formValues = () => ({ name: $('#name').value, product: $('#product').value, target: $('#target').value, facts: $('#facts').value, cta: $('#cta').value });
@@ -317,7 +363,8 @@ async function createInCanva() {
   try {
     const f = formValues();
     const r = await api('canva/create', {
-      slides: lastResult.slides, analysis: { aspect: analysis?.aspect, palette: analysis?.palette },
+      slides: lastResult.slides, analysis: { aspect: analysis?.aspect, palette: analysis?.palette, slides: analysis?.slides },
+      images: refImages.map(({ data, w, h }) => ({ data, w, h })),
       name: f.name, cta: f.cta, title: `${f.product || '약사'} 카드뉴스`.slice(0, 50),
     });
     if (canvaWin && !canvaWin.closed) canvaWin.location.href = r.editUrl;
@@ -356,6 +403,7 @@ function restoreAfterLogin() {
   try { saved = JSON.parse(sessionStorage.getItem('lastResult') || 'null'); } catch { /* 무시 */ }
   if (!saved) return;
   analysis = saved.analysis;
+  try { refImages = JSON.parse(sessionStorage.getItem('refImages') || '[]'); } catch { /* 무시 */ }
   for (const [k, v] of Object.entries(saved.form || {})) if ($('#' + k)) $('#' + k).value = v;
   $('#step2').setAttribute('aria-disabled', 'false');
   renderResult(saved.r);
