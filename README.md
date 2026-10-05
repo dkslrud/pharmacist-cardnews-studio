@@ -29,5 +29,5 @@ Vercel 프로젝트 `pharmacist-cardnews-studio`가 이 저장소의 `main`에 �
 카드뉴스 구성을 PPTX(장별 제목·본문·이미지 자리, 레퍼런스 색상 적용)로 만든 뒤 Canva Connect API의 디자인 가져오기(`/v1/imports`)로 편집 가능한 Canva 디자인을 만들고, 편집 화면을 새 창으로 엽니다.
 - 로그인: OAuth + PKCE. 토큰은 DB 없이 브라우저의 암호화된 HttpOnly 쿠키에 보관 (암호화 키는 `CANVA_CLIENT_SECRET`에서 생성)
 - 필요한 권한(scope): `design:content:write`
-- 리디렉션 주소: `https://<배포 주소>/api/canva/callback` (로컬은 `http://127.0.0.1:3000/api/canva/callback`)
+- 리디렉션 주소: Canva 개발자 포털에 `https://<배포 주소>/api/canva/callback` 를 URL 1(기본)로 등록. 앱은 기본 주소를 쓰고, 다른 주소를 쓰려면 `CANVA_REDIRECT_URI`를 설정 (로컬은 `http://127.0.0.1:3000/api/canva/callback`)
 - `CANVA_CLIENT_ID`, `CANVA_CLIENT_SECRET`가 없으면 Canva 버튼은 숨겨지고 기존 지시문 복사만 보입니다.
