@@ -62,13 +62,21 @@
   .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -2px; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   #pwBox { display: none; }
+  .canva-box { margin-top: 20px; border: 1px solid var(--brand); background: var(--brand-soft); border-radius: 12px; padding: 16px 18px; }
+  .canva-box h4 { margin: 0 0 4px; font-size: 15px; }
+  .canva-box p { margin: 0; color: var(--muted); font-size: 14px; }
+  .canva-box .btn { margin-top: 12px; }
+  .canva-box a.open { color: var(--brand); font-weight: 700; }
+  .linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; margin-left: 12px; }
+  details.fallback { margin-top: 20px; }
+  details.fallback summary { cursor: pointer; font-weight: 700; font-size: 15px; }
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>약사 카드뉴스 스튜디오</h1>
-    <p>잘 된 카드뉴스의 레이아웃을 분석하고, 마케팅 단계에 맞춰 내 카드뉴스 구성과 Canva 지시문을 만들어요.</p>
+    <p>잘 된 카드뉴스의 레이아웃을 분석하고, 마케팅 단계에 맞춰 내 카드뉴스를 구성해 Canva 디자인으로 바로 만들어요.</p>
   </header>
 
   <section class="card" id="pwBox">
@@ -114,10 +122,17 @@
   <section class="card" id="step3" hidden>
     <h2 class="step-title"><span class="badge">STEP 3</span>카드뉴스 구성</h2>
     <div class="slides" id="slides"></div>
-    <div class="block">
-      <div class="block-head"><h4>Canva AI 지시문</h4><button class="btn ghost" data-copy="canva">복사</button></div>
-      <pre class="out" id="canva"></pre>
+    <div class="canva-box" id="canvaBox" hidden>
+      <h4>Canva에서 바로 디자인하기</h4>
+      <p>위 구성으로 Canva 디자인을 만들어 새 창에서 열어요. 글자, 색, 이미지는 Canva에서 바로 고칠 수 있어요.</p>
+      <button class="btn" id="canvaBtn">Canva 디자인 만들기</button><button class="linkbtn" id="canvaLogout" hidden>Canva 연결 해제</button>
+      <div class="msg" id="msgCanva"></div>
     </div>
+    <details class="fallback" id="canvaFallback">
+      <summary>Canva AI 지시문 (직접 복사해 붙여넣기)</summary>
+      <div class="block-head" style="margin-top:8px"><span class="hint">Canva AI에 그대로 붙여넣으면 비슷한 디자인을 만들어요.</span><button class="btn ghost" data-copy="canva">복사</button></div>
+      <pre class="out" id="canva"></pre>
+    </details>
     <div class="block">
       <div class="block-head"><h4>인스타 캡션</h4><button class="btn ghost" data-copy="caption">복사</button></div>
       <pre class="out" id="caption"></pre>
@@ -150,7 +165,7 @@ async function api(name, body) {
     if (res.status === 504) throw new Error('시간이 너무 오래 걸렸어요. 잠시 뒤 다시 시도해 주세요.');
     throw new Error(`서버 응답을 읽지 못했어요 (${res.status}). 다시 시도해 주세요.`);
   }
-  if (!res.ok) throw new Error(data.error || `오류가 났어요 (${res.status}).`);
+  if (!res.ok) throw Object.assign(new Error(data.error || `오류가 났어요 (${res.status}).`), { data });
   return data;
 }
 
@@ -227,7 +242,11 @@ document.querySelectorAll('.stage').forEach(b => b.onclick = () => {
   document.querySelectorAll('.stage').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
 });
 
+let lastResult = null;
 function renderResult(r) {
+  lastResult = r;
+  try { sessionStorage.setItem('lastResult', JSON.stringify({ r, analysis, stage, form: formValues() })); } catch { /* 저장 불가 */ }
+  setMsg($('#msgCanva'), '');
   $('#slides').innerHTML = (r.slides || []).map(s => `<div class="slide">
     <div class="no">${esc(s.no)}장 · ${esc(s.role)}</div>
     <h3>${esc(s.headline)}</h3>
@@ -243,15 +262,14 @@ function renderResult(r) {
   $('#step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+const formValues = () => ({ name: $('#name').value, product: $('#product').value, target: $('#target').value, facts: $('#facts').value, cta: $('#cta').value });
+
 $('#composeBtn').onclick = async () => {
   if (!analysis) return setMsg($('#msg2'), '먼저 STEP 1에서 레이아웃을 분석해 주세요.', 'err');
   const btn = $('#composeBtn'); btn.disabled = true;
   setMsg($('#msg2'), busy('카드뉴스 구성을 만들고 있어요 (1분 안팎)…'), 'info');
   try {
-    const r = await api('compose', {
-      analysis, stage, slideCount: +$('#count').value,
-      pharmacist: { name: $('#name').value, product: $('#product').value, target: $('#target').value, facts: $('#facts').value, cta: $('#cta').value },
-    });
+    const r = await api('compose', { analysis, stage, slideCount: +$('#count').value, pharmacist: formValues() });
     setMsg($('#msg2'), '');
     renderResult(r);
   } catch (e) { setMsg($('#msg2'), esc(e.message), 'err'); }
@@ -261,6 +279,91 @@ $('#composeBtn').onclick = async () => {
 document.querySelectorAll('[data-copy]').forEach(b => b.onclick = async () => {
   try { await navigator.clipboard.writeText($('#' + b.dataset.copy).textContent); b.textContent = '복사됨'; setTimeout(() => b.textContent = '복사', 1500); } catch { /* 클립보드 거부 */ }
 });
+
+// ---------- Canva 연동 ----------
+// 로그인 창과 디자인 창을 같은 창으로 쓴다: 클릭 즉시 창을 열어야 팝업 차단에 걸리지 않는다.
+let canva = { configured: false, connected: false };
+let canvaWin = null, pendingCreate = false;
+const waitPage = t => `<!doctype html><meta charset="utf-8"><title>Canva</title><body style="font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#f4f4ef;color:#1d2320"><p>${t}</p></body>`;
+
+function renderCanva() {
+  $('#canvaBox').hidden = !canva.configured;
+  $('#canvaFallback').open = !canva.configured;
+  $('#canvaLogout').hidden = !canva.connected;
+  $('#canvaBtn').textContent = canva.connected ? 'Canva 디자인 만들기' : 'Canva 연결하고 디자인 만들기';
+}
+
+$('#canvaBtn').onclick = () => {
+  if (!lastResult) return;
+  canvaWin = window.open('', 'canvaDesign');
+  if (!canva.connected) {
+    pendingCreate = true;
+    setMsg($('#msgCanva'), busy('열린 창에서 Canva 로그인 후 "허용"을 눌러 주세요…'), 'info');
+    if (canvaWin) canvaWin.location.href = '/api/canva/login';
+    else { // 팝업이 막히면 현재 창에서 로그인하고 돌아온다(결과는 sessionStorage에 보관)
+      sessionStorage.setItem('canvaPending', '1');
+      location.href = '/api/canva/login';
+    }
+    return;
+  }
+  if (canvaWin) { canvaWin.document.write(waitPage('Canva 디자인을 만들고 있어요…')); canvaWin.document.close(); }
+  createInCanva();
+};
+
+async function createInCanva() {
+  pendingCreate = false;
+  const btn = $('#canvaBtn'); btn.disabled = true;
+  setMsg($('#msgCanva'), busy('Canva에 디자인을 만들고 있어요 (30초 안팎)…'), 'info');
+  try {
+    const f = formValues();
+    const r = await api('canva/create', {
+      slides: lastResult.slides, analysis: { aspect: analysis?.aspect, palette: analysis?.palette },
+      name: f.name, cta: f.cta, title: `${f.product || '약사'} 카드뉴스`.slice(0, 50),
+    });
+    if (canvaWin && !canvaWin.closed) canvaWin.location.href = r.editUrl;
+    setMsg($('#msgCanva'), `Canva 디자인을 만들었어요. 새 창이 안 열렸다면 <a class="open" href="${esc(r.editUrl)}" target="_blank" rel="noopener">Canva에서 열기</a>`, 'info');
+  } catch (e) {
+    if (canvaWin && !canvaWin.closed) canvaWin.close();
+    if (e.data?.needsLogin) { canva.connected = false; renderCanva(); }
+    setMsg($('#msgCanva'), esc(e.message) + (e.data?.needsLogin ? ' 버튼을 다시 눌러 연결해 주세요.' : ''), 'err');
+  } finally { btn.disabled = false; }
+}
+
+window.addEventListener('message', e => {
+  if (e.origin !== location.origin || !e.data?.canva) return;
+  if (e.data.canva === 'connected') {
+    canva.connected = true; renderCanva();
+    if (pendingCreate) createInCanva();
+  } else {
+    pendingCreate = false;
+    setMsg($('#msgCanva'), esc(e.data.message || 'Canva 연결에 실패했어요.'), 'err');
+  }
+});
+
+$('#canvaLogout').onclick = async () => {
+  try { await fetch('/api/canva/logout', { method: 'POST' }); } catch { /* 무시 */ }
+  canva.connected = false; renderCanva();
+  setMsg($('#msgCanva'), 'Canva 연결을 해제했어요.', 'info');
+};
+
+// 팝업 없이 로그인하고 돌아온 경우: 이전 결과를 복원하고 이어서 만든다.
+function restoreAfterLogin() {
+  const q = new URLSearchParams(location.search).get('canva');
+  if (!q) return;
+  history.replaceState(null, '', location.pathname);
+  const pending = sessionStorage.getItem('canvaPending'); sessionStorage.removeItem('canvaPending');
+  let saved = null;
+  try { saved = JSON.parse(sessionStorage.getItem('lastResult') || 'null'); } catch { /* 무시 */ }
+  if (!saved) return;
+  analysis = saved.analysis;
+  for (const [k, v] of Object.entries(saved.form || {})) if ($('#' + k)) $('#' + k).value = v;
+  $('#step2').setAttribute('aria-disabled', 'false');
+  renderResult(saved.r);
+  if (q === 'connected' && pending) createInCanva();
+  else if (q === 'error') setMsg($('#msgCanva'), 'Canva 연결에 실패했어요. 다시 시도해 주세요.', 'err');
+}
+
+fetch('/api/canva/status').then(r => r.json()).then(s => { canva = s; renderCanva(); restoreAfterLogin(); }).catch(() => restoreAfterLogin());
 
 api('config').then(c => {
   if (c.needsPassword) $('#pwBox').style.display = 'block';

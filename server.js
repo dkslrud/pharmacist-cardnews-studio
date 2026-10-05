@@ -12,11 +12,29 @@ try {
 } catch { /* .env 없음 */ }
 
 const { handle } = require('./lib/core');
+const { canvaHandle } = require('./lib/canva');
 const PUB = path.join(__dirname, 'public');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
+  const cv = url.pathname.match(/^\/api\/canva\/([a-z]+)$/);
+  if (cv) {
+    let raw = '';
+    for await (const c of req) raw += c;
+    let body = {};
+    try { body = raw ? JSON.parse(raw) : {}; } catch { /* 빈 본문 */ }
+    const r = await canvaHandle({
+      action: cv[1], method: req.method, query: Object.fromEntries(url.searchParams), body,
+      cookie: req.headers.cookie, origin: `http://${req.headers.host}`, password: req.headers['x-app-password'],
+    });
+    const headers = { 'cache-control': 'no-store' };
+    if (r.setCookies.length) headers['set-cookie'] = r.setCookies;
+    if (r.location) { res.writeHead(r.code, { ...headers, location: r.location }); return res.end(); }
+    if (r.html) { res.writeHead(r.code, { ...headers, 'content-type': 'text/html; charset=utf-8' }); return res.end(r.html); }
+    res.writeHead(r.code, { ...headers, 'content-type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify(r.json));
+  }
   const api = url.pathname.match(/^\/api\/(config|analyze|compose)$/);
   if (api) {
     let raw = '';
