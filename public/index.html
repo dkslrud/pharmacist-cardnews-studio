@@ -63,7 +63,9 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   #pwBox { display: none; }
   .preview { position: relative; container-type: inline-size; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 10px; }
-  .preview img { display: block; width: 100%; }
+  .preview .sh { position: absolute; }
+  .preview .sh.img { display: flex; align-items: center; justify-content: center; outline: 1px dashed rgba(0,0,0,.35); outline-offset: -1px; opacity: .55; }
+  .preview .sh.img span { font-size: 3.2cqw; color: #333; background: rgba(255,255,255,.7); padding: 1px 4px; border-radius: 3px; }
   .preview .tx { position: absolute; display: flex; align-items: center; overflow: hidden; line-height: 1.1; white-space: pre-wrap; word-break: keep-all; font-family: 'Noto Sans KR', sans-serif; }
   .slide details { margin-top: 6px; font-size: 13px; }
   .slide details summary { cursor: pointer; color: var(--muted); }
@@ -83,7 +85,7 @@
 <main>
   <header>
     <h1>약사 카드뉴스 스튜디오</h1>
-    <p>잘 된 카드뉴스의 레이아웃을 분석하고, 마케팅 단계에 맞춰 내 카드뉴스를 구성해 Canva 디자인으로 바로 만들어요.</p>
+    <p>잘 된 카드뉴스의 레이아웃은 그대로 두고, 상세페이지·리뷰 내용과 마케팅 단계에 맞춘 내 문구로 바꿔 Canva 디자인으로 바로 만들어요.</p>
   </header>
 
   <section class="card" id="pwBox">
@@ -107,21 +109,33 @@
   <section class="card" id="step2" aria-disabled="true">
     <h2 class="step-title"><span class="badge">STEP 2</span>마케팅 단계와 약사 정보</h2>
     <div class="stages">
-      <button class="stage" data-stage="conversion" aria-pressed="true"><b>구매전환</b><span>공감 → 원인 → 성분·근거 → 솔루션 → 복용법 → 상담·구매 안내</span></button>
-      <button class="stage" data-stage="remind" aria-pressed="false"><b>리마인드</b><span>복용 체크 → 복용 팁 → 생활습관 → 자가 체크 → 재구매 안내</span></button>
+      <button class="stage" data-stage="conversion" aria-pressed="true"><b>전환 · 나눔이벤트 OPEN</b><span>오픈 기간 · 나눔이벤트(사은품) · USP 체크 · 섭취법 · 구매 방법</span></button>
+      <button class="stage" data-stage="remind" aria-pressed="false"><b>리마인드 · 마감임박</b><span>마감 일시 · 남은 혜택 · 후기·Q&A로 망설임 해소 · 구매 방법</span></button>
     </div>
     <div class="grid4">
       <div><label for="name">약사명</label><input id="name" value="서울대 약사엄마 레인보우 약사"></div>
-      <div><label for="product">제품 / 주제</label><input id="product" value="오메가3 츄"></div>
-      <div><label for="target">타깃 · 증상</label><input id="target" value="5세 미만 어린이 (두뇌발달, 눈건강)"></div>
+      <div><label for="product">제품 / 주제</label><input id="product" value="알래스카 오메가 츄 패밀리 (오메가3)"></div>
+      <div><label for="target">타깃 · 증상</label><input id="target" value="30~40대 육아맘 · 아이와 온 가족"></div>
       <div><label for="count">장 수</label><input id="count" type="number" min="3" max="10" value="6"></div>
     </div>
+    <label for="must">반드시 포함할 내용 (단계를 바꾸면 그 단계 기본값으로 바뀌어요)</label>
+    <textarea id="must" rows="9"></textarea>
     <label for="facts">핵심 성분 · 근거 (인정된 기능성 범위 안에서)</label>
-    <textarea id="facts">아이들이 먼저 찾는 오렌지맛
-꾸준함이 중요한 DHA, 성장기에 꼭 필요한 EPA까지 쉽게 챙길 수 있어요</textarea>
+    <textarea id="facts">비린내 없이 간식처럼 씹어먹는 온 가족 rTG 오메가3 젤리 (오렌지맛)
+1일 2젤리 EPA+DHA 600mg · rTG 순도 80% · 알래스카 베링해 단일 어종 원료(AlaskOmega®)
+6무첨가 · 한 알씩 개별 포장 · 1박스 30젤리(15일분)
+인정 기능성: 건조한 눈을 개선하여 눈 건강에 도움, 혈중 중성지질 개선·혈행 개선에 도움</textarea>
     <label for="cta">CTA</label>
-    <input id="cta" value="카카오톡 채널로 무료 복약 상담 받기">
-    <p class="hint">입력값은 예시예요. 약사 정보로 바꿔서 쓰세요.</p>
+    <input id="cta" value="프로필 링크에서 구매 · 댓글 남기면 구매 링크 DM">
+    <label>상세페이지 이미지 (긴 이미지도 그대로 올리면 나눠서 읽어요)</label>
+    <div class="drop" id="detailDrop" tabindex="0" role="button">상세페이지 캡처를 끌어다 놓거나 눌러서 선택</div>
+    <input id="detailFile" type="file" accept="image/*" multiple hidden>
+    <div class="thumbs" id="detailThumbs"></div>
+    <label>Q&A · 베스트 리뷰 이미지</label>
+    <div class="drop" id="reviewDrop" tabindex="0" role="button">Q&A·베스트 리뷰 캡처를 끌어다 놓거나 눌러서 선택</div>
+    <input id="reviewFile" type="file" accept="image/*" multiple hidden>
+    <div class="thumbs" id="reviewThumbs"></div>
+    <p class="hint">올린 상세페이지와 Q&A·리뷰 내용은 카드뉴스 문구에 반드시 들어가요. 입력값은 레인보우약사 오메가3 공구(노션) 기준 예시예요.</p>
     <button class="btn" id="composeBtn">카드뉴스 구성 만들기</button>
     <div class="msg" id="msg2"></div>
   </section>
@@ -266,24 +280,87 @@ $('#analyzeBtn').onclick = async () => {
   finally { btn.disabled = false; }
 };
 
+// 단계별 반드시 포함할 내용 기본값 (레인보우약사 오메가3 공구 노션 기준)
+const MUST = {
+  conversion: `[나눔이벤트 OPEN]
+- 공구 기간: 10/12(월) ~ 10/18(일)
+- 나눔이벤트(사은품): 콜라겐 20개 증정
+- 제품: 알래스카 오메가 츄 패밀리 (오렌지맛 씹어먹는 rTG 오메가3 젤리)
+- USP 체크: rTG 순도 80% · 1일 2젤리 EPA+DHA 600mg · 알래스카 베링해 단일 어종 원료 · 한 알씩 개별 포장 · 6무첨가
+- 섭취법: 하루 2젤리, 알약 못 삼키는 아이도 간식처럼
+- 구성: 1박스 30젤리(15일분)
+- 구매: 프로필 링크 / 댓글 남기면 링크 DM
+- 하단 표기: *오메가3: EPA 및 DHA 함유 유지`,
+  remind: `[마감 임박]
+- 곧 마감: 10/18(일) 마감 (공구 기간 10/12~10/18)
+- 남은 혜택: 나눔이벤트 사은품 콜라겐 20개
+- 망설임 해소: 알약 못 삼키는 아이도 간식처럼 · 비린내 없는 오렌지맛 · 한 알씩 개별 포장
+- 아이가 직접 먹는 장면(이미지 자리)
+- 구매: 프로필 링크 / 댓글 남기면 링크 DM
+- 하단 표기: *오메가3: EPA 및 DHA 함유 유지`,
+};
+let mustEdited = false;
+$('#must').value = MUST.conversion;
+$('#must').oninput = () => { mustEdited = true; };
 document.querySelectorAll('.stage').forEach(b => b.onclick = () => {
   stage = b.dataset.stage;
   document.querySelectorAll('.stage').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  if (!mustEdited || confirm('반드시 포함할 내용을 이 단계 기본값으로 바꿀까요?')) { $('#must').value = MUST[stage]; mustEdited = false; }
 });
+
+// 상세페이지·리뷰 이미지: 너비 900px로 맞추고, 긴 이미지는 1400px 높이씩 잘라 글자가 읽히게 보낸다
+function sliceImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const sc = Math.min(1, 900 / img.width), w = Math.round(img.width * sc), H = Math.round(img.height * sc), step = 1400, out = [];
+      for (let y = 0; y < H; y += step) {
+        const h = Math.min(step, H - y), c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, y / sc, img.width, h / sc, 0, 0, w, h);
+        const url = c.toDataURL('image/jpeg', 0.72);
+        out.push({ media_type: 'image/jpeg', data: url.split(',')[1], url });
+      }
+      URL.revokeObjectURL(img.src);
+      resolve(out);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+const srcFiles = { detail: [], review: [] }; // 파일별 조각 묶음 [{name, parts:[]}]
+function uploader(key) {
+  const drop = $('#' + key + 'Drop'), input = $('#' + key + 'File'), thumbs = $('#' + key + 'Thumbs');
+  const render = () => { thumbs.innerHTML = srcFiles[key].map((f, i) => `<figure><img src="${f.parts[0].url}" alt="${esc(f.name)}" title="${esc(f.name)} (${f.parts.length}조각)"><button data-i="${i}" aria-label="삭제">×</button></figure>`).join(''); };
+  const add = async list => {
+    for (const f of [...list].filter(f => f.type.startsWith('image/'))) {
+      try { srcFiles[key].push({ name: f.name, parts: await sliceImage(f) }); } catch { /* 읽을 수 없는 파일 */ }
+    }
+    render();
+  };
+  thumbs.onclick = e => { const i = e.target.dataset.i; if (i !== undefined) { srcFiles[key].splice(+i, 1); render(); } };
+  drop.onclick = () => input.click();
+  drop.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') input.click(); };
+  input.onchange = e => { add(e.target.files); e.target.value = ''; };
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
+  drop.ondragleave = () => drop.classList.remove('over');
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); add(e.dataTransfer.files); };
+}
+uploader('detail'); uploader('review');
+const parts = key => srcFiles[key].flatMap(f => f.parts).map(({ media_type, data }) => ({ media_type, data }));
 
 let lastResult = null;
 function renderResult(r) {
   lastResult = r;
   try { sessionStorage.setItem('lastResult', JSON.stringify({ r, analysis, stage, form: formValues() })); } catch { /* 저장 불가 */ }
-  try { sessionStorage.setItem('refImages', JSON.stringify(refImages)); } catch { /* 용량 초과 */ }
+  try { sessionStorage.setItem('refImages', JSON.stringify(refImages.map(({ w, h }) => ({ w, h })))); } catch { /* 용량 초과 */ }
   setMsg($('#msgCanva'), '');
   $('#slides').innerHTML = (r.slides || []).map((s, i) => {
     const ref = (analysis?.slides || [])[i];
-    const im = refImages[Math.min(i, refImages.length - 1)];
     const rep = Object.fromEntries((s.replacements || []).map(x => [x.id, x.text]));
     const changed = (ref?.texts || []).filter(t => rep[t.id] !== undefined && String(rep[t.id]).trim() !== String(t.text).trim());
     return `<div class="slide">
-    ${im && ref ? preview(im, changed, rep) : ''}
+    ${ref && (ref.texts || []).length ? preview(ref, rep, cardSize()) : ''}
     <div class="no">${esc(s.no)}장 · ${esc(s.role)}</div>
     <h3>${esc(s.headline)}</h3>
     <p>${esc(s.body)}</p>
@@ -299,23 +376,34 @@ function renderResult(r) {
   $('#step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// 레퍼런스 이미지 위에 바꿀 자리를 배경색으로 덮고 새 문구를 얹은 미리보기 (Canva 디자인과 같은 방식)
-function preview(im, changed, rep) {
-  const ratio = im.h / im.w;
+// 레퍼런스 레이아웃(배경색, 도형·이미지 자리, 글자 자리)에 새 문구를 얹은 미리보기 (Canva 디자인과 같은 방식)
+function preview(ref, rep, size) {
+  const ratio = size.h / size.w;
   const cl = v => Math.max(0, Math.min(100, +v || 0));
   const col = c => /^#?[0-9a-f]{6}$/i.test(String(c || '').trim()) ? '#' + String(c).trim().replace('#', '') : '';
-  const boxes = changed.map(t => `<div class="tx" style="left:${cl(t.x)}%;top:${cl(t.y)}%;width:${cl(t.w)}%;height:${cl(t.h)}%;background:${col(t.bg) || '#fff'};color:${col(t.color) || '#1d2320'};font-size:${((+t.lineHeight || 4) * ratio * 0.78).toFixed(2)}cqw;font-weight:${t.bold ? 700 : 400};justify-content:${{ left: 'flex-start', center: 'center', right: 'flex-end' }[t.align] || 'flex-start'};text-align:${esc(t.align || 'left')}">${esc(rep[t.id])}</div>`).join('');
-  return `<div class="preview"><img src="${im.url}" alt="">${boxes}</div>`;
+  const pos = o => `left:${cl(o.x)}%;top:${cl(o.y)}%;width:${cl(o.w)}%;height:${cl(o.h)}%`;
+  const shapes = (ref.shapes || []).map(sh => sh.kind === '이미지'
+    ? `<div class="sh img" style="${pos(sh)};background:${col(sh.color) || '#ddd'}"><span>${esc(sh.label || '이미지')}</span></div>`
+    : `<div class="sh" style="${pos(sh)};background:${col(sh.color) || '#eee'}"></div>`).join('');
+  const texts = (ref.texts || []).map(t => {
+    const text = rep[t.id] !== undefined ? rep[t.id] : t.text;
+    return `<div class="tx" style="${pos(t)};color:${col(t.color) || '#1d2320'};font-size:${((+t.lineHeight || 4) * ratio * 0.78).toFixed(2)}cqw;font-weight:${t.bold ? 700 : 400};justify-content:${{ left: 'flex-start', center: 'center', right: 'flex-end' }[t.align] || 'flex-start'};text-align:${esc(t.align || 'left')}">${esc(text)}</div>`;
+  }).join('');
+  return `<div class="preview" style="aspect-ratio:${size.w}/${size.h};background:${col(ref.bg) || '#fff'}">${shapes}${texts}</div>`;
 }
+const cardSize = () => refImages[0] ? { w: refImages[0].w, h: refImages[0].h } : ({ '1:1': { w: 1080, h: 1080 }, '9:16': { w: 1080, h: 1920 } }[analysis?.aspect] || { w: 1080, h: 1350 });
 
-const formValues = () => ({ name: $('#name').value, product: $('#product').value, target: $('#target').value, facts: $('#facts').value, cta: $('#cta').value });
+const formValues = () => ({ name: $('#name').value, product: $('#product').value, target: $('#target').value, facts: $('#facts').value, cta: $('#cta').value, must: $('#must').value });
 
 $('#composeBtn').onclick = async () => {
   if (!analysis) return setMsg($('#msg2'), '먼저 STEP 1에서 레이아웃을 분석해 주세요.', 'err');
   const btn = $('#composeBtn'); btn.disabled = true;
   setMsg($('#msg2'), busy('카드뉴스 구성을 만들고 있어요 (1분 안팎)…'), 'info');
   try {
-    const r = await api('compose', { analysis, stage, slideCount: +$('#count').value, pharmacist: formValues() });
+    const detailImages = parts('detail'), reviewImages = parts('review');
+    const size = [...detailImages, ...reviewImages].reduce((n, i) => n + i.data.length, 0);
+    if (size > 3.6e6) throw new Error('상세페이지·리뷰 이미지가 너무 많아요. 꼭 필요한 부분만 남겨 주세요.');
+    const r = await api('compose', { analysis, stage, slideCount: +$('#count').value, pharmacist: formValues(), detailImages, reviewImages });
     setMsg($('#msg2'), '');
     renderResult(r);
   } catch (e) { setMsg($('#msg2'), esc(e.message), 'err'); }
@@ -364,7 +452,7 @@ async function createInCanva() {
     const f = formValues();
     const r = await api('canva/create', {
       slides: lastResult.slides, analysis: { aspect: analysis?.aspect, palette: analysis?.palette, slides: analysis?.slides },
-      images: refImages.map(({ data, w, h }) => ({ data, w, h })),
+      size: cardSize(),
       name: f.name, cta: f.cta, title: `${f.product || '약사'} 카드뉴스`.slice(0, 50),
     });
     if (canvaWin && !canvaWin.closed) canvaWin.location.href = r.editUrl;
@@ -405,6 +493,7 @@ function restoreAfterLogin() {
   analysis = saved.analysis;
   try { refImages = JSON.parse(sessionStorage.getItem('refImages') || '[]'); } catch { /* 무시 */ }
   for (const [k, v] of Object.entries(saved.form || {})) if ($('#' + k)) $('#' + k).value = v;
+  if (saved.stage && MUST[saved.stage]) { stage = saved.stage; document.querySelectorAll('.stage').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.stage === stage))); mustEdited = true; }
   $('#step2').setAttribute('aria-disabled', 'false');
   renderResult(saved.r);
   if (q === 'connected' && pending) createInCanva();
