@@ -220,8 +220,7 @@ function setMode(m) {
   $('#step1Title').textContent = v ? '레퍼런스 영상' : '레퍼런스 카드뉴스';
   $('#urlLabel').textContent = v ? '영상 주소 (유튜브는 자막을 자동으로 가져와요)' : '게시물 주소 (선택)';
   $('#url').placeholder = v ? 'https://www.youtube.com/watch?v=...' : 'https://www.instagram.com/p/...';
-  $('#file').accept = v ? 'image/*,video/*' : 'image/*';
-  $('#drop').textContent = v ? '썸네일 이미지 또는 영상 파일을 끌어다 놓거나 눌러서 선택 (선택 · 최대 3컷)' : '카드뉴스 이미지를 끌어다 놓거나 눌러서 선택 (최대 8장)';
+  $('#drop').textContent = v ? '썸네일 이미지를 끌어다 놓거나 눌러서 선택 (선택 · 최대 3장)' : '카드뉴스 이미지를 끌어다 놓거나 눌러서 선택 (최대 8장)';
   $('#scriptBox').hidden = !v;
   $('#composeBtn').textContent = v ? '영상 스크립트·썸네일 만들기' : '카드뉴스 구성 만들기';
   $('#count').disabled = v || !!analysis; $('#count').closest('div').hidden = v;
@@ -282,47 +281,11 @@ function shrink(file) {
   });
 }
 
-// 영상 파일에서 장면 몇 컷(첫 장면 포함)을 뽑는다. 영상은 서버로 올리지 않고 브라우저에서만 처리한다.
-function videoFrames(file, count) {
-  return new Promise((resolve, reject) => {
-    const v = document.createElement('video');
-    const src = URL.createObjectURL(file);
-    v.muted = true; v.preload = 'auto'; v.playsInline = true; v.src = src;
-    const out = [];
-    const done = () => { URL.revokeObjectURL(src); out.length ? resolve(out) : reject(new Error('영상을 읽지 못했어요.')); };
-    v.onerror = done;
-    v.onloadedmetadata = () => {
-      const dur = isFinite(v.duration) ? v.duration : 0;
-      const times = Array.from({ length: count }, (_, i) => (i === 0 ? Math.min(1, dur / 2) : dur * (i / count)));
-      let k = 0;
-      v.onseeked = () => {
-        const s = Math.min(1, 1280 / Math.max(v.videoWidth, v.videoHeight));
-        const c = document.createElement('canvas');
-        c.width = Math.round(v.videoWidth * s); c.height = Math.round(v.videoHeight * s);
-        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-        const url = c.toDataURL('image/jpeg', 0.82);
-        out.push({ media_type: 'image/jpeg', data: url.split(',')[1], url });
-        if (++k >= times.length) return done();
-        v.currentTime = times[k];
-      };
-      v.currentTime = times[0];
-    };
-  });
-}
-
 async function addFiles(list) {
   const max = mode === 'video' ? 3 : MAX_IMG;
-  for (const f of [...list]) {
+  for (const f of [...list].filter(f => f.type.startsWith('image/'))) {
     if (images.length >= max) break;
-    try {
-      if (f.type.startsWith('image/')) images.push(await shrink(f));
-      else if (mode === 'video' && f.type.startsWith('video/')) {
-        setMsg($('#msg1'), busy('영상에서 장면을 뽑고 있어요…'), 'info');
-        const frames = await videoFrames(f, Math.min(3, max - images.length));
-        images.push(...frames);
-        setMsg($('#msg1'), '영상은 올리지 않고 장면 몇 컷만 분석에 써요. 영상의 말은 읽지 못하니 스크립트를 아래에 붙여넣어 주세요.', 'info');
-      }
-    } catch { setMsg($('#msg1'), '파일을 읽지 못했어요.', 'err'); }
+    try { images.push(await shrink(f)); } catch { /* 읽을 수 없는 파일 */ }
   }
   renderThumbs();
 }
