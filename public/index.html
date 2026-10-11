@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>약사 카드뉴스 스튜디오</title>
+<title>콘텐츠 스튜디오</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -77,6 +77,13 @@
   .canva-box .btn { margin-top: 12px; }
   .canva-box a.open { color: var(--brand); font-weight: 700; }
   .linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; margin-left: 12px; }
+  .modes { display: flex; gap: 8px; margin-bottom: 4px; }
+  .mode { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 8px 16px; font: inherit; color: inherit; cursor: pointer; }
+  .mode[aria-pressed="true"] { border-color: var(--brand); background: var(--brand-soft); font-weight: 700; }
+  .script-sec { border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-top: 10px; }
+  .script-sec .no { font-size: 12px; color: var(--brand); font-weight: 700; }
+  .script-sec p { margin: 6px 0 0; white-space: pre-wrap; }
+  .script-sec small { display: block; color: var(--muted); font-size: 12px; margin-top: 6px; }
   .revise-box { margin-top: 20px; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; background: var(--field); }
   .revise-box h4 { margin: 0 0 4px; font-size: 15px; }
   .revise-box textarea { background: var(--card); }
@@ -88,8 +95,8 @@
 <body>
 <main>
   <header>
-    <h1>약사 카드뉴스 스튜디오</h1>
-    <p>잘 된 카드뉴스의 레이아웃은 그대로 두고, 상세페이지·리뷰 내용과 마케팅 단계에 맞춘 내 문구로 바꿔 Canva 디자인으로 바로 만들어요.</p>
+    <h1>콘텐츠 스튜디오</h1>
+    <p id="subtitle">잘 된 카드뉴스의 레이아웃은 그대로 두고, 상세페이지·리뷰 내용과 마케팅 단계에 맞춘 내 문구로 바꿔 Canva 디자인으로 바로 만들어요.</p>
   </header>
 
   <section class="card" id="pwBox">
@@ -98,13 +105,21 @@
   </section>
 
   <section class="card" id="step1">
-    <h2 class="step-title"><span class="badge">STEP 1</span>레퍼런스 카드뉴스</h2>
-    <label for="url">게시물 주소 (선택)</label>
+    <h2 class="step-title"><span class="badge">STEP 1</span><span id="step1Title">레퍼런스 카드뉴스</span></h2>
+    <div class="modes">
+      <button class="mode" data-mode="card" aria-pressed="true">카드뉴스</button>
+      <button class="mode" data-mode="video" aria-pressed="false">영상</button>
+    </div>
+    <label for="url" id="urlLabel">게시물 주소 (선택)</label>
     <input id="url" type="url" placeholder="https://www.instagram.com/p/...">
     <p class="hint" id="urlHint">인스타그램 주소를 넣으면 이미지를 자동으로 가져와요 (30~60초).</p>
     <div class="drop" id="drop" tabindex="0" role="button">카드뉴스 이미지를 끌어다 놓거나 눌러서 선택 (최대 8장)</div>
     <input id="file" type="file" accept="image/*" multiple hidden>
     <div class="thumbs" id="thumbs"></div>
+    <div id="scriptBox" hidden>
+      <label for="script">스크립트 직접 붙여넣기 (선택 · 자막을 못 가져오는 영상은 필수)</label>
+      <textarea id="script" rows="6" placeholder="영상에서 말하는 내용을 그대로 붙여 넣어 주세요. 주소의 자막보다 이 내용을 먼저 써요."></textarea>
+    </div>
     <button class="btn" id="analyzeBtn">레이아웃 분석</button>
     <div class="msg" id="msg1"></div>
     <div id="analysisOut"></div>
@@ -145,12 +160,20 @@
   </section>
 
   <section class="card" id="step3" hidden>
-    <h2 class="step-title"><span class="badge">STEP 3</span>카드뉴스 구성</h2>
+    <h2 class="step-title"><span class="badge">STEP 3</span><span id="step3Title">카드뉴스 구성</span></h2>
     <div class="slides" id="slides"></div>
+    <div id="scriptOut" hidden>
+      <div class="block"><div class="block-head"><h4>영상 제목</h4></div><pre class="out" id="vTitle"></pre></div>
+      <div class="block">
+        <div class="block-head"><h4>영상 스크립트</h4><button class="btn ghost" data-copy="vScript">전체 복사</button></div>
+        <div id="scriptList"></div>
+        <pre class="out" id="vScript" hidden></pre>
+      </div>
+    </div>
     <div class="revise-box" id="reviseBox">
-      <h4>카드뉴스 수정하기</h4>
+      <h4 id="reviseTitle">카드뉴스 수정하기</h4>
       <p class="hint" style="margin:0">바꾸고 싶은 점을 적으면 반영해 구성·캡션·Canva 지시문을 다시 만들어요. 여러 번 반복할 수 있어요.</p>
-      <textarea id="reviseText" rows="3" placeholder="예) 2장 제목을 더 공감되게 바꿔줘 / 전체적으로 말투를 더 친근하게 / 캡션 첫 줄을 질문형으로"></textarea>
+      <textarea id="reviseText" rows="3" data-card="예) 2장 제목을 더 공감되게 바꿔줘 / 전체적으로 말투를 더 친근하게 / 캡션 첫 줄을 질문형으로" data-video="예) 훅을 더 강하게 바꿔줘 / 3구간 길이를 줄여줘 / 썸네일 문구를 질문형으로" placeholder=""></textarea>
       <button class="btn" id="reviseBtn">수정 반영하기</button>
       <div class="msg" id="msgRevise"></div>
       <ol id="reviseLog"></ol>
@@ -184,6 +207,41 @@ let images = [];        // {media_type, data, url}
 let refImages = [];     // 분석에 쓴 레퍼런스 이미지(올린 것 + 주소에서 가져온 것) {data, w, h, url}
 let analysis = null;
 let stage = 'conversion';
+let mode = 'card';       // card | video
+
+const VIDEO_URL = /youtube\.com|youtu\.be|tiktok\.com|instagram\.com\/(reel|reels|tv)\//i;
+function setMode(m) {
+  mode = m;
+  const v = m === 'video';
+  document.querySelectorAll('.mode').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.mode === m)));
+  $('#subtitle').textContent = v
+    ? '잘 된 영상의 구조는 그대로 두고, 스크립트와 썸네일을 상세페이지·리뷰 내용과 마케팅 단계에 맞춘 내 문구로 바꿔 만들어요.'
+    : '잘 된 카드뉴스의 레이아웃은 그대로 두고, 상세페이지·리뷰 내용과 마케팅 단계에 맞춘 내 문구로 바꿔 Canva 디자인으로 바로 만들어요.';
+  $('#step1Title').textContent = v ? '레퍼런스 영상' : '레퍼런스 카드뉴스';
+  $('#urlLabel').textContent = v ? '영상 주소 (유튜브는 자막을 자동으로 가져와요)' : '게시물 주소 (선택)';
+  $('#url').placeholder = v ? 'https://www.youtube.com/watch?v=...' : 'https://www.instagram.com/p/...';
+  $('#file').accept = v ? 'image/*,video/*' : 'image/*';
+  $('#drop').textContent = v ? '썸네일 이미지 또는 영상 파일을 끌어다 놓거나 눌러서 선택 (선택 · 최대 3컷)' : '카드뉴스 이미지를 끌어다 놓거나 눌러서 선택 (최대 8장)';
+  $('#scriptBox').hidden = !v;
+  $('#analyzeBtn').textContent = v ? '영상 구조 분석' : '레이아웃 분석';
+  $('#composeBtn').textContent = v ? '영상 스크립트·썸네일 만들기' : '카드뉴스 구성 만들기';
+  $('#count').disabled = v || !!analysis; $('#count').closest('div').hidden = v;
+  $('#reviseTitle').textContent = v ? '영상 콘텐츠 수정하기' : '카드뉴스 수정하기';
+  $('#reviseText').placeholder = $('#reviseText').dataset[v ? 'video' : 'card'];
+  $('#step3Title').textContent = v ? '영상 구성' : '카드뉴스 구성';
+}
+document.querySelectorAll('.mode').forEach(b => b.onclick = () => {
+  if (b.dataset.mode === mode) return;
+  if (analysis && !confirm('모드를 바꾸면 지금까지의 분석과 결과가 초기화돼요. 바꿀까요?')) return;
+  analysis = null; lastResult = null; reviseHistory = []; refImages = []; images = [];
+  $('#analysisOut').innerHTML = ''; $('#step3').hidden = true; renderThumbs();
+  $('#step2').setAttribute('aria-disabled', 'true'); $('#count').disabled = false;
+  setMode(b.dataset.mode);
+});
+$('#url').addEventListener('input', () => {
+  const u = $('#url').value;
+  if (!analysis && VIDEO_URL.test(u) && mode !== 'video') setMode('video');
+});
 
 const pw = () => $('#pw').value;
 async function api(name, body) {
@@ -225,10 +283,47 @@ function shrink(file) {
   });
 }
 
+// 영상 파일에서 장면 몇 컷(첫 장면 포함)을 뽑는다. 영상은 서버로 올리지 않고 브라우저에서만 처리한다.
+function videoFrames(file, count) {
+  return new Promise((resolve, reject) => {
+    const v = document.createElement('video');
+    const src = URL.createObjectURL(file);
+    v.muted = true; v.preload = 'auto'; v.playsInline = true; v.src = src;
+    const out = [];
+    const done = () => { URL.revokeObjectURL(src); out.length ? resolve(out) : reject(new Error('영상을 읽지 못했어요.')); };
+    v.onerror = done;
+    v.onloadedmetadata = () => {
+      const dur = isFinite(v.duration) ? v.duration : 0;
+      const times = Array.from({ length: count }, (_, i) => (i === 0 ? Math.min(1, dur / 2) : dur * (i / count)));
+      let k = 0;
+      v.onseeked = () => {
+        const s = Math.min(1, 1280 / Math.max(v.videoWidth, v.videoHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(v.videoWidth * s); c.height = Math.round(v.videoHeight * s);
+        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+        const url = c.toDataURL('image/jpeg', 0.82);
+        out.push({ media_type: 'image/jpeg', data: url.split(',')[1], url });
+        if (++k >= times.length) return done();
+        v.currentTime = times[k];
+      };
+      v.currentTime = times[0];
+    };
+  });
+}
+
 async function addFiles(list) {
-  for (const f of [...list].filter(f => f.type.startsWith('image/'))) {
-    if (images.length >= MAX_IMG) break;
-    try { images.push(await shrink(f)); } catch { /* 읽을 수 없는 파일 */ }
+  const max = mode === 'video' ? 3 : MAX_IMG;
+  for (const f of [...list]) {
+    if (images.length >= max) break;
+    try {
+      if (f.type.startsWith('image/')) images.push(await shrink(f));
+      else if (mode === 'video' && f.type.startsWith('video/')) {
+        setMsg($('#msg1'), busy('영상에서 장면을 뽑고 있어요…'), 'info');
+        const frames = await videoFrames(f, Math.min(3, max - images.length));
+        images.push(...frames);
+        setMsg($('#msg1'), '영상은 올리지 않고 장면 몇 컷만 분석에 써요. 영상의 말은 읽지 못하니 스크립트를 아래에 붙여넣어 주세요.', 'info');
+      }
+    } catch { setMsg($('#msg1'), '파일을 읽지 못했어요.', 'err'); }
   }
   renderThumbs();
 }
@@ -262,6 +357,17 @@ async function prepRefImages(list) {
 }
 
 function renderAnalysis(a, note, used) {
+  if (a.kind === 'video') {
+    $('#analysisOut').innerHTML = `<div class="analysis">
+      <b>영상 분석 결과</b> · ${esc(a.format)} · ${esc(a.lengthNote)} · 썸네일 ${esc(a.aspect)}<br>
+      훅: ${esc(a.hook)}<br>
+      말투: ${esc(a.speech)}<br>
+      구조: ${(a.structure || []).map(x => `${esc(x.no)}. ${esc(x.role)}${x.start ? ` (${esc(x.start)})` : ''}`).join(' → ')}<br>
+      구성 공식: ${esc(a.reusablePattern)}
+      ${note ? `<br><span class="hint">${esc(note)}</span>` : ''}
+    </div>`;
+    return;
+  }
   const pal = (a.palette || []).map(h => `<span class="sw" style="background:${esc(h)}"></span>${esc(h)}`).join(' ');
   $('#analysisOut').innerHTML = `<div class="analysis">
     <b>분석 결과</b> (이미지 ${used}장) · 비율 ${esc(a.aspect)} · ${esc(a.slideCount)}장<br>
@@ -275,15 +381,16 @@ function renderAnalysis(a, note, used) {
 
 $('#analyzeBtn').onclick = async () => {
   const url = $('#url').value.trim();
-  if (!images.length && !url) return setMsg($('#msg1'), '이미지를 올리거나 게시물 주소를 넣어 주세요.', 'err');
+  if (mode === 'video') { if (!url && !$('#script').value.trim()) return setMsg($('#msg1'), '영상 주소를 넣거나 스크립트를 붙여넣어 주세요.', 'err'); }
+  else if (!images.length && !url) return setMsg($('#msg1'), '이미지를 올리거나 게시물 주소를 넣어 주세요.', 'err');
   const btn = $('#analyzeBtn'); btn.disabled = true;
-  setMsg($('#msg1'), busy(url ? '게시물을 가져와 분석하고 있어요 (최대 1~2분)…' : '레이아웃을 분석하고 있어요…'), 'info');
+  setMsg($('#msg1'), busy(mode === 'video' ? '영상 스크립트와 썸네일을 분석하고 있어요 (1분 안팎)…' : url ? '게시물을 가져와 분석하고 있어요 (최대 1~2분)…' : '레이아웃을 분석하고 있어요…'), 'info');
   try {
-    const r = await api('analyze', { url: url || undefined, images: images.map(({ media_type, data }) => ({ media_type, data })) });
+    const r = await api('analyze', { mode, script: mode === 'video' ? $('#script').value : undefined, url: url || undefined, images: images.map(({ media_type, data }) => ({ media_type, data })) });
     analysis = r.analysis;
     refImages = await prepRefImages(images.concat((r.fetchedImages || []).map(i => ({ ...i, url: `data:${i.media_type};base64,${i.data}` }))));
     const n = (analysis.slides || []).length;
-    if (n) { $('#count').value = n; $('#count').disabled = true; $('#count').title = '레퍼런스 장 수를 그대로 써요'; }
+    if (n && mode !== 'video') { $('#count').value = n; $('#count').disabled = true; $('#count').title = '레퍼런스 장 수를 그대로 써요'; }
     renderAnalysis(analysis, r.note, r.usedImages);
     setMsg($('#msg1'), '');
     $('#step2').setAttribute('aria-disabled', 'false');
@@ -368,20 +475,30 @@ function renderResult(r, keepScroll) {
   try { sessionStorage.setItem('lastResult', JSON.stringify({ r, analysis, stage, form: formValues() })); } catch { /* 저장 불가 */ }
   try { sessionStorage.setItem('refImages', JSON.stringify(refImages.map(({ w, h }) => ({ w, h })))); } catch { /* 용량 초과 */ }
   setMsg($('#msgCanva'), '');
+  const isVideo = analysis?.kind === 'video';
+  $('#scriptOut').hidden = !isVideo;
+  $('#canvaFallback').hidden = isVideo;
+  if (isVideo) {
+    $('#vTitle').textContent = r.title || '';
+    $('#scriptList').innerHTML = (r.script || []).map(x => `<div class="script-sec"><span class="no">${esc(x.no)}. ${esc(x.role)}${x.timing ? ' · ' + esc(x.timing) : ''}</span>
+      <p>${esc(x.narration)}</p>${x.onScreen ? `<small>화면 자막: ${esc(x.onScreen)}</small>` : ''}${x.visual ? `<small>화면 구성: ${esc(x.visual)}</small>` : ''}</div>`).join('');
+    $('#vScript').textContent = (r.script || []).map(x => `[${x.no}. ${x.role}${x.timing ? ' ' + x.timing : ''}]\n${x.narration}${x.onScreen ? `\n(자막: ${x.onScreen})` : ''}`).join('\n\n');
+  }
   $('#slides').innerHTML = (r.slides || []).map((s, i) => {
     const ref = (analysis?.slides || [])[i];
     const rep = Object.fromEntries((s.replacements || []).map(x => [x.id, x.text]));
     const changed = (ref?.texts || []).filter(t => rep[t.id] !== undefined && String(rep[t.id]).trim() !== String(t.text).trim());
     return `<div class="slide">
     ${ref && (ref.texts || []).length ? preview(ref, rep, cardSize()) : ''}
-    <div class="no">${esc(s.no)}장 · ${esc(s.role)}</div>
+    <div class="no">${isVideo ? '' : esc(s.no) + '장 · '}${esc(s.role)}</div>
     <h3>${esc(s.headline)}</h3>
     <p>${esc(s.body)}</p>
     ${changed.length ? `<details><summary>바뀐 문구 ${changed.length}곳</summary>${changed.map(t => `<p class="chg"><s>${esc(t.text)}</s><br>→ ${esc(rep[t.id])}</p>`).join('')}</details>` : ''}
-    ${s.visual ? `<small>이미지 제안: ${esc(s.visual)}</small>` : ''}
+    ${s.visual ? `<small>${isVideo ? '썸네일 이미지 제안' : '이미지 제안'}: ${esc(s.visual)}</small>` : ''}
   </div>`;
   }).join('');
   $('#canva').textContent = r.canvaPrompt || '';
+  $('#canvaBox').hidden = isVideo || !canva.configured;
   $('#caption').textContent = [r.caption, (r.hashtags || []).join(' ')].filter(Boolean).join('\n\n');
   const notes = r.complianceNotes || [];
   $('#notes').innerHTML = notes.length ? notes.map(n => `<li>${esc(n)}</li>`).join('') : '<li>특별히 지적할 표현이 없어요.</li>';
@@ -452,7 +569,7 @@ let canvaWin = null, pendingCreate = false;
 const waitPage = t => `<!doctype html><meta charset="utf-8"><title>Canva</title><body style="font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#f4f4ef;color:#1d2320"><p>${t}</p></body>`;
 
 function renderCanva() {
-  $('#canvaBox').hidden = !canva.configured;
+  $('#canvaBox').hidden = !canva.configured || analysis?.kind === 'video';
   $('#canvaFallback').open = !canva.configured;
   $('#canvaLogout').hidden = !canva.connected;
   $('#canvaBtn').textContent = canva.connected ? 'Canva 디자인 만들기' : 'Canva 연결하고 디자인 만들기';
