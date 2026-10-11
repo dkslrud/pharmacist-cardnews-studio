@@ -39,7 +39,7 @@
   .msg { margin-top: 12px; font-size: 14px; min-height: 1em; }
   .msg.err { color: var(--err); }
   .msg.info { color: var(--muted); }
-  .stages { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   @media (max-width: 760px) { .stages { grid-template-columns: 1fr; } }
   .stage { text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 16px 18px; cursor: pointer; font: inherit; color: inherit; }
   .stage b { display: block; font-size: 17px; margin-bottom: 6px; }
@@ -128,8 +128,9 @@
   <section class="card" id="step2" aria-disabled="true">
     <h2 class="step-title"><span class="badge">STEP 2</span>마케팅 단계와 약사 정보</h2>
     <div class="stages">
-      <button class="stage" data-stage="conversion" aria-pressed="true"><b>전환 · 나눔이벤트 OPEN</b><span>오픈 기간 · 나눔이벤트(사은품) · USP 체크 · 섭취법 · 구매 방법</span></button>
-      <button class="stage" data-stage="remind" aria-pressed="false"><b>리마인드 · 마감임박</b><span>마감 일시 · 남은 혜택 · 후기·Q&A로 망설임 해소 · 구매 방법</span></button>
+      <button class="stage" data-stage="inflow" aria-pressed="false"><b>유입</b><span>공감·정보로 관심 모으기 · 댓글 유도 · 저장 · 공유</span></button>
+      <button class="stage" data-stage="conversion" aria-pressed="true"><b>전환</b><span>오픈 기간 · 나눔이벤트(사은품) · USP 체크 · 섭취법 · 구매 방법</span></button>
+      <button class="stage" data-stage="deadline" aria-pressed="false"><b>마감</b><span>마감 일시 · 남은 혜택 · 후기·Q&A로 망설임 해소 · 구매 방법</span></button>
     </div>
     <div class="grid4">
       <div><label for="name">약사명</label><input id="name" value="서울대 약사엄마 레인보우 약사"></div>
@@ -363,6 +364,13 @@ $('#analyzeBtn').onclick = async () => {
 
 // 단계별 반드시 포함할 내용 기본값 (레인보우약사 오메가3 공구 노션 기준)
 const MUST = {
+  inflow: `[유입]
+- 목표: 댓글 유도 · 저장 · 공유 (구매 유도는 하지 않기)
+- 주제: 알래스카 오메가 츄 패밀리(오렌지맛 씹어먹는 rTG 오메가3 젤리)와 이어지는 육아맘 공감·정보
+- 댓글 유도: 질문을 던져 경험·의견을 댓글로 남기게
+- 저장 유도: 나중에 다시 보도록 "저장해두세요"
+- 공유 유도: 필요한 친구·가족에게 보내도록 "공유해주세요"
+- 하단 표기: *오메가3: EPA 및 DHA 함유 유지`,
   conversion: `[나눔이벤트 OPEN]
 - 공구 기간: 10/12(월) ~ 10/18(일)
 - 나눔이벤트(사은품): 콜라겐 20개 증정
@@ -372,7 +380,7 @@ const MUST = {
 - 구성: 1박스 30젤리(15일분)
 - 구매: 프로필 링크 / 댓글 남기면 링크 DM
 - 하단 표기: *오메가3: EPA 및 DHA 함유 유지`,
-  remind: `[마감 임박]
+  deadline: `[마감 임박]
 - 곧 마감: 10/18(일) 마감 (공구 기간 10/12~10/18)
 - 남은 혜택: 나눔이벤트 사은품 콜라겐 20개
 - 망설임 해소: 알약 못 삼키는 아이도 간식처럼 · 비린내 없는 오렌지맛 · 한 알씩 개별 포장
@@ -380,12 +388,16 @@ const MUST = {
 - 구매: 프로필 링크 / 댓글 남기면 링크 DM
 - 하단 표기: *오메가3: EPA 및 DHA 함유 유지`,
 };
+const CTA = { inflow: '댓글로 알려주세요 · 나중에 보게 저장 · 필요한 친구에게 공유', conversion: '프로필 링크에서 구매 · 댓글 남기면 구매 링크 DM', deadline: '프로필 링크에서 구매 · 댓글 남기면 구매 링크 DM' };
+let ctaEdited = false;
 let mustEdited = false;
+$('#cta').oninput = () => { ctaEdited = true; };
 $('#must').value = MUST.conversion;
 $('#must').oninput = () => { mustEdited = true; };
 document.querySelectorAll('.stage').forEach(b => b.onclick = () => {
   stage = b.dataset.stage;
   document.querySelectorAll('.stage').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  if (!ctaEdited) $('#cta').value = CTA[stage];
   if (!mustEdited || confirm('반드시 포함할 내용을 이 단계 기본값으로 바꿀까요?')) { $('#must').value = MUST[stage]; mustEdited = false; }
 });
 
