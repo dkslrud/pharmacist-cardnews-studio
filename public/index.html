@@ -120,7 +120,7 @@
       <label for="script">스크립트 직접 붙여넣기 (선택 · 자막을 못 가져오는 영상은 필수)</label>
       <textarea id="script" rows="6" placeholder="영상에서 말하는 내용을 그대로 붙여 넣어 주세요. 주소의 자막보다 이 내용을 먼저 써요."></textarea>
     </div>
-    <button class="btn" id="analyzeBtn">레이아웃 분석</button>
+    <button class="btn" id="analyzeBtn">레퍼런스 분석</button>
     <div class="msg" id="msg1"></div>
     <div id="analysisOut"></div>
   </section>
@@ -223,7 +223,6 @@ function setMode(m) {
   $('#file').accept = v ? 'image/*,video/*' : 'image/*';
   $('#drop').textContent = v ? '썸네일 이미지 또는 영상 파일을 끌어다 놓거나 눌러서 선택 (선택 · 최대 3컷)' : '카드뉴스 이미지를 끌어다 놓거나 눌러서 선택 (최대 8장)';
   $('#scriptBox').hidden = !v;
-  $('#analyzeBtn').textContent = v ? '영상 구조 분석' : '레이아웃 분석';
   $('#composeBtn').textContent = v ? '영상 스크립트·썸네일 만들기' : '카드뉴스 구성 만들기';
   $('#count').disabled = v || !!analysis; $('#count').closest('div').hidden = v;
   $('#reviseTitle').textContent = v ? '영상 콘텐츠 수정하기' : '카드뉴스 수정하기';
