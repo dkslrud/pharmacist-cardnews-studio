@@ -136,7 +136,7 @@ description: 약사·건강 전문가를 위한 인스타그램 콘텐츠 기획
   - 릴스·영상: 화면 비율, 인물·피사체 구도, 자막·라벨·로고의 위치·정렬·줄 수, 장면 전환 구성
   - 이미지를 볼 수 없으면 레이아웃을 추정하지 않습니다. 이미지 주소를 Apify `apify/web-fetch`(raw)로 가져와 확인하고, 그래도 안 되면 화면 캡처를 요청합니다. 릴스는 표지 프레임만 확인되는 경우가 많으므로 확인 범위를 밝힙니다.
 - **영상 원본 스크립트 추출** (레퍼런스가 릴스·영상일 때, 입력한 URL에서 자동 진행)
-  - Actor: `steadyfetch/instagram-reel-transcript-scraper` — 입력 `reelUrls`(릴스 URL), `includeOnScreenText: true`. 음성 대본, 시간 구간(segments), 첫 3초 훅, 화면 자막(옵션), 영상 길이, 재생수·좋아요를 돌려줍니다. 시험 단가는 릴스 1건당 약 $0.01이며, 실행 전에 Actor·입력·예상 건수·단가를 알립니다.
+  - Actor: `steadyfetch/instagram-reel-transcript-scraper` — 입력 `reelUrls`(릴스 URL), `includeOnScreenText: true`. 음성 대본, 시간 구간(segments), 첫 3초 훅, 화면 자막(옵션), 영상 길이, 재생수·좋아요를 돌려줍니다. 시험 단가는 릴스 1건당 약 0.01달러이며, 실행 전에 Actor·입력·예상 건수·단가를 알립니다.
   - 대안 Actor: `afanasenko/instagram-reel-script-extractor`(화면 자막과 훅·CTA 분해까지, 단가 높음), `memo23/instagram-reel-transcript-scraper`(Whisper, SRT/VTT), 인스타그램 외 영상 URL은 `themineworks/instagram-tiktok-video-transcript`
   - 결과를 가져올 때 시간 구간(`segments`)은 `fields`로 항목을 지정하면 빠질 수 있으므로, 불필요한 큰 항목(`transcript`, `videoUrl` 등)을 `omit`으로 제외하는 방식으로 가져옵니다.
   - 추출 결과를 **원본 컷표**로 정리합니다: 컷 번호 | 시간 구간 | 음성 대본 | 화면 자막 | 역할(후킹·공감·정보·전환·CTA) | 길이(초)·글자 수
@@ -285,7 +285,7 @@ description: 약사·건강 전문가를 위한 인스타그램 콘텐츠 기획
 1. 폴더를 만들고 이 파일을 넣습니다: `~/.claude/skills/instagram-content-planner/SKILL.md`
 2. Claude Code를 다시 시작한 뒤 `/instagram-content-planner` 로 실행하거나 "인스타그램 콘텐츠 기획해줘"라고 말합니다.
 3. 한글 명령(`/인스타그램-콘텐츠-기획`)을 원하면 `~/.claude/commands/인스타그램-콘텐츠-기획.md` 파일을 만들고 다음 한 줄을 넣습니다.
-   `instagram-content-planner 스킬로 진행해 주세요. 입력: $ARGUMENTS`
+   `instagram-content-planner 스킬로 진행해 주세요. 입력:` 뒤에 달러 기호와 영문 대문자 ARGUMENTS를 붙여 쓴 인수 자리표시자를 넣습니다. (이 문서에 그대로 적으면 스킬 실행 시 입력값으로 치환되어 깨지므로 풀어서 설명했습니다.)
 
 **Claude 앱(claude.ai / Desktop)**
 1. `instagram-content-planner` 폴더(`SKILL.md` 포함)를 zip으로 압축
