@@ -35,7 +35,7 @@ http.createServer(async (req, res) => {
     res.writeHead(r.code, { ...headers, 'content-type': 'application/json; charset=utf-8' });
     return res.end(JSON.stringify(r.json));
   }
-  const api = url.pathname.match(/^\/api\/(config|analyze|compose)$/);
+  const api = url.pathname.match(/^\/api\/(config|analyze|compose|revise)$/);
   if (api) {
     let raw = '';
     for await (const c of req) raw += c;

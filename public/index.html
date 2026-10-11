@@ -77,6 +77,10 @@
   .canva-box .btn { margin-top: 12px; }
   .canva-box a.open { color: var(--brand); font-weight: 700; }
   .linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; margin-left: 12px; }
+  .revise-box { margin-top: 20px; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; background: var(--field); }
+  .revise-box h4 { margin: 0 0 4px; font-size: 15px; }
+  .revise-box textarea { background: var(--card); }
+  .revise-box ol { margin: 8px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
   details.fallback { margin-top: 20px; }
   details.fallback summary { cursor: pointer; font-weight: 700; font-size: 15px; }
 </style>
@@ -143,6 +147,14 @@
   <section class="card" id="step3" hidden>
     <h2 class="step-title"><span class="badge">STEP 3</span>카드뉴스 구성</h2>
     <div class="slides" id="slides"></div>
+    <div class="revise-box" id="reviseBox">
+      <h4>카드뉴스 수정하기</h4>
+      <p class="hint" style="margin:0">바꾸고 싶은 점을 적으면 반영해 구성·캡션·Canva 지시문을 다시 만들어요. 여러 번 반복할 수 있어요.</p>
+      <textarea id="reviseText" rows="3" placeholder="예) 2장 제목을 더 공감되게 바꿔줘 / 전체적으로 말투를 더 친근하게 / 캡션 첫 줄을 질문형으로"></textarea>
+      <button class="btn" id="reviseBtn">수정 반영하기</button>
+      <div class="msg" id="msgRevise"></div>
+      <ol id="reviseLog"></ol>
+    </div>
     <div class="canva-box" id="canvaBox" hidden>
       <h4>Canva에서 바로 디자인하기</h4>
       <p>위 구성으로 Canva 디자인을 만들어 새 창에서 열어요. 글자, 색, 이미지는 Canva에서 바로 고칠 수 있어요.</p>
@@ -350,7 +362,8 @@ uploader('detail'); uploader('review');
 const parts = key => srcFiles[key].flatMap(f => f.parts).map(({ media_type, data }) => ({ media_type, data }));
 
 let lastResult = null;
-function renderResult(r) {
+let reviseHistory = [];
+function renderResult(r, keepScroll) {
   lastResult = r;
   try { sessionStorage.setItem('lastResult', JSON.stringify({ r, analysis, stage, form: formValues() })); } catch { /* 저장 불가 */ }
   try { sessionStorage.setItem('refImages', JSON.stringify(refImages.map(({ w, h }) => ({ w, h })))); } catch { /* 용량 초과 */ }
@@ -373,7 +386,8 @@ function renderResult(r) {
   const notes = r.complianceNotes || [];
   $('#notes').innerHTML = notes.length ? notes.map(n => `<li>${esc(n)}</li>`).join('') : '<li>특별히 지적할 표현이 없어요.</li>';
   $('#step3').hidden = false;
-  $('#step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('#reviseLog').innerHTML = reviseHistory.map(h => `<li>${esc(h)}</li>`).join('');
+  if (!keepScroll) $('#step3').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // 레퍼런스 레이아웃(배경색, 도형·이미지 자리, 글자 자리)에 새 문구를 얹은 미리보기 (Canva 디자인과 같은 방식)
@@ -405,8 +419,25 @@ $('#composeBtn').onclick = async () => {
     if (size > 3.6e6) throw new Error('상세페이지·리뷰 이미지가 너무 많아요. 꼭 필요한 부분만 남겨 주세요.');
     const r = await api('compose', { analysis, stage, slideCount: +$('#count').value, pharmacist: formValues(), detailImages, reviewImages });
     setMsg($('#msg2'), '');
+    reviseHistory = []; $('#reviseText').value = '';
     renderResult(r);
   } catch (e) { setMsg($('#msg2'), esc(e.message), 'err'); }
+  finally { btn.disabled = false; }
+};
+
+$('#reviseBtn').onclick = async () => {
+  const request = $('#reviseText').value.trim();
+  if (!lastResult) return setMsg($('#msgRevise'), '먼저 카드뉴스 구성을 만들어 주세요.', 'err');
+  if (!request) return setMsg($('#msgRevise'), '수정 요청을 입력해 주세요.', 'err');
+  const btn = $('#reviseBtn'); btn.disabled = true;
+  setMsg($('#msgRevise'), busy('수정 요청을 반영하고 있어요 (1분 안팎)…'), 'info');
+  try {
+    const r = await api('revise', { analysis, stage, pharmacist: formValues(), current: lastResult, request, history: reviseHistory });
+    reviseHistory.push(request);
+    $('#reviseText').value = '';
+    renderResult(r, true);
+    setMsg($('#msgRevise'), '수정 내용을 반영했어요. 위 카드와 캡션, Canva 지시문이 모두 갱신됐어요.', 'info');
+  } catch (e) { setMsg($('#msgRevise'), esc(e.message), 'err'); }
   finally { btn.disabled = false; }
 };
 
