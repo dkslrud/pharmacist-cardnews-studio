@@ -138,6 +138,7 @@ description: 약사·건강 전문가를 위한 인스타그램 콘텐츠 기획
 - **영상 원본 스크립트 추출** (레퍼런스가 릴스·영상일 때, 입력한 URL에서 자동 진행)
   - Actor: `steadyfetch/instagram-reel-transcript-scraper` — 입력 `reelUrls`(릴스 URL), `includeOnScreenText: true`. 음성 대본, 시간 구간(segments), 첫 3초 훅, 화면 자막(옵션), 영상 길이, 재생수·좋아요를 돌려줍니다. 시험 단가는 릴스 1건당 약 $0.01이며, 실행 전에 Actor·입력·예상 건수·단가를 알립니다.
   - 대안 Actor: `afanasenko/instagram-reel-script-extractor`(화면 자막과 훅·CTA 분해까지, 단가 높음), `memo23/instagram-reel-transcript-scraper`(Whisper, SRT/VTT), 인스타그램 외 영상 URL은 `themineworks/instagram-tiktok-video-transcript`
+  - 결과를 가져올 때 시간 구간(`segments`)은 `fields`로 항목을 지정하면 빠질 수 있으므로, 불필요한 큰 항목(`transcript`, `videoUrl` 등)을 `omit`으로 제외하는 방식으로 가져옵니다.
   - 추출 결과를 **원본 컷표**로 정리합니다: 컷 번호 | 시간 구간 | 음성 대본 | 화면 자막 | 역할(후킹·공감·정보·전환·CTA) | 길이(초)·글자 수
   - 한계와 처리: 언어를 잘못 인식하거나(예: 한국어 영상이 외국어로 표시), 음악만 있는 영상이거나, 화면 자막이 비어 있을 수 있습니다. 이때 표지 프레임(이미지)에서 읽을 수 있는 자막만 기록하고, 나머지는 사용자에게 대본·자막을 붙여넣거나 화면 캡처를 올려 달라고 요청합니다. 짧은 티저 영상은 대본이 한두 문장뿐일 수 있으므로 캡션 구조로 보완합니다. **추출하지 못한 부분은 추정하지 않습니다.**
   - 원본 스크립트는 구조 분석용입니다. 보고서에는 원문을 길게 옮기지 않고 필요한 부분만 짧게 인용합니다.
