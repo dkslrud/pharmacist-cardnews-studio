@@ -24,9 +24,6 @@ h1{font-size:clamp(40px,7vw,64px);line-height:1.15;margin:0;font-weight:800;lett
 h1 .ic{font-size:.85em}
 h2{font-size:clamp(26px,4vw,34px);line-height:1.3;margin:72px 0 18px;font-weight:800;letter-spacing:-0.02em}
 h3{font-size:22px;line-height:1.4;margin:44px 0 12px;font-weight:700}
-.hint{font-size:15px;color:var(--sub);margin:10px 0 36px}
-.hint em{font-style:normal;color:var(--accent);font-weight:700}
-.hint span{color:var(--mute)}
 
 /* top nav */
 .top{position:sticky;top:0;z-index:20;background:rgba(239,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -200,23 +197,6 @@ section.stage.on{display:block}
 ul.tight{margin:0 0 14px;padding-left:22px;color:var(--sub)}
 ul.tight li{margin:4px 0}
 
-/* ask ui */
-#askBtn{position:absolute;z-index:40;display:none;background:var(--ink);color:#fff;border:0;font:inherit;font-size:14px;font-weight:700;padding:9px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.18);cursor:pointer}
-#askBtn::before{content:"💬 ";}
-#askSheet{position:fixed;z-index:50;right:20px;bottom:20px;width:min(440px,calc(100vw - 32px));max-height:min(78vh,680px);display:none;flex-direction:column;background:#FFFDF8;border:1px solid var(--line);box-shadow:0 18px 48px rgba(0,0,0,.18)}
-#askSheet.on{display:flex}
-#askSheet header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700}
-#askSheet header button{appearance:none;border:0;background:none;font-size:22px;cursor:pointer;color:var(--sub);line-height:1}
-#askBody{padding:16px 18px;overflow:auto;flex:1}
-#askQuote{border-left:3px solid var(--accent);background:var(--accent-pale);padding:10px 12px;font-size:14px;color:var(--ink);margin-bottom:12px;max-height:120px;overflow:auto}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.chips button{appearance:none;font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);padding:6px 10px;border-radius:999px;cursor:pointer;color:var(--ink)}
-#askInput{width:100%;font:inherit;font-size:15px;border:1px solid var(--line);padding:10px 12px;resize:vertical;min-height:64px;background:#fff}
-#askSend{margin-top:8px;width:100%;appearance:none;border:0;background:var(--accent);color:#fff;font:inherit;font-weight:700;font-size:15px;padding:12px;cursor:pointer}
-#askSend:disabled{opacity:.6;cursor:wait}
-#askAnswer{margin-top:14px;font-size:15px;line-height:1.7;color:var(--ink);white-space:pre-wrap}
-#askAnswer.err{color:#B23A17}
-@media (max-width:640px){#askSheet{right:0;left:0;bottom:0;width:100%;max-height:85vh}}
 @media (max-width:640px){.callout{padding:18px 18px;gap:12px}.callout .e{font-size:22px}.panel{padding:18px}.qcard{padding:20px;gap:14px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -238,7 +218,6 @@ ul.tight li{margin:4px 0}
 <header class="intro">
   <div class="kicker">약사 4주 집중 컨설팅 · 1주차</div>
   <h1>팔리는 콘텐츠 3단계</h1>
-  <p class="hint">읽다가 궁금한 문장을 <em>드래그</em>하면 바로 질문할 수 있어요 <span>(폰은 길게 눌러 선택)</span></p>
   <p>공구는 한 제품으로 <b>유입 → 전환 → 리마인드</b>를 끊김 없이 잇는 흐름입니다. 1주차는 그 흐름에 넣을 콘텐츠를 <b>누구에게 보여질지, 무엇을 말할지, 어디서 가져올지</b> 순서로 만듭니다.</p>
   <div class="roadmap">
     <button class="road" data-go="s1"><div class="no">1단계</div><div class="t">🎆 알고리즘이 좋아하는 콘텐츠</div><div class="d">내 영상이 엄마들에게 먼저 가도록 계정을 길들이기</div></button>
@@ -250,7 +229,6 @@ ul.tight li{margin:4px 0}
 <!-- ============ STAGE 1 ============ -->
 <section class="stage" id="s1" data-title="1단계 알고리즘이 좋아하는 콘텐츠">
   <h1 style="margin-top:56px"><span class="ic">🎆</span>알고리즘 해킹</h1>
-  <p class="hint">읽다가 궁금한 문장을 <em>드래그</em>하면 바로 질문할 수 있어요 <span>(폰은 길게 눌러 선택)</span></p>
 
   <h2>먼저, 알고리즘은 어떻게 움직일까요?</h2>
   <div class="panel">
@@ -347,7 +325,6 @@ ul.tight li{margin:4px 0}
 <!-- ============ STAGE 2 ============ -->
 <section class="stage" id="s2" data-title="2단계 콘텐츠 기획">
   <h1 style="margin-top:56px"><span class="ic">🧩</span>콘텐츠 기획</h1>
-  <p class="hint">읽다가 궁금한 문장을 <em>드래그</em>하면 바로 질문할 수 있어요 <span>(폰은 길게 눌러 선택)</span></p>
 
   <h2>척추 — 손님이 사기까지 지나는 5단계</h2>
   <p><b>손님은 콘텐츠 한 편 보고 바로 사지 않습니다.</b> 문제를 느끼고, 갖고 싶어지고, 알아보고, 그다음에야 삽니다.</p>
@@ -426,7 +403,6 @@ ul.tight li{margin:4px 0}
 <!-- ============ STAGE 3 ============ -->
 <section class="stage" id="s3" data-title="3단계 콘텐츠 소재">
   <h1 style="margin-top:56px"><span class="ic">🔬</span>콘텐츠 소재</h1>
-  <p class="hint">읽다가 궁금한 문장을 <em>드래그</em>하면 바로 질문할 수 있어요 <span>(폰은 길게 눌러 선택)</span></p>
   <div class="callout"><span class="e">🔬</span><div><p class="lead">이미 터진 영상에서 형식을 빌리고, 내용만 내 것으로 채웁니다.</p></div></div>
 
   <h2>콘텐츠 재료 모으기</h2>
@@ -500,22 +476,6 @@ ul.tight li{margin:4px 0}
 
 </main>
 
-<button id="askBtn" type="button">이 부분 질문하기</button>
-<div id="askSheet" role="dialog" aria-label="질문하기">
-  <header><span>💬 강의 조교에게 질문</span><button type="button" id="askClose" aria-label="닫기">×</button></header>
-  <div id="askBody">
-    <div id="askQuote"></div>
-    <div class="chips">
-      <button type="button" data-q="이 부분을 쉽게 다시 설명해 주세요.">쉽게 설명해줘</button>
-      <button type="button" data-q="이걸 제 공구 제품에 적용하면 어떻게 되나요? 예시를 들어 주세요.">내 공구에 적용하면?</button>
-      <button type="button" data-q="이 내용으로 바로 쓸 수 있는 릴스 첫 문장 5개를 만들어 주세요.">훅 5개 만들어줘</button>
-    </div>
-    <textarea id="askInput" placeholder="궁금한 점을 적어 주세요. 비워두면 쉬운 설명과 적용 예시를 드려요."></textarea>
-    <button type="button" id="askSend">질문하기</button>
-    <div id="askAnswer"></div>
-  </div>
-</div>
-
 <script>
 (function(){
   // ---- 단계 탭 ----
@@ -536,81 +496,6 @@ ul.tight li{margin:4px 0}
   });
   window.addEventListener('popstate', () => show(location.hash.slice(1)));
   show(location.hash.slice(1), false);
-
-  // ---- 드래그해서 질문하기 ----
-  const main = document.getElementById('main');
-  const btn = document.getElementById('askBtn');
-  const sheet = document.getElementById('askSheet');
-  const qEl = document.getElementById('askQuote');
-  const input = document.getElementById('askInput');
-  const send = document.getElementById('askSend');
-  const ans = document.getElementById('askAnswer');
-  let quote = '', section = '';
-
-  function currentSelection(){
-    const sel = window.getSelection();
-    if(!sel || sel.isCollapsed || !sel.rangeCount) return null;
-    const text = sel.toString().replace(/\s+/g,' ').trim();
-    if(text.length < 2) return null;
-    const range = sel.getRangeAt(0);
-    if(!main.contains(range.commonAncestorContainer)) return null;
-    return { text, range };
-  }
-  function placeBtn(){
-    const s = currentSelection();
-    if(!s){ btn.style.display = 'none'; return; }
-    const r = s.range.getBoundingClientRect();
-    const top = window.scrollY + r.bottom + 8;
-    let left = window.scrollX + r.left + r.width/2 - 70;
-    left = Math.max(8, Math.min(left, window.scrollX + document.documentElement.clientWidth - 160));
-    btn.style.top = top + 'px'; btn.style.left = left + 'px'; btn.style.display = 'block';
-  }
-  let t;
-  document.addEventListener('selectionchange', () => { clearTimeout(t); t = setTimeout(placeBtn, 250); });
-  btn.addEventListener('mousedown', e => e.preventDefault());
-  btn.addEventListener('click', () => {
-    const s = currentSelection();
-    if(!s) return;
-    quote = s.text.slice(0, 1200);
-    const sec = (s.range.commonAncestorContainer.nodeType === 1 ? s.range.commonAncestorContainer : s.range.commonAncestorContainer.parentElement).closest('section.stage');
-    let h = '';
-    if (sec) {
-      const hs = [...sec.querySelectorAll('h2,h3')].filter(x => x.compareDocumentPosition(s.range.startContainer) & Node.DOCUMENT_POSITION_FOLLOWING);
-      h = hs.length ? hs[hs.length-1].textContent : '';
-      section = sec.dataset.title + (h ? ' > ' + h : '');
-    } else section = '1주차 개요';
-    qEl.textContent = '“' + quote + '”';
-    ans.textContent = ''; ans.className = '';
-    input.value = '';
-    sheet.classList.add('on');
-    btn.style.display = 'none';
-    input.focus({preventScroll:true});
-  });
-  document.getElementById('askClose').addEventListener('click', () => sheet.classList.remove('on'));
-  document.querySelectorAll('.chips button').forEach(c => c.addEventListener('click', () => { input.value = c.dataset.q; ask(); }));
-  send.addEventListener('click', ask);
-  input.addEventListener('keydown', e => { if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)) ask(); });
-
-  function getPw(){ try { return localStorage.getItem('week1_pw') || ''; } catch { return ''; } }
-  function setPw(v){ try { localStorage.setItem('week1_pw', v); } catch {} }
-
-  async function ask(retry){
-    if(!quote) return;
-    send.disabled = true; ans.className = ''; ans.textContent = '답변을 쓰고 있어요…';
-    try{
-      const r = await fetch('/api/ask', { method:'POST', headers:{'content-type':'application/json','x-app-password':getPw()}, body: JSON.stringify({ quote, question: input.value, section }) });
-      const j = await r.json().catch(() => ({}));
-      if(r.status === 401 && !retry){
-        const pw = prompt('질문 기능 비밀번호를 입력해 주세요.');
-        if(pw){ setPw(pw); send.disabled = false; return ask(true); }
-      }
-      if(!r.ok) throw new Error(j.error || ('오류 ' + r.status));
-      ans.textContent = j.answer.replace(/\*\*(.+?)\*\*/g, '$1');
-    }catch(e){
-      ans.className = 'err';
-      ans.textContent = location.protocol === 'file:' ? '질문 기능은 배포된 사이트(또는 node server.js)에서만 동작해요.' : '질문하지 못했어요: ' + e.message;
-    }finally{ send.disabled = false; }
-  }
 })();
 </script>
 </body>
