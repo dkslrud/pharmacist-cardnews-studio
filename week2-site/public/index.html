@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2주차 · 클로드 코드 콘텐츠 기획</title>
+<meta name="description" content="약사 4주 집중 컨설팅 2주차: 클로드 코드로 알고리즘이 좋아하는 콘텐츠 만들기">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EFECE2; --card:#F8F6F0; --line:#D9D6CC; --ink:#1A1A17; --sub:#5F5E58; --mute:#8C8A82;
+  --accent:#E5531F; --accent-soft:#F3D8CB; --accent-pale:#F5E6DE;
+  --blue:#6AA6F0; --blue-bg:#E4E4E1; --green:#5FD08E; --green-bg:#E2E8DA; --yellow:#F0C04A; --yellow-bg:#EEE6D3; --red:#F07862; --red-bg:#F0E2D8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.75;letter-spacing:-0.01em;word-break:keep-all}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 120px}
+a{color:inherit}
+b,strong{font-weight:700;color:var(--ink)}
+p{margin:0 0 14px;color:var(--sub)}
+p b{color:var(--ink)}
+h1{font-size:clamp(40px,7vw,64px);line-height:1.15;margin:0;font-weight:800;letter-spacing:-0.03em;display:flex;align-items:center;gap:20px}
+h1 .ic{font-size:.85em}
+h2{font-size:clamp(26px,4vw,34px);line-height:1.3;margin:72px 0 18px;font-weight:800;letter-spacing:-0.02em}
+h3{font-size:22px;line-height:1.4;margin:44px 0 12px;font-weight:700}
+
+/* top nav */
+.top{position:sticky;top:0;z-index:20;background:rgba(239,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:900px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.top .in::-webkit-scrollbar{display:none}
+.brand{font-size:13px;font-weight:700;color:var(--mute);white-space:nowrap;margin-right:6px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--sub);font:inherit;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.tab .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--line);color:var(--ink);font-size:12px;margin-right:6px}
+.tab[aria-selected="true"]{border-color:var(--accent);color:var(--ink);background:var(--accent-pale)}
+.tab[aria-selected="true"] .n{background:var(--accent);color:#fff}
+
+/* intro */
+.intro{padding:48px 0 8px}
+.kicker{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px}
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 8px}
+.road{background:var(--card);border:1px solid var(--line);padding:20px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.road:hover{border-color:var(--accent)}
+.road .no{font-size:13px;font-weight:700;color:var(--accent)}
+.road .t{font-size:19px;font-weight:700;margin:4px 0 6px;line-height:1.35}
+.road .d{font-size:14px;color:var(--sub);line-height:1.55}
+
+section.stage{display:none}
+section.stage.on{display:block}
+
+/* callouts */
+.callout{display:flex;gap:18px;align-items:flex-start;padding:24px 28px;margin:22px 0;border-left:4px solid var(--blue);background:var(--blue-bg);color:var(--ink)}
+.callout .e{font-size:26px;line-height:1.2;flex:none}
+.callout p{color:var(--ink);margin:0}
+.callout p + p{margin-top:8px}
+.callout.green{border-color:var(--green);background:var(--green-bg)}
+.callout.yellow{border-color:var(--yellow);background:var(--yellow-bg)}
+.callout.red{border-color:var(--red);background:var(--red-bg)}
+.callout.gray{border-color:#C9C6BC;background:#E3E0D6}
+.callout .lead{font-weight:700}
+
+/* flow boxes with dots */
+.flow{display:flex;align-items:center;margin:28px 0;flex-wrap:nowrap}
+.flow .box{flex:1;background:var(--card);border:1px solid var(--line);padding:22px 12px;text-align:center;min-width:0}
+.flow .box .e{font-size:34px;line-height:1.1;margin-bottom:10px}
+.flow .box .t{font-weight:700;font-size:17px;line-height:1.4}
+.flow .box .s{font-size:14px;color:var(--sub);margin-top:6px;line-height:1.5}
+.flow .link{flex:0 0 34px;height:1px;background:var(--line);position:relative}
+.flow .link::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.flow .link.soft::after{background:var(--accent-soft)}
+.flow .box.hot{background:var(--accent);border-color:var(--accent);color:#fff}
+.flow .box.hot .s{color:#FBE3D8}
+@media (max-width:640px){
+  .flow{flex-direction:column;align-items:stretch}
+  .flow .link{flex:0 0 26px;width:1px;height:26px;margin:0 auto}
+  .roadmap{grid-template-columns:1fr}
+}
+
+/* pills */
+.pills{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px 8px;margin:24px 0}
+.pill{display:flex;flex-direction:column;align-items:center}
+.pill b{display:inline-block;border:1px solid var(--accent);background:var(--accent-soft);border-radius:999px;padding:10px 22px;font-size:17px}
+.pill small{font-size:13px;color:var(--sub);margin-top:6px}
+.arrow{color:var(--accent);font-weight:700;font-size:20px;padding-top:10px}
+
+/* panel */
+.panel{background:var(--card);border:1px solid var(--line);padding:26px;margin:24px 0}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{display:flex;gap:12px;margin:0 0 14px}
+.steps .num{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-size:14px;font-weight:700;margin-top:2px}
+.steps .t{font-weight:700;font-size:19px}
+.steps .s{font-size:15px;color:var(--sub)}
+.dashed{display:inline-block;border:1px dashed var(--accent);color:var(--accent);padding:6px 16px;letter-spacing:.15em;font-size:15px;margin:6px 0 16px}
+.split{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.split .side{border:1px solid var(--line);background:var(--bg);padding:18px}
+.split .side.dim{color:var(--mute)}
+.bar{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:14px;color:var(--sub);letter-spacing:.08em}
+.bar i{display:block;height:20px;background:var(--accent)}
+.loop{display:flex;gap:14px;align-items:flex-start;border-top:1px dashed var(--line);margin-top:20px;padding-top:18px}
+.loop .r{flex:none;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:20px}
+@media (max-width:640px){.split{grid-template-columns:1fr}}
+
+/* tab cards */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.three .col{background:var(--card);border:1px solid var(--line);padding:22px 18px}
+.three .col h4{margin:0 0 14px;font-size:18px;display:flex;gap:8px;align-items:center}
+.three .item{border:1px solid var(--line);background:#FBFAF6;padding:10px 14px;font-size:15px;margin-bottom:8px;line-height:1.5}
+.three .item.first{background:var(--accent-pale);border-color:var(--accent)}
+@media (max-width:720px){.three{grid-template-columns:1fr}}
+
+/* meter */
+.meter{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center;margin:14px 0}
+.meter .l b{display:block;font-size:17px}
+.meter .l small{font-size:13px;color:var(--sub)}
+.cells{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.cells i{display:block;aspect-ratio:46/80;background:#E3E0D6;border:1px solid var(--line)}
+.cells i.on{background:var(--accent);border-color:var(--accent)}
+.cells i.mid{background:#E9A07F;border-color:#E9A07F}
+.legend{font-size:13px;color:var(--sub);display:flex;gap:18px;letter-spacing:.1em;margin-top:6px}
+.legend i{display:inline-block;width:13px;height:13px;vertical-align:-2px;margin-right:6px;background:var(--accent)}
+.legend i.g{background:#E3E0D6;border:1px solid var(--line)}
+@media (max-width:640px){.meter{grid-template-columns:1fr}}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:16px}
+.tbl th{text-align:left;font-weight:500;color:var(--sub);font-size:14px;letter-spacing:.12em;padding:14px 18px;border-bottom:2px solid var(--ink)}
+.tbl td{padding:18px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.tbl td:first-child{color:var(--ink);font-weight:700;width:30%}
+.cmp{width:100%;border:1px solid var(--line);margin:24px 0;background:transparent}
+.cmp .hd{display:grid;grid-template-columns:1fr 1fr;padding:16px 26px;border-bottom:2px solid var(--ink);font-size:14px;color:var(--sub);letter-spacing:.12em}
+.cmp .row{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;padding:18px 26px;border-bottom:1px solid var(--line)}
+.cmp .row:last-child{border-bottom:0}
+.cmp .cat{font-size:13px;color:var(--sub);letter-spacing:.1em}
+.cmp .old{color:var(--mute);text-decoration:line-through;font-size:17px}
+.cmp .ar{color:var(--accent);font-weight:700;font-size:20px;text-align:center}
+.cmp .new{font-weight:700;font-size:18px;line-height:1.45}
+@media (max-width:640px){.cmp .row{grid-template-columns:1fr}.cmp .ar{text-align:left}.cmp .hd{display:none}}
+
+/* numbered question cards */
+.qcard{display:flex;gap:22px;background:var(--card);border:1px solid var(--line);padding:26px 30px;margin:0 0 14px}
+.qcard .sq{flex:none;width:44px;height:44px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:18px}
+.qcard .t{font-weight:700;font-size:19px}
+.qcard .s{color:var(--sub);font-size:16px}
+.qcard .ex{margin-top:10px;font-size:15px;background:var(--accent-pale);padding:10px 14px;color:var(--ink)}
+
+/* inflow diagram */
+.inflow{display:grid;grid-template-columns:1fr 60px 170px 60px 1fr;align-items:center;margin:28px 0}
+.inflow .list{display:flex;flex-direction:column;gap:10px}
+.inflow .ib{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);padding:16px 18px}
+.inflow .ib .e{font-size:28px}
+.inflow .ib .t{font-weight:700;font-size:16px}
+.inflow .ib .s{font-size:14px;color:var(--sub);line-height:1.5}
+.inflow .ln{height:1px;background:var(--line);position:relative}
+.inflow .ln::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.inflow .circle{width:170px;height:170px;border-radius:50%;border:2px solid var(--accent);display:grid;place-items:center;font-weight:700;text-align:center;font-size:17px;padding:16px;line-height:1.4}
+.inflow .out{background:var(--accent);color:#fff;padding:24px 20px;font-weight:700;text-align:center;line-height:1.6;font-size:16px}
+@media (max-width:760px){.inflow{grid-template-columns:1fr}.inflow .ln{width:1px;height:26px;margin:0 auto}.inflow .circle{margin:0 auto}}
+
+/* video grid */
+.vgrid{background:#F6F3EC;border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 0}
+.vid{aspect-ratio:9/13;background:#E8E6DF;padding:12px;display:flex;flex-direction:column;justify-content:space-between;font-size:14px;border:1px solid transparent}
+.vid .p{font-size:13px;color:#4E4D48}
+.vid .h{font-size:13px;line-height:1.45;color:var(--sub)}
+.vid .v{font-weight:700;font-size:16px}
+.vid.hot{background:var(--accent-soft);border-color:var(--accent)}
+.vid.hot .h{color:var(--ink)}
+.connector{width:1px;height:26px;background:var(--line);margin:0 auto;position:relative}
+.connector::after{content:"";position:absolute;bottom:-5px;left:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translateX(-50%)}
+.verdict{background:var(--accent);color:#fff;text-align:center;font-weight:700;padding:22px;margin:0 0 24px}
+@media (max-width:640px){.vgrid{grid-template-columns:repeat(2,1fr)}}
+
+/* mixing */
+.mix{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0 0}
+.mix .side{border:1px solid #CFCBBF;padding:22px}
+.mix .side.mine{border-color:var(--accent)}
+.mix .lab{font-size:15px;letter-spacing:.15em;color:var(--sub);margin-bottom:14px}
+.mix .mine .lab{color:var(--accent)}
+.mix .blk{background:var(--card);border:1px solid var(--line);padding:16px 20px;margin-bottom:10px}
+.mix .blk .t{font-weight:700;font-size:17px}
+.mix .blk .s{font-size:14px;color:var(--sub)}
+.mix .blk .x{font-size:14px;color:var(--ink);margin-top:6px;background:var(--accent-pale);padding:6px 10px}
+@media (max-width:640px){.mix{grid-template-columns:1fr}}
+
+.kr-us{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.center-box{border:2px solid var(--ink);padding:18px 28px;font-weight:700;width:max-content;max-width:100%;margin:28px auto 0;text-align:center;background:transparent}
+.center-box.or{border-color:var(--accent);border-width:1px;background:var(--card)}
+.krbox{background:var(--card);border:1px solid var(--line);padding:24px;text-align:center}
+.krbox .c{font-size:22px;letter-spacing:.05em}
+.krbox .t{font-weight:700;margin-top:6px}
+.krbox .s{font-size:14px;color:var(--sub)}
+
+.ref{font-size:14px;color:var(--mute);margin-top:-6px}
+.ref a{color:var(--sub)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:80px;border-top:1px solid var(--line);padding-top:24px}
+.pager button{appearance:none;font:inherit;font-size:16px;font-weight:700;background:var(--card);border:1px solid var(--line);padding:14px 20px;cursor:pointer;color:var(--ink)}
+.pager button.next{background:var(--accent);border-color:var(--accent);color:#fff;margin-left:auto}
+ul.tight{margin:0 0 14px;padding-left:22px;color:var(--sub)}
+ul.tight li{margin:4px 0}
+
+@media (max-width:640px){.callout{padding:18px 18px;gap:12px}.callout .e{font-size:22px}.panel{padding:18px}.qcard{padding:20px;gap:14px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* week2 additions */
+.tree{background:#24231F;color:#EDEAE0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;line-height:1.85;padding:22px 26px;margin:24px 0;overflow-x:auto;white-space:pre}
+.tree .d{color:#F3B08F;font-weight:700}
+.tree .c{color:#9C998E}
+.prompt{position:relative;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);padding:18px 22px 18px 22px;margin:18px 0;font-size:16px;color:var(--ink);line-height:1.7}
+.prompt .lab{display:block;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em;margin-bottom:6px}
+.prompt .copy{position:absolute;top:12px;right:12px;appearance:none;border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;font-weight:700;color:var(--sub);padding:4px 10px;cursor:pointer}
+.prompt .copy.ok{color:var(--accent);border-color:var(--accent)}
+.prompt .body{white-space:pre-wrap;padding-right:56px;overflow-wrap:anywhere}
+.rcard,.tbl td{overflow-wrap:anywhere}
+@media (max-width:640px){.prompt .body{padding-right:0;padding-top:18px}}
+code,.cmd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:#E3E0D6;padding:1px 6px}
+.cmd{display:block;background:#24231F;color:#EDEAE0;padding:14px 18px;margin:10px 0 16px;font-size:14px;white-space:pre-wrap;word-break:break-all}
+.mdgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}
+.mdfile{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.mdfile .fn{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;font-weight:700;padding:10px 16px;border-bottom:1px solid var(--line);background:#E8E5DC;display:flex;justify-content:space-between;gap:10px}
+.mdfile .fn span{font-family:inherit;font-weight:500;color:var(--sub);font-size:12px}
+.mdfile .ct{padding:14px 16px;font-size:14px;line-height:1.7;color:var(--sub);white-space:pre-wrap}
+.mdfile .ct b{color:var(--ink)}
+.mdfile.main{grid-column:1/-1;border-color:var(--accent)}
+.mdfile.main .fn{background:var(--accent-pale)}
+@media (max-width:720px){.mdgrid{grid-template-columns:1fr}}
+.refs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}
+.rcard{background:var(--card);border:1px solid var(--line);padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.rcard .top2{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.rcard .who{font-size:13px;color:var(--sub);font-weight:600}
+.rcard .num{font-size:24px;font-weight:800;color:var(--accent);letter-spacing:-.02em;white-space:nowrap}
+.rcard .num small{font-size:13px;color:var(--sub);font-weight:600;margin-left:2px}
+.rcard .hook{font-size:17px;font-weight:700;color:var(--ink);line-height:1.45}
+.rcard .why{font-size:14px;color:var(--sub);line-height:1.6}
+.rcard .take{font-size:14px;background:var(--accent-pale);padding:8px 12px;color:var(--ink)}
+.rcard .take b{color:var(--accent)}
+.rcard a.go{font-size:13px;color:var(--sub);margin-top:auto}
+.rcard .tag{display:inline-block;font-size:12px;font-weight:700;border:1px solid var(--line);padding:1px 8px;margin-right:4px;color:var(--sub);background:#fff}
+.rcard.dim{opacity:.75}
+.rcard.dim .num{color:var(--mute)}
+@media (max-width:720px){.refs{grid-template-columns:1fr}}
+.subtabs{display:flex;gap:8px;margin:40px 0 0;flex-wrap:wrap}
+.subtabs a{text-decoration:none;border:1px solid var(--line);background:var(--card);padding:10px 16px;font-weight:700;font-size:15px}
+.subtabs a:hover{border-color:var(--accent)}
+.part{scroll-margin-top:70px;font-size:14px;font-weight:700;color:var(--accent);letter-spacing:.08em;margin:80px 0 -50px}
+.frame{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.frame .f{background:var(--card);border:1px solid var(--line);padding:16px 14px}
+.frame .f .k{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.frame .f .t{font-weight:700;font-size:16px;margin:2px 0 6px;line-height:1.35}
+.frame .f .s{font-size:13px;color:var(--sub);line-height:1.55}
+@media (max-width:760px){.frame{grid-template-columns:1fr 1fr}}
+.timeline{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+.timeline th{text-align:left;font-weight:600;color:var(--sub);font-size:13px;letter-spacing:.08em;padding:10px 12px;border-bottom:2px solid var(--ink)}
+.timeline td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.timeline td:first-child{white-space:nowrap;color:var(--ink);font-weight:700}
+.timeline td.say{color:var(--ink)}
+.timeline .role{display:inline-block;font-size:12px;font-weight:700;background:var(--accent-pale);color:var(--accent);padding:1px 8px;white-space:nowrap}
+.tscroll{overflow-x:auto}
+.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+.slide{aspect-ratio:4/5;background:var(--card);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.5;color:var(--sub)}
+.slide .no{font-size:11px;font-weight:700;color:var(--mute)}
+.slide .role{font-size:12px;font-weight:700;color:var(--accent)}
+.slide .t{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35}
+.slide.must{border-color:var(--accent);background:#FBF1EB}
+@media (max-width:720px){.slides{grid-template-columns:repeat(2,1fr)}}
+.must-list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.must-list .m{background:var(--card);border:1px solid var(--accent);padding:16px 14px}
+.must-list .m .e{font-size:26px;line-height:1.2}
+.must-list .m .t{font-weight:800;font-size:16px;margin:6px 0 4px}
+.must-list .m .s{font-size:13px;color:var(--sub);line-height:1.55}
+.must-list .m .ex{font-size:12.5px;color:var(--ink);background:var(--accent-pale);padding:6px 8px;margin-top:8px;line-height:1.5}
+@media (max-width:860px){.must-list{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.must-list{grid-template-columns:1fr}}
+.bridge{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;margin:24px 0}
+.bridge .b{background:var(--card);border:1px solid var(--line);padding:16px}
+.bridge .b .k{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.08em}
+.bridge .b .t{font-weight:700;font-size:15px;line-height:1.45;margin-top:4px}
+.bridge .b.out{background:var(--accent);border-color:var(--accent);color:#fff}
+.bridge .b.out .k{color:#FBE3D8}
+.bridge .ar{display:grid;place-items:center;color:var(--accent);font-weight:800}
+@media (max-width:640px){.bridge{grid-template-columns:1fr}.bridge .ar{transform:rotate(90deg);height:26px}}
+.dont{border:1px dashed var(--red);background:var(--red-bg);padding:20px 24px;margin:40px 0 0}
+.dont .h{font-weight:800;font-size:17px;margin-bottom:8px}
+.dont ul{margin:0;padding-left:20px;color:var(--ink);font-size:15px}
+.dont li{margin:4px 0}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="2주차 단계">
+  <div class="in" role="tablist">
+    <span class="brand">2주차</span>
+    <button class="tab" role="tab" data-go="s1" aria-selected="false"><span class="n">1</span>내 계정 가르치기</button>
+    <button class="tab" role="tab" data-go="s2" aria-selected="false"><span class="n">2</span>터진 영상 레퍼런스</button>
+    <button class="tab" role="tab" data-go="s3" aria-selected="false"><span class="n">3</span>분석하고 기획하기</button>
+  </div>
+</nav>
+
+<main class="wrap" id="main">
+
+<!-- ============ INTRO ============ -->
+<header class="intro">
+  <div class="kicker">약사 4주 집중 컨설팅 · 2주차</div>
+  <h1>클로드 코드로 만드는<br>알고리즘이 좋아하는 콘텐츠</h1>
+  <p style="margin-top:20px">1주차에는 <b>알고리즘 → 기획 → 소재</b> 순서로 팔리는 콘텐츠를 만드는 법을 배웠습니다. 2주차는 그 과정을 <b>클로드 코드에게 시키는 법</b>입니다. 단계마다 1주차에서 배운 것, 클로드 코드에게 시키는 일, 손에 남는 결과물을 이어서 봅니다.</p>
+  <div class="roadmap">
+    <button class="road" data-go="s1"><div class="no">1단계</div><div class="t">🗂️ 클로드 코드에 내 계정 가르치기</div><div class="d">폴더 하나와 md 파일 4개로 내 계정·제품·규정을 기억시키기</div></button>
+    <button class="road" data-go="s2"><div class="no">2단계</div><div class="t">🔥 터진 영상 레퍼런스</div><div class="d">실제로 터진 릴스와 카드뉴스를 보고 무엇을 빌릴지 고르기</div></button>
+    <button class="road" data-go="s3"><div class="no">3단계</div><div class="t">✍️ 분석하고 기획하기</div><div class="d">영상 스크립트와 카드뉴스를 분석해 내 공구 콘텐츠로 각색하기</div></button>
+  </div>
+  <div class="callout gray" style="margin-top:28px"><span class="e">🌈</span><div><p><b>예시 계정은 1주차와 같은 레인보우약사입니다.</b> 서울대 약대 출신 약사 엄마, 코어 타깃은 30~40대 육아맘, 공구 제품은 아이 오메가3(10/12~18, 사은품 콜라겐 20개)입니다. 수강생은 자기 계정과 제품으로 바꿔서 따라 합니다.</p></div></div>
+</header>
+
+<!-- ============ STAGE 1 ============ -->
+<section class="stage" id="s1" data-title="1단계 클로드 코드에 내 계정 가르치기">
+  <h1 style="margin-top:56px"><span class="ic">🗂️</span>내 계정 가르치기</h1>
+
+  <div class="bridge">
+    <div class="b"><div class="k">1주차에서 배운 것</div><div class="t">알고리즘은 자막·설명글로 주제를 읽고, 첫 200~500명에게 먼저 보낸다</div></div>
+    <div class="ar">→</div>
+    <div class="b"><div class="k">클로드 코드에게 시키는 일</div><div class="t">내 계정·제품·규정을 md 파일로 기억시키고, 내 계정이 어떤 주제로 읽히는지 진단받기</div></div>
+    <div class="ar">→</div>
+    <div class="b out"><div class="k">결과물</div><div class="t">공구 폴더 하나 + md 파일 4개 + 계정 진단표</div></div>
+  </div>
+
+  <h2>클로드 코드는 매번 처음 만나는 직원입니다</h2>
+  <p>그냥 "오메가3 릴스 대본 써줘"라고 하면 <b>누구에게 파는지, 어떤 말투인지, 어떤 표현이 금지인지</b> 모르는 채로 씁니다. 그래서 결과가 남의 계정 글처럼 나옵니다.</p>
+  <p>해결은 간단합니다. <b>폴더 하나를 만들고 내 정보를 md 파일로 넣어 둡니다.</b> 클로드 코드는 그 폴더에서 시작할 때마다 파일을 먼저 읽고, 내 계정을 아는 직원처럼 일합니다. 2·3단계의 모든 분석과 각색이 이 파일들을 기준으로 이루어집니다.</p>
+
+  <h2>공구 폴더 구조</h2>
+  <div class="tree"><span class="d">레인보우약사_오메가3공구/</span>
+├── <span class="d">CLAUDE.md</span>        <span class="c"># 일하는 규칙. 클로드 코드가 가장 먼저 읽는 파일</span>
+├── 내계정.md         <span class="c"># 나는 누구고, 누구에게, 어떤 말투로</span>
+├── 판매제품.md       <span class="c"># 공구 제품·기간·혜택·자주 받는 질문</span>
+├── 광고규정.md       <span class="c"># 쓰면 안 되는 표현, 기능성 인정 문구</span>
+├── <span class="d">레퍼런스/</span>         <span class="c"># 2·3단계에서 분석한 영상·카드뉴스가 쌓이는 곳</span>
+└── <span class="d">기획/</span>             <span class="c"># 각색한 대본·카드뉴스 원고가 쌓이는 곳</span></div>
+  <p>md는 메모장처럼 글자만 있는 파일입니다. 클로드 코드에게 <b>"이 폴더 구조로 만들어 줘"</b>라고 하면 빈 파일까지 만들어 줍니다. 내용은 아래처럼 채웁니다.</p>
+
+  <h2>md 파일 4개, 이렇게 채웁니다</h2>
+  <div class="mdgrid">
+    <div class="mdfile main"><div class="fn">CLAUDE.md <span>일하는 규칙</span></div><div class="ct"># 레인보우약사 공구 작업 규칙
+- 작업을 시작하기 전에 <b>내계정.md, 판매제품.md, 광고규정.md</b>를 먼저 읽는다.
+- 모든 글은 내계정.md의 타깃과 말투로 쓴다. 한국어, 존댓말, 짧은 문장.
+- 분석 결과는 <b>레퍼런스/</b>에, 대본·원고는 <b>기획/</b>에 날짜를 붙여 md로 저장한다.
+- 숫자·연구 결과는 출처가 있을 때만 쓴다. 모르면 [확인 필요]라고 적는다.
+- 광고규정.md에 걸리는 표현이 나오면 고쳐 쓰고, 고친 곳을 따로 알려준다.</div></div>
+    <div class="mdfile"><div class="fn">내계정.md <span>누가, 누구에게</span></div><div class="ct"><b>계정</b> @rainbow_yak · 레인보우약사
+<b>정체성</b> 서울대 약대 출신, 5살·3살 키우는 약사 엄마
+<b>타깃</b> 30~40대 육아맘. 아이 영양제를 기준 없이 고르는 엄마
+<b>검색 키워드</b> 아이 영양제, 아이 오메가3, 약사 엄마, 어린이집 면역, 초등 입학 준비
+<b>말투</b> 약국에서 엄마에게 설명하듯 다정하게. 전문용어는 바로 풀어서
+<b>잘된 첫 줄</b> "🚨마그네슘 부족 신호🚨 3개 이상 해당 된다면"(9.7만)
+<b>안 된 첫 줄</b> "오메가3는"(367)</div></div>
+    <div class="mdfile"><div class="fn">판매제품.md <span>무엇을, 언제</span></div><div class="ct"><b>제품</b> 알래스카 오메가 츄 패밀리
+<b>공구</b> 10/12~18 · 사은품 콜라겐 20개
+<b>공구가·구성</b> [상세페이지에서 옮겨 적기]
+<b>EPA+DHA 합계·원료 형태</b> [상세페이지에서 옮겨 적기]
+<b>섭취 연령·하루 섭취량</b> [상세페이지에서 옮겨 적기]
+<b>자주 받는 질문</b> 몇 살부터? 하루 몇 개? 젤리면 당은? 들기름으로 대신 돼요?
+<b>실제 구매평</b> [받은 후기 원문 그대로 붙여넣기]</div></div>
+    <div class="mdfile" style="grid-column:1/-1"><div class="fn">광고규정.md <span>쓰면 안 되는 것</span></div><div class="ct">- 질병 예방·치료 표현 금지 (예: "ADHD에 좋다", "면역질환 예방")
+- "최고", "유일", "100%" 같은 최상급·단정 표현 금지
+- 기능성은 상세페이지의 인정 문구 그대로만. "~에 도움을 줄 수 있음"
+- 후기는 실제 받은 것만, 원문을 바꾸지 않는다. 효과를 약속하는 후기는 쓰지 않는다
+- 먹기 전·후 효과를 비교하는 표현과 사진은 쓰지 않는다</div></div>
+  </div>
+  <div class="callout yellow"><span class="e">✍️</span><div><p class="lead">빈칸은 반드시 직접 채웁니다.</p><p>함량, 가격, 후기처럼 <b>제품마다 다른 사실</b>은 클로드 코드가 지어내면 안 되는 부분입니다. 상세페이지와 실제 후기에서 옮겨 적으세요. 채워 둔 만큼 3단계 각색이 정확해집니다.</p></div></div>
+
+  <h2>첫 번째 일: 내 계정 진단받기</h2>
+  <p>폴더가 준비되면 1주차의 질문을 클로드 코드에게 던집니다. <b>"알고리즘이 내 계정을 어떤 주제로 읽고 있을까?"</b></p>
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">내 최근 릴스 링크 목록이야. Apify로 각 릴스의 첫 자막, 캡션 첫 줄, 조회수를 받아 줘.
+그다음 내계정.md의 타깃·검색 키워드와 비교해서
+1) 알고리즘이 내 계정을 어떤 주제로 읽을지
+2) 주제별 조회 중앙값
+3) 타깃 주제인데 조회가 낮은 릴스의 첫 줄을 어떻게 바꾸면 좋을지
+표로 정리해서 레퍼런스/계정진단.md로 저장해 줘.</div></div>
+  <p class="ref">Apify 연결은 3단계에서 한 번만 하면 됩니다. 연결 전이라면 인스타 인사이트 화면을 캡처해 폴더에 넣어도 됩니다.</p>
+
+  <h3>레인보우약사 계정 진단표 (실제 결과)</h3>
+  <table class="tbl">
+    <thead><tr><th>주제</th><th>조회 중앙값 · 최고</th></tr></thead>
+    <tbody>
+      <tr><td>수면</td><td>5,020 · 최고 27,589</td></tr>
+      <tr><td>마그네슘</td><td>3,995 · 최고 97,486 "🚨마그네슘 부족 신호🚨"</td></tr>
+      <tr><td>탈모·모발</td><td>2,752 · 최고 47,456</td></tr>
+      <tr><td>약 상식(약국 질문)</td><td>2,556 · 최고 56,997</td></tr>
+      <tr><td>오메가3</td><td>1,612 · 최고 2,417</td></tr>
+      <tr><td style="color:var(--accent)">아이·육아 (공구 타깃)</td><td><b>858</b> · 계정 전체 중앙값 2,168의 절반 이하</td></tr>
+    </tbody>
+  </table>
+  <div class="callout yellow"><span class="e">🔍</span><div><p class="lead">진단 결과: 모인 사람(성인 건강)과 살 사람(육아맘)이 다릅니다.</p><p>그래서 내계정.md의 검색 키워드를 육아 쪽으로 고정하고, 2단계에서 <b>육아맘에게 터진 영상</b>을 레퍼런스로 고릅니다. 1주차의 세 탭 루틴은 계속 병행합니다.</p></div></div>
+  <p class="ref">출처: 레인보우약사 공개 게시물 59개(2026-07-10~10-06) 진단. 캡션 앞부분 키워드로 분류했습니다.</p>
+
+  <div class="dont"><div class="h">🚫 1단계에서 AI에게 맡기면 안 되는 것</div><ul><li>판매제품.md의 함량·가격·후기를 클로드 코드가 채우게 두기</li><li>진단 숫자를 보지 않고 결론만 받아 적기. 표의 숫자가 내 인사이트와 맞는지 한 번은 확인합니다</li></ul></div>
+
+  <div class="pager"><button class="next" data-go="s2">다음: 2단계 터진 영상 레퍼런스 →</button></div>
+</section>
+
+<!-- ============ STAGE 2 ============ -->
+<section class="stage" id="s2" data-title="2단계 터진 영상 레퍼런스">
+  <h1 style="margin-top:56px"><span class="ic">🔥</span>터진 영상 레퍼런스</h1>
+
+  <div class="bridge">
+    <div class="b"><div class="k">1주차에서 배운 것</div><div class="t">이미 터진 영상에서 형식을 빌리고, 내용만 내 것으로 채운다</div></div>
+    <div class="ar">→</div>
+    <div class="b"><div class="k">클로드 코드에게 시키는 일</div><div class="t">고른 레퍼런스 링크를 레퍼런스/ 폴더에 모아 3단계 분석 재료로 넘기기</div></div>
+    <div class="ar">→</div>
+    <div class="b out"><div class="k">결과물</div><div class="t">빌릴 형식이 정해진 레퍼런스 목록</div></div>
+  </div>
+
+  <p>분석보다 먼저 <b>잘 고르는 눈</b>이 필요합니다. 아래는 이 강의에서 실제로 분석한 영상들입니다. 숫자, 첫 줄, 터진 이유, 빌릴 것을 차례로 보세요.</p>
+
+  <h2>약사 계정에서 터진 릴스</h2>
+  <div class="refs">
+    <div class="rcard">
+      <div class="top2"><span class="who">@하이킴약사 · 릴스 36.9초</span><span class="num">20.7만<small>재생</small></span></div>
+      <div class="hook">"오메가3를 먹는 여자와 먹지 않는 여자, 피부가 다른가요?"</div>
+      <div class="why">약사 5명이 길거리 인터뷰처럼 한 마디씩. 공유 3,231회로 저장(670)의 약 5배인 <b>공유형 히트</b>입니다. 첫 문장이 영양제가 아니라 '피부·노화'라서 관심 없는 사람도 멈춥니다.</div>
+      <div class="take"><b>빌릴 것</b> 넓은 훅 + "약사 N명에게 딱 한 가지만" 포맷 + 상단 고정 타이틀</div>
+      <a class="go" href="https://www.instagram.com/reel/DcTWigoSFyR/" target="_blank" rel="noopener">원본 보기 ↗</a>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">@레인보우약사 · 마그네슘</span><span class="num">9.7만<small>조회</small></span></div>
+      <div class="hook">"🚨마그네슘 부족 신호🚨 3개 이상 해당 된다면"</div>
+      <div class="why">보는 사람이 속으로 개수를 세게 만드는 <b>자가진단형</b>. 계정 전체 중앙값(2,168)의 45배입니다.</div>
+      <div class="take"><b>빌릴 것</b> "부족 신호 N개 이상이면" → 아이 DHA 버전으로</div>
+      <a class="go" href="https://www.instagram.com/p/DbiZAe9vZ3B/" target="_blank" rel="noopener">원본 보기 ↗</a>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">@레인보우약사 · 비염</span><span class="num">5.4만<small>조회</small></span></div>
+      <div class="hook">"오늘도 훌쩍훌쩍 비염 때문에 고생하고 계신가요?"</div>
+      <div class="why">지금 계절의 증상을 소리로 표현한 <b>계절 공감형</b>. 좋아요 2,224로 계정 최고입니다.</div>
+      <div class="take"><b>빌릴 것</b> 지금 이 시기의 장면으로 시작하기 (예: 어린이집 독감 시즌)</div>
+      <a class="go" href="https://www.instagram.com/p/Ddks_-BPZ7x/" target="_blank" rel="noopener">원본 보기 ↗</a>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">@레인보우약사 · 탈모</span><span class="num">4.7만<small>조회</small></span></div>
+      <div class="hook">"머리카락이 후두둑 빠지는 계절이 돌아왔습니다"</div>
+      <div class="why">"반전" 댓글 이벤트로 댓글 2,859개. 이 릴스 → O/X 10문제 → 공구 예고 → 오픈으로 이어져 <b>실제로 팔린 흐름</b>입니다.</div>
+      <div class="take"><b>빌릴 것</b> 댓글 키워드 CTA. CTA 있는 릴스 중앙값 4,172 vs 없는 릴스 1,676</div>
+      <a class="go" href="https://www.instagram.com/p/DdWKl2xvY_u/" target="_blank" rel="noopener">원본 보기 ↗</a>
+    </div>
+  </div>
+
+  <h2>육아맘에게 터진 릴스</h2>
+  <p>레인보우약사의 공구 타깃은 육아맘이라, 육아 계정에서 터진 영상이 더 중요합니다. 1주차에서 찾은 세 편입니다.</p>
+  <div class="refs">
+    <div class="rcard">
+      <div class="top2"><span class="who">육아 정보 계정 · 레퍼런스 A</span><span class="num">21.8만<small>조회</small></span></div>
+      <div class="hook">"36개월 전에 알면 좋았을 생활 면역 기준 10가지"</div>
+      <div class="take"><b>빌릴 것</b> 월령 + 기준 N가지</div>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">육아 정보 계정 · 레퍼런스 B</span><span class="num">9.9만<small>조회</small></span></div>
+      <div class="hook">"첫째 6살이 되기 전, 알았다면 좋았을 것들"</div>
+      <div class="take"><b>빌릴 것</b> 첫째 땐 vs 지금은 (후회담)</div>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">육아 정보 계정 · 레퍼런스 C</span><span class="num">12.6만<small>조회</small></span></div>
+      <div class="hook">"첫째 땐 몰랐던 생후 1000일까지 벌어지는 일 10가지"</div>
+      <div class="take"><b>빌릴 것</b> 시기별 사실 N가지 (호기심 갭)</div>
+    </div>
+    <div class="rcard" style="justify-content:center;background:var(--accent-pale);border-color:var(--accent)">
+      <div class="hook">세 편 모두 "아이가 ○살 되기 전" + "알았다면 좋았을" + N가지</div>
+      <div class="why">엄마의 후회와 시기 불안을 건드립니다. 서로 다른 계정인데 터진 이유가 같습니다.</div>
+      <a class="go" href="https://www.instagram.com/reel/DX_6kC4JfUq/" target="_blank" rel="noopener">레퍼런스 계정 @ok._mommy ↗</a>
+    </div>
+  </div>
+
+  <h2>팔리는 공구 카드뉴스</h2>
+  <div class="refs">
+    <div class="rcard">
+      <div class="top2"><span class="who">@eunha__yak · 아이 오메가3 공구</span><span class="num">6장<small>흐름</small></span></div>
+      <div class="hook">유입 카드뉴스 2 → OPEN 예고 → USP 릴스 → OPEN → 마감</div>
+      <div class="why">D-5 "독감 유행, YES or NO?" 질문으로 시작해 제품 언급 없이 사람을 모으고, OPEN 카드에서 <b>USP 체크리스트 + 지금 사야 할 이유</b>로 닫습니다. 공구가 끝나면 오픈·마감 콘텐츠는 숨깁니다.</div>
+      <div class="take"><b>빌릴 것</b> 오픈 예고 → 오픈 → 마감의 3장짜리 판매 흐름</div>
+      <a class="go" href="https://www.instagram.com/eunha__yak/" target="_blank" rel="noopener">계정 보기 ↗</a>
+    </div>
+    <div class="rcard">
+      <div class="top2"><span class="who">@도비약사 · 마그네슘 캐러셀</span><span class="num">8장<small>체크리스트형</small></span></div>
+      <div class="hook">"하나 부족해도 도미노처럼 올 수 있어요"</div>
+      <div class="why">자가체크 7줄로 "내 얘기"를 만들고, 장마다 키워드 하나씩 보여 줍니다. 첫 줄에 "상담 주세요" CTA가 먼저 나옵니다.</div>
+      <div class="take"><b>빌릴 것</b> 커버 메타포 훅 + 1장 1키워드 레이아웃</div>
+      <a class="go" href="https://www.instagram.com/p/DdsiHhoAe7O/" target="_blank" rel="noopener">원본 보기 ↗</a>
+    </div>
+  </div>
+
+  <h2>비교용: 같은 계정에서 안 된 것</h2>
+  <div class="refs">
+    <div class="rcard dim"><div class="top2"><span class="who">@레인보우약사 · 오메가3</span><span class="num">367<small>조회</small></span></div><div class="hook">"오메가3는"</div><div class="why">주제어로만 시작. 누구 얘기인지 첫 줄에 없습니다.</div></div>
+    <div class="rcard dim"><div class="top2"><span class="who">@레인보우약사 · 일상</span><span class="num">224<small>조회</small></span></div><div class="hook">"약국에서 일하다 보면"</div><div class="why">혼잣말 독백. 보는 사람이 멈출 이유가 없습니다.</div></div>
+  </div>
+  <div class="verdict">터진 영상은 첫 줄에서 "내 얘기인가?"를 묻고, 안 된 영상은 주제어나 혼잣말로 시작합니다</div>
+
+  <h2>고른 레퍼런스는 폴더에 넘깁니다</h2>
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">레퍼런스/목록.md를 만들어 줘. 아래 링크마다 한 줄씩
+[링크 · 형식(릴스/카드뉴스) · 빌리고 싶은 것 · 공구 흐름에서 쓸 자리(유입/오픈/마감)]
+으로 정리하고, 3단계에서 하나씩 분석할 수 있게 순서를 매겨 줘.
+https://www.instagram.com/reel/DcTWigoSFyR/ 넓은 훅, 약사 인터뷰 포맷
+https://www.instagram.com/p/DdsiHhoAe7O/ 체크리스트 캐러셀 레이아웃</div></div>
+  <div class="callout"><span class="e">🎯</span><div><p class="lead">레퍼런스 고르는 기준 세 가지</p><p>① 내 타깃(육아맘)이 보는 계정에서 터졌는가 ② 계정 평균보다 확실히 높은가 (하이킴 릴스는 계정 평균의 약 24배) ③ 형식만 빌려도 내 제품 이야기가 들어가는가</p></div></div>
+
+  <div class="dont"><div class="h">🚫 2단계에서 AI에게 맡기면 안 되는 것</div><ul><li>레퍼런스 고르기 자체. 내 손님이 보는 영상인지는 세 탭 루틴을 해 온 내가 제일 잘 압니다</li><li>남의 문구·사진·후기를 그대로 가져오기. 빌리는 건 형식뿐입니다</li></ul></div>
+
+  <div class="pager"><button data-go="s1">← 1단계</button><button class="next" data-go="s3">다음: 3단계 분석하고 기획하기 →</button></div>
+</section>
+
+<!-- ============ STAGE 3 ============ -->
+<section class="stage" id="s3" data-title="3단계 분석하고 기획하기">
+  <h1 style="margin-top:56px"><span class="ic">✍️</span>분석하고 기획하기</h1>
+
+  <div class="bridge">
+    <div class="b"><div class="k">1주차에서 배운 것</div><div class="t">구매 전환 1편에 유입 3편. 내 상품은 결론에</div></div>
+    <div class="ar">→</div>
+    <div class="b"><div class="k">클로드 코드에게 시키는 일</div><div class="t">레퍼런스를 정해진 틀로 분석하고, md 파일 기준으로 내 공구 콘텐츠로 각색하기</div></div>
+    <div class="ar">→</div>
+    <div class="b out"><div class="k">결과물</div><div class="t">유입 릴스 대본 + OPEN 카드뉴스 원고</div></div>
+  </div>
+
+  <div class="subtabs"><a href="#v1">🎬 3-1 영상 스크립트 분석 및 기획</a><a href="#c1">🗞️ 3-2 카드뉴스 분석 및 기획</a></div>
+
+  <!-- 3-1 -->
+  <div class="part" id="v1">3-1</div>
+  <h2>영상 콘텐츠 스크립트 분석 및 기획</h2>
+
+  <h3>준비: Apify 연결 (한 번만)</h3>
+  <p>클로드 코드는 인스타 영상을 직접 열어 보지 못합니다. <b>Apify</b>를 연결하면 링크만 줘도 영상 원본, 자막(음성 받아쓰기), 캡션, 댓글, 조회수를 받아 와서 분석할 수 있습니다.</p>
+  <ol class="steps" style="margin:18px 0">
+    <li><span class="num">1</span><div><div class="t">Apify 가입 후 API 토큰 복사</div><div class="s">apify.com 가입 → Settings → API &amp; Integrations → Personal API token 복사. 무료 크레딧으로 시작할 수 있습니다.</div></div></li>
+    <li><span class="num">2</span><div><div class="t">터미널에서 클로드 코드에 연결</div><div class="s">아래 한 줄에서 <code>내토큰</code> 자리에 복사한 토큰을 넣어 실행합니다.</div><code class="cmd">claude mcp add --transport http apify https://mcp.apify.com --header "Authorization: Bearer 내토큰"</code></div></li>
+    <li><span class="num">3</span><div><div class="t">연결 확인</div><div class="s">클로드 코드를 다시 켜고 <code>/mcp</code>를 입력해 apify가 connected로 보이면 끝입니다.</div></div></li>
+  </ol>
+  <div class="callout red"><span class="e">🔑</span><div><p><b>토큰은 비밀번호와 같습니다.</b> md 파일이나 단톡방, 캡처에 남기지 마세요.</p></div></div>
+
+  <h3>분석 틀: 다섯 칸으로 나눠 받습니다</h3>
+  <p>"분석해 줘"라고만 하면 감상문이 나옵니다. <b>칸을 정해 주면</b> 레퍼런스끼리 비교할 수 있고, 각색할 때 칸만 바꿔 끼우면 됩니다.</p>
+  <div class="frame">
+    <div class="f"><div class="k">1 · 구성</div><div class="t">전체 흐름과 컷</div><div class="s">몇 초에 무엇이 나오는지, 컷 수, 화자, 길이</div></div>
+    <div class="f"><div class="k">2 · 훅</div><div class="t">첫 문장과 화면 글자</div><div class="s">무엇을 묻거나 건드려서 멈추게 하는지</div></div>
+    <div class="f"><div class="k">3 · 초반 3초</div><div class="t">넘기지 않게 만드는 것</div><div class="s">화면·소리·자막이 각각 무엇을 하는지</div></div>
+    <div class="f"><div class="k">4 · 지속 장치</div><div class="t">끝까지 보게 만드는 것</div><div class="s">포맷 예고, 리스트 카운트, 화자 전환, 웃음, 고정 타이틀</div></div>
+    <div class="f"><div class="k">5 · 마무리·반응</div><div class="t">CTA와 댓글</div><div class="s">무엇을 하라고 하는지, 댓글에 나온 수요·의심</div></div>
+  </div>
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">이 릴스를 분석해 줘: https://www.instagram.com/reel/DcTWigoSFyR/
+Apify로 영상, 자막(음성 받아쓰기), 캡션, 댓글, 조회·공유·저장 수를 받아서
+① 구성 ② 훅 ③ 초반 3초 ④ 영상을 끝까지 보게 하는 장치 ⑤ 마무리와 댓글 반응
+다섯 칸으로 나눠 분석해 줘. 구성은 초 단위 표로.
+레퍼런스/영상_하이킴_오메가3.md로 저장해 줘.</div></div>
+
+  <h3>실제 분석 결과: 하이킴약사 오메가3 릴스 (20.7만 재생)</h3>
+  <table class="tbl">
+    <tbody>
+      <tr><td>① 구성</td><td>36.9초, 컷 8~9개, 화자당 3~4초. 훅 질문 → "딱 한 가지만 얘기해 봅시다" → 약사 4명이 한 마디씩 → 결론 한 줄</td></tr>
+      <tr><td>② 훅</td><td>"오메가3를 먹는 여자와 먹지 않는 여자, 피부가 다른가요?" → "그럼요, 빨리 늙죠?" 영양제가 아니라 <b>피부·노화</b>라는 넓은 관심사로 묻습니다</td></tr>
+      <tr><td>③ 초반 3초</td><td>하이킴은 손과 마이크만 보이고 약사가 답하는 길거리 인터뷰 화면 + 질문형 자막. 광고가 아니라 예능처럼 보여 넘기지 않습니다</td></tr>
+      <tr><td>④ 지속 장치</td><td>6초에 "약사님들 한 마디씩" <b>포맷 예고</b> · 화자가 바뀔 때마다 장면 전환 · 이름표 수식어(근거에 진심, 간단명료) · 화자별 자막 색 · "여기까지..ㅎ", "허허허" <b>웃음 포인트</b> · 전 구간 <b>상단 고정 타이틀</b></td></tr>
+      <tr><td>⑤ 마무리·반응</td><td>"안 먹는 것보다는 100배 낫습니다"로 끝. <b>CTA 없음</b> → 팔로우 유입 0. 댓글에 "추천 부탁드려요"(수요)와 "그냥 광고같은데"(의심)가 함께 있었습니다</td></tr>
+    </tbody>
+  </table>
+  <p class="ref">출처: Apify로 받은 영상·자막·캡션·댓글과 2026-10-08 인사이트. 공유 3,231 / 저장 670.</p>
+
+  <h3>각색: md 파일을 기준으로 내 공구 대본으로</h3>
+  <p>분석이 끝나면 <b>형식(칸)은 그대로 두고 내용만</b> 1단계의 md 파일로 바꿔 끼웁니다. 하이킴 릴스에 없던 CTA는 여기서 추가합니다.</p>
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">레퍼런스/영상_하이킴_오메가3.md의 구성·훅·초반 3초·지속 장치는 그대로 빌리고,
+내계정.md, 판매제품.md, 광고규정.md를 기준으로
+D-4 유입 릴스 대본(40초 이내)을 써 줘.
+- 제품명·가격은 넣지 말고, 마지막에 댓글 키워드 CTA를 넣어 줘.
+- 초 단위 표: [시간 · 화면 · 대사/자막 · 역할]
+- 광고규정에 걸릴 수 있는 문장은 표 아래에 따로 표시해 줘.
+기획/유입릴스_D-4.md로 저장해 줘.</div></div>
+
+  <h3>각색 예시: 레인보우약사 D-4 유입 릴스</h3>
+  <div class="tscroll"><table class="timeline">
+    <thead><tr><th>시간</th><th>화면</th><th>대사 · 자막</th><th>역할</th></tr></thead>
+    <tbody>
+      <tr><td>0~3초</td><td>식탁 위 생선 반찬, 숟가락 내려놓는 아이 손</td><td class="say">"생선만 나오면 숟가락 내려놓는 아이, 우리 집만 그런가요?"</td><td><span class="role">훅 · 넓은 공감</span></td></tr>
+      <tr><td>3~6초</td><td>레인보우약사 셀카</td><td class="say">"약사 엄마로서 아이 오메가3, 딱 세 가지만 말씀드릴게요"</td><td><span class="role">포맷 예고</span></td></tr>
+      <tr><td>6~16초</td><td>자막 "① 몸에서 거의 못 만든다"</td><td class="say">"DHA는 몸에서 만들어지는 양이 아주 적어서 음식으로 챙겨야 해요"</td><td><span class="role">리스트 카운트</span></td></tr>
+      <tr><td>16~26초</td><td>들기름 병 + 자막 "② 들기름이면 될까?"</td><td class="say">"들기름의 오메가3는 DHA로 바뀌는 양이 적어요. 약국에서 제일 많이 받는 질문이에요"</td><td><span class="role">통념 뒤집기</span></td></tr>
+      <tr><td>26~34초</td><td>제품 뒷면 확대 (브랜드 가림)</td><td class="say">"고를 땐 앞면 숫자 말고 뒷면 EPA+DHA 합계를 보세요"</td><td><span class="role">약사 기준</span></td></tr>
+      <tr><td>34~38초</td><td>셀카 + 자막 "댓글에 DHA"</td><td class="say">"제가 아이들 먹이는 기준, 댓글에 'DHA' 남기시면 정리본 보내 드릴게요"</td><td><span class="role">CTA</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="ref">상단 고정 타이틀: "약사 엄마가 아이 오메가3 고르는 기준". 하이킴 릴스의 고정 타이틀 장치를 그대로 빌렸습니다.</p>
+  <div class="callout green"><span class="e">✅</span><div><p><b>칸별로 확인합니다.</b> 훅이 내 타깃(육아맘) 얘기인가, 6초 안에 무엇을 보게 될지 예고했는가, 마지막에 댓글 키워드가 있는가. 하나라도 비면 그 칸만 다시 시킵니다.</p></div></div>
+
+  <!-- 3-2 -->
+  <div class="part" id="c1">3-2</div>
+  <h2>카드뉴스 분석 및 기획</h2>
+  <p>릴스가 사람을 데려오면, 카드뉴스는 <b>사게 만듭니다.</b> 특히 OPEN 카드뉴스는 상세페이지를 대신하므로 레이아웃과 필수 요소를 빠짐없이 분석해야 합니다.</p>
+
+  <h3>분석 틀: 레이아웃 + 후킹 요소 + 필수 요소</h3>
+  <table class="tbl">
+    <thead><tr><th>분석 칸</th><th>무엇을 보나</th></tr></thead>
+    <tbody>
+      <tr><td>레이아웃</td><td>몇 장인지, 비율(1080×1350), 장마다 맡은 역할, 큰 글자·작은 글자 위계, 색과 사진 배치</td></tr>
+      <tr><td>후킹 요소</td><td>커버 한 장에서 멈추게 하는 문장, 숫자, 질문, 이모지. 2장으로 넘기게 만드는 장치</td></tr>
+      <tr><td>필수 요소</td><td>아래 다섯 가지가 몇 번째 장에, 어떻게 들어갔는지. 빠진 요소도 표시</td></tr>
+    </tbody>
+  </table>
+
+  <h3>OPEN 카드뉴스에 반드시 들어가야 하는 다섯 가지</h3>
+  <div class="must-list">
+    <div class="m"><div class="e">🎁</div><div class="t">혜택</div><div class="s">지금 사면 받는 것</div><div class="ex">공구가 · 사은품 콜라겐 20개</div></div>
+    <div class="m"><div class="e">📦</div><div class="t">구성</div><div class="s">무엇이 몇 개 오는지, 며칠 분인지</div><div class="ex">[판매제품.md의 구성]</div></div>
+    <div class="m"><div class="e">⏰</div><div class="t">제한·파격</div><div class="s">기간·수량·가격으로 "굳이 지금" 만들기</div><div class="ex">10/12~18 단 7일 · 마감 D-1 알림</div></div>
+    <div class="m"><div class="e">🔄</div><div class="t">Before / After</div><div class="s">먹이는 장면으로 간접 경험하게</div><div class="ex">생선 반찬 실랑이 → 아이가 먼저 찾는 간식 시간</div></div>
+    <div class="m"><div class="e">💬</div><div class="t">실제 구매평</div><div class="s">진짜 후기 캡처, 원문 그대로</div><div class="ex">[판매제품.md의 후기]</div></div>
+  </div>
+  <div class="callout red"><span class="e">⚖️</span><div><p class="lead">Before/After와 구매평은 건강기능식품 광고 규정을 먼저 봅니다.</p><p>Before/After는 <b>효과 비교가 아니라 생활 장면</b>으로 보여 줍니다(먹이기 전 실랑이 → 먹이는 루틴). 구매평은 <b>맛·먹이기 편함·아이 반응</b>처럼 효과를 약속하지 않는 후기를 고르고, 원문을 고치지 않습니다.</p></div></div>
+
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">이 카드뉴스를 분석해 줘: [게시물 링크]
+Apify로 캡션·장수·댓글을 받고, 내가 레퍼런스/ 폴더에 넣은 캡처 이미지도 같이 봐 줘.
+① 레이아웃(장별 역할, 글자 위계, 색) ② 후킹 요소(커버, 2장으로 넘기게 하는 장치)
+③ 필수 요소 다섯 가지(혜택, 구성, 제한·파격, Before/After, 실제 구매평)가
+몇 번째 장에 어떻게 들어갔는지, 빠진 건 무엇인지 표로 정리해서
+레퍼런스/카드뉴스_[계정명].md로 저장해 줘.</div></div>
+  <p class="ref">캐러셀 이미지는 Apify로 받아도 열리지 않을 때가 있습니다. 캡처를 레퍼런스/ 폴더에 넣어 주면 문구와 레이아웃까지 정확하게 분석합니다.</p>
+
+  <h3>각색: OPEN 카드뉴스 원고</h3>
+  <div class="prompt"><span class="lab">클로드 코드에게 이렇게</span><button class="copy" type="button">복사</button><div class="body">레퍼런스/카드뉴스_[계정명].md의 레이아웃과 후킹 요소를 빌리고,
+내계정.md, 판매제품.md, 광고규정.md를 기준으로
+10/12 OPEN 카드뉴스 8장 원고를 써 줘.
+- 필수 요소 다섯 가지를 모두 넣고, 장마다 [역할 · 큰 글자 · 작은 글자 · 사진 지시]로.
+- 판매제품.md에 없는 숫자는 [확인 필요]로 비워 둬.
+- 캡션 첫 줄과 댓글 키워드도 같이 써 줘.
+기획/OPEN카드뉴스_1012.md로 저장해 줘.</div></div>
+
+  <h3>각색 예시: 레인보우약사 OPEN 카드뉴스 8장</h3>
+  <div class="slides">
+    <div class="slide"><span class="no">1</span><span class="role">커버 훅</span><span class="t">약사 엄마가 고른<br>아이 오메가3, 오늘 OPEN</span>아이 사진 + "10/12~18" 날짜 띠</div>
+    <div class="slide"><span class="no">2</span><span class="role">문제</span><span class="t">생선만 나오면<br>숟가락 내려놓는 아이</span>식탁 실랑이 사진. 유입 릴스와 같은 장면</div>
+    <div class="slide"><span class="no">3</span><span class="role">약사 기준</span><span class="t">고를 땐 이 3가지만</span>EPA+DHA 합계 · 원료 형태 · 아이가 먹기 쉬운 제형</div>
+    <div class="slide"><span class="no">4</span><span class="role">제품 · 구성</span><span class="t">그 기준을 갖춘 게<br>오메가 츄 패밀리</span>[함량·원료 형태] · [구성·며칠 분]</div>
+    <div class="slide must"><span class="no">5</span><span class="role">Before / After</span><span class="t">생선 반찬 실랑이 →<br>먼저 찾는 간식 시간</span>먹이는 루틴 사진 2컷. 효과 비교는 쓰지 않음</div>
+    <div class="slide must"><span class="no">6</span><span class="role">실제 구매평</span><span class="t">먼저 받아 본<br>엄마들의 후기</span>실제 받은 후기 캡처 3개. 원문 그대로</div>
+    <div class="slide must"><span class="no">7</span><span class="role">혜택 · 구성</span><span class="t">공구가 [확인 필요]<br>+ 콜라겐 20개</span>정가 대비, 구성, 사은품 한눈에</div>
+    <div class="slide must"><span class="no">8</span><span class="role">제한 · CTA</span><span class="t">10/18 마감<br>단 7일</span>[마감 시각 확인 필요] · "오메가" 댓글 → 링크 DM · 프로필 링크</div>
+  </div>
+  <p class="ref">진한 테두리 칸이 필수 요소입니다. 1·3장은 도비약사의 1장 1키워드 레이아웃, 8장 흐름은 @eunha__yak의 OPEN 카드뉴스를 빌렸습니다.</p>
+
+  <div class="callout green"><span class="e">📅</span><div><p><b>1주차 업로드 스케줄에 그대로 넣습니다.</b> D-4 유입 릴스(3-1) → D-Day OPEN 카드뉴스(3-2) → 마감 D-1 리마인드. 리마인드는 OPEN 카드뉴스의 7·8장(혜택·제한)을 "곧 마감"으로 바꿔 다시 쓰라고 시키면 됩니다.</p></div></div>
+
+  <div class="dont"><div class="h">🚫 3단계에서 AI에게 맡기면 안 되는 것</div><ul><li>함량·가격·마감 시각 같은 숫자. [확인 필요]로 비워 두고 직접 채웁니다</li><li>후기 만들기. 실제 받은 후기만, 원문 그대로 씁니다</li><li>최종 검수. 광고규정.md에 걸리는 표현이 없는지 올리기 전에 내가 한 번 더 읽습니다</li></ul></div>
+
+  <div class="pager"><button data-go="s2">← 2단계</button><button class="next" data-go="s1">처음으로 ↺</button></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  const stages = ['s1','s2','s3'];
+  const anchors = { v1:'s3', c1:'s3' };
+  function show(id, scroll){
+    const target = anchors[id] ? id : null;
+    if (anchors[id]) id = anchors[id];
+    if(!stages.includes(id)) id = null;
+    document.querySelectorAll('section.stage').forEach(s => s.classList.toggle('on', s.id === id));
+    document.querySelector('.intro').style.display = id ? 'none' : '';
+    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.go === id)));
+    if (target) document.getElementById(target).scrollIntoView();
+    else if (scroll !== false) window.scrollTo({top:0});
+  }
+  document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]');
+    if(g){ e.preventDefault(); history.pushState(null, '', '#' + g.dataset.go); show(g.dataset.go); return; }
+    const a = e.target.closest('.subtabs a');
+    if(a){ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.pushState(null, '', '#' + k); show(k); return; }
+    const c = e.target.closest('.prompt .copy');
+    if(c){
+      const text = c.parentElement.querySelector('.body').innerText;
+      const done = () => { c.textContent = '복사됨'; c.classList.add('ok'); setTimeout(() => { c.textContent = '복사'; c.classList.remove('ok'); }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => {});
+    }
+  });
+  window.addEventListener('popstate', () => show(location.hash.slice(1)));
+  show(location.hash.slice(1), false);
+})();
+</script>
+</body>
+</html>
