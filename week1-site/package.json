@@ -1,0 +1,8 @@
+{
+  "name": "pharmacist-week1-content",
+  "version": "1.0.0",
+  "private": true,
+  "description": "약사 4주 집중 컨설팅 1주차: 알고리즘이 좋아하는 콘텐츠 · 콘텐츠 기획 · 콘텐츠 소재",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
