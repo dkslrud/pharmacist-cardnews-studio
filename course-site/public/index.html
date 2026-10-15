@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>콘텐츠 처방소 · 약사 4주 과정</title>
+<meta name="description" content="약사 인스타그램 공구 4주 집중 컨설팅: 1주차부터 4주차까지 교육자료를 한곳에서 봅니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EFECE2; --card:#F8F6F0; --line:#D9D6CC; --ink:#1A1A17; --sub:#5F5E58; --mute:#8C8A82;
+  --accent:#E5531F; --accent-deep:#C4401A; --dark:#141413;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.18em;text-transform:uppercase}
+
+/* header */
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(239,236,226,.94);backdrop-filter:blur(6px);z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;text-decoration:none;white-space:nowrap}
+.logo svg{flex:none}
+nav.top{display:flex;align-items:center;gap:26px}
+nav.top a{text-decoration:none;color:var(--sub);font-size:15px;white-space:nowrap}
+nav.top a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:11px 20px;letter-spacing:.06em;border:0;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--accent-deep)}
+
+/* hero */
+.hero{display:flex;align-items:center;gap:44px;padding:110px 0 80px}
+.mark{flex:none;width:132px;height:132px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center}
+.hero .kick{font-size:11px;color:var(--mute)}
+.hero .kick b{font-family:inherit;color:var(--sub);font-weight:500;letter-spacing:.06em}
+.hero h1{font-size:44px;line-height:1.2;margin:10px 0 12px;letter-spacing:-.02em;font-weight:800}
+.hero p{margin:0;color:var(--sub);font-size:17px}
+
+/* now box */
+.now{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid var(--accent);padding:24px 26px}
+.now .k{font-size:11px;color:var(--accent)}
+.now .k b{font-family:inherit;letter-spacing:.06em;font-weight:600}
+.now .t{font-weight:700;font-size:18px;margin-top:4px}
+
+/* tabs */
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--ink);margin-top:56px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{appearance:none;background:none;border:0;font:inherit;font-size:16px;color:var(--sub);padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button small{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--mute);margin-left:6px}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:800;border-bottom-color:var(--ink)}
+.count{font-size:13px;color:var(--sub);margin:30px 0 16px;letter-spacing:.1em}
+.count span{font-family:ui-monospace,Menlo,monospace;color:var(--mute);margin-left:6px}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:90px}
+.card{position:relative;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;text-decoration:none;overflow:hidden;border:1px solid var(--line);background:var(--card);transition:transform .15s ease}
+a.card:hover{transform:translateY(-3px)}
+.card .lab{position:absolute;top:26px;left:26px;font-size:11px;color:var(--accent);z-index:2}
+.card .wk{position:absolute;top:22px;right:24px;font-size:12px;font-weight:700;color:var(--mute);z-index:2}
+.card h3{position:relative;z-index:2;margin:0;font-size:24px;line-height:1.35;letter-spacing:-.02em;font-weight:800}
+.card .tg{position:relative;z-index:2;margin-top:10px;font-size:13px;color:var(--mute);letter-spacing:.14em}
+.card .ds{position:relative;z-index:2;margin-top:8px;font-size:14px;color:var(--sub);line-height:1.55}
+
+.card.orange{background:var(--accent-deep);border-color:var(--accent-deep);color:#fff}
+.card.orange .lab,.card.orange .wk{color:#FBD9C9}
+.card.orange .tg{color:#FBD9C9}
+.card.orange .ds{color:#FCE6DC}
+
+.card.dark{background:var(--dark);border-color:var(--dark);color:#fff}
+.card.dark .lab{color:#F07B4F}.card.dark .wk{color:#8C8A82}
+.card.dark .tg{color:#8C8A82}.card.dark .ds{color:#BDBAB0}
+.card.dark .big{position:absolute;left:22px;right:22px;top:58px;font-size:58px;line-height:1.02;font-weight:900;letter-spacing:-.04em;color:#6E6B63;z-index:1}
+.card.dark .big em{font-style:normal;color:var(--accent-deep)}
+.card.dark .rule{position:absolute;right:54px;top:14px;bottom:14px;width:1px;background:#3A3934;z-index:1}
+
+.card.photo{color:#fff;border-color:#222}
+.card.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.card.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,.78) 100%);z-index:1}
+.card.photo .lab{color:#fff}.card.photo .wk{color:#eee}.card.photo .tg{color:#ddd}.card.photo .ds{color:#eee}
+
+.card.soon{background:transparent;border:1px dashed #BDB9AE;justify-content:center;align-items:flex-start}
+.card.soon h3{color:var(--mute)}
+.card.soon .lab{color:var(--mute)}
+
+.card .arrow{position:absolute;right:24px;bottom:26px;font-size:20px;z-index:2;opacity:.75}
+
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--mute);font-size:13px}
+
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.card h3{font-size:21px}.card.dark .big{font-size:46px}}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  nav.top a.n{display:none}
+  .btn{padding:10px 14px;font-size:14px}
+  .hero{flex-direction:column;align-items:flex-start;gap:22px;padding:56px 0 44px}
+  .mark{width:84px;height:84px}.mark svg{width:40px;height:40px}
+  .hero h1{font-size:32px}
+  .hero p{font-size:15.5px}
+  .now{flex-direction:column;align-items:flex-start}
+  .tabs{margin-top:40px}
+  .tabs button{padding:12px 14px;font-size:15px}
+  .grid{grid-template-columns:1fr;gap:12px}
+  .card{aspect-ratio:auto;min-height:300px}
+  .card.dark{min-height:420px}
+  .card.dark .big{font-size:46px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="./">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></svg>
+      콘텐츠 처방소
+    </a>
+    <nav class="top">
+      <a class="n" href="#w1" data-f="w1">1주차</a>
+      <a class="n" href="#w2" data-f="w2">2주차</a>
+      <a class="n" href="#w3" data-f="w3">3주차</a>
+      <a class="n" href="#w4" data-f="w4">4주차</a>
+      <a class="btn" href="week2/index.html">이번 주 자료 →</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="mark" aria-hidden="true">
+      <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#E5531F" stroke-width=".9"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></svg>
+    </div>
+    <div>
+      <div class="kick mono">Pharm Creator Lab · <b>약사 크리에이터 · 4주 과정</b></div>
+      <h1>콘텐츠 처방소</h1>
+      <p>약사 크리에이터의 성장을 곁에서 돕습니다. 계정을 진단하고, 콘텐츠를 처방합니다.</p>
+    </div>
+  </section>
+
+  <div class="now">
+    <div>
+      <div class="k mono">Now · <b>이번 주</b></div>
+      <div class="t">2주차 — 클로드 코드로 알고리즘이 좋아하는 콘텐츠 만들기</div>
+    </div>
+    <a class="btn" href="week2/index.html">바로 보기 →</a>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" data-f="all" aria-selected="true">전체<small></small></button>
+    <button role="tab" data-f="w1" aria-selected="false">1주차<small></small></button>
+    <button role="tab" data-f="w2" aria-selected="false">2주차<small></small></button>
+    <button role="tab" data-f="w3" aria-selected="false">3주차<small></small></button>
+    <button role="tab" data-f="w4" aria-selected="false">4주차<small></small></button>
+  </div>
+  <div class="count">자료 <span id="cnt"></span></div>
+
+  <div class="grid" id="grid">
+    <!-- 1주차 -->
+    <a class="card" data-w="w1" href="week1/index.html#s1">
+      <span class="lab mono">Theory</span><span class="wk">1주차 · 1</span>
+      <h3>🎆 알고리즘이 좋아하는 콘텐츠</h3>
+      <div class="ds">내 영상이 엄마들에게 먼저 가도록 계정을 길들이기</div>
+      <div class="tg">세 탭 루틴 · 리서치 계정</div>
+    </a>
+    <a class="card orange" data-w="w1" href="week1/index.html#s2">
+      <span class="lab mono">Practice</span><span class="wk">1주차 · 2</span>
+      <h3>🧩 콘텐츠 기획</h3>
+      <div class="ds">구매 전환 1편과 유입 3편을 짝지어 설계하기</div>
+      <div class="tg">척추 5단계 · 주제 3개</div>
+    </a>
+    <a class="card dark" data-w="w1" href="week1/index.html#s3">
+      <span class="lab mono">Practice</span><span class="wk">1주차 · 3</span>
+      <span class="rule"></span>
+      <div class="big" aria-hidden="true">형식은<br>빌리고<br><em>내용은</em><br>내 것</div>
+      <h3>🔬 콘텐츠 소재 — 믹싱</h3>
+      <div class="tg">터진 영상 · 재료 모으기</div>
+    </a>
+
+    <!-- 2주차 -->
+    <a class="card" data-w="w2" href="week2/index.html#why">
+      <span class="lab mono">Theory</span><span class="wk">2주차 · 시작</span>
+      <h3>🤖 왜 클로드 코드로 하나요?</h3>
+      <div class="ds">1주차에 손으로 한 리서치를 링크 한 줄로</div>
+      <div class="tg">1주차 vs 2주차</div>
+    </a>
+    <a class="card orange" data-w="w2" href="week2/index.html#ready">
+      <span class="lab mono">Setup</span><span class="wk">2주차 · 세팅</span>
+      <h3>⚙️ 클로드 처음 세팅 3가지</h3>
+      <div class="ds">Code 탭 + 공구 폴더, Apify 연결, 스킬 파일 받기</div>
+      <div class="tg">시작 전 체크</div>
+    </a>
+    <a class="card dark" data-w="w2" href="week2/index.html#rules">
+      <span class="lab mono">Rules</span><span class="wk">2주차 · 규칙</span>
+      <span class="rule"></span>
+      <div class="big" aria-hidden="true">지어낸<br>숫자<br><em>후기는</em><br>0개</div>
+      <h3>🚦 사고 안 나는 5가지 규칙</h3>
+      <div class="tg">광고 규정 · 근거 표시</div>
+    </a>
+    <a class="card" data-w="w2" href="week2/index.html#s1">
+      <span class="lab mono">Step 1</span><span class="wk">2주차</span>
+      <h3>📁 한 줄로 시작하기 — 내 계정 가르치기</h3>
+      <div class="ds">질문 5개에 답하면 CLAUDE.md와 폴더가 생겨요</div>
+      <div class="tg">CLAUDE.md · 계정 진단</div>
+    </a>
+    <a class="card photo" data-w="w2" href="week2/index.html#s2">
+      <img src="week2/img/ref-a.png" alt="" loading="lazy">
+      <span class="lab mono">Step 2</span><span class="wk">2주차</span>
+      <h3>🔥 터진 영상 찾기 — 키워드 꼬리 물기</h3>
+      <div class="tg">계정 평균 3배 이상</div>
+    </a>
+    <a class="card orange" data-w="w2" href="week2/index.html#s3">
+      <span class="lab mono">Step 3</span><span class="wk">2주차</span>
+      <h3>🎬 영상 5칸 분석과 대본 각색</h3>
+      <div class="ds">구성 · 훅 · 초반 3초 · 지속 장치 · 마무리</div>
+      <div class="tg">Apify · 레퍼런스 A·B·C</div>
+    </a>
+    <a class="card dark" data-w="w2" href="week2/index.html#s4">
+      <span class="lab mono">Step 4</span><span class="wk">2주차</span>
+      <span class="rule"></span>
+      <div class="big" aria-hidden="true">혜택<br>구성<br><em>마감</em><br>후기</div>
+      <h3>🃏 카드뉴스 분석과 각색</h3>
+      <div class="tg">레이아웃 · 필수 요소 5가지</div>
+    </a>
+    <a class="card" data-w="w2" href="week2/index.html#s5">
+      <span class="lab mono">Step 5</span><span class="wk">2주차</span>
+      <h3>🗂 폴더에 쌓이는 기획안</h3>
+      <div class="ds">plans/ 한 장만 열면 대본과 원고가 순서대로</div>
+      <div class="tg">이어서 하기 · FAQ</div>
+    </a>
+
+    <!-- 3·4주차 -->
+    <div class="card soon" data-w="w3">
+      <span class="lab mono">Coming soon</span><span class="wk">3주차</span>
+      <h3>3주차 자료 준비 중</h3>
+      <div class="ds">수업이 끝나면 여기에 올라와요</div>
+    </div>
+    <div class="card soon" data-w="w4">
+      <span class="lab mono">Coming soon</span><span class="wk">4주차</span>
+      <h3>4주차 자료 준비 중</h3>
+      <div class="ds">수업이 끝나면 여기에 올라와요</div>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">콘텐츠 처방소 · 약사 4주 집중 컨설팅 · 예시 계정 레인보우약사(@rainbow_yak)</div></footer>
+
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('#grid .card'));
+  var tabs=[].slice.call(document.querySelectorAll('.tabs button'));
+  tabs.forEach(function(b){
+    var f=b.dataset.f, n=f==='all'?cards.filter(function(c){return !c.classList.contains('soon')}).length:cards.filter(function(c){return c.dataset.w===f&&!c.classList.contains('soon')}).length;
+    b.querySelector('small').textContent=n;
+  });
+  function show(f){
+    if(!/^(all|w[1-4])$/.test(f)) f='all';
+    var shown=0;
+    cards.forEach(function(c){var on=f==='all'||c.dataset.w===f;c.style.display=on?'':'none';if(on&&!c.classList.contains('soon'))shown++;});
+    tabs.forEach(function(b){b.setAttribute('aria-selected',b.dataset.f===f?'true':'false')});
+    document.getElementById('cnt').textContent=shown;
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-f]'); if(!t) return;
+    e.preventDefault();
+    var f=t.dataset.f;
+    history.replaceState(null,'',f==='all'?location.pathname:'#'+f);
+    show(f);
+    if(t.tagName==='A') document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  show(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
