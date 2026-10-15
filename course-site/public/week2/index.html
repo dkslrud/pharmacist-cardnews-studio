@@ -261,8 +261,9 @@ h3{font-size:23px;line-height:1.45;margin:52px 0 14px;font-weight:800;letter-spa
 
 /* summary */
 .sum .rule:nth-child(4) .n{background:#EA7448}
-.sum .rule:nth-child(5){opacity:.7}
-.sum .rule:nth-child(5) .n{background:#EDA27F}
+.sum .rule:nth-child(5) .n{background:#EC8B60}
+.sum .rule:nth-child(6){opacity:.7}
+.sum .rule:nth-child(6) .n{background:#EDA27F}
 
 /* faq */
 details.faq{border-bottom:1px solid var(--line);padding:4px 0}
@@ -294,6 +295,7 @@ details.faq p{font-size:16px;margin:0 0 16px}
     <a href="#s3">STEP 3 영상</a>
     <a href="#s4">STEP 4 카드뉴스</a>
     <a href="#s5">STEP 5 쌓기</a>
+    <a href="#s6">STEP 6 캔바</a>
     <a href="#faq">FAQ</a>
   </div>
 </nav>
@@ -310,7 +312,7 @@ details.faq p{font-size:16px;margin:0 0 16px}
     <ul>
       <li>1주차에 손으로 한 '알고리즘 → 소재 → 기획'을 클로드 코드에게 시킨다</li>
       <li>세팅 3가지: 데스크톱 앱 Code 탭 · Apify 연결 · 스킬 파일</li>
-      <li>내 계정을 가르치고 → 터진 영상을 찾고 → 5칸으로 뜯고 → 내 공구 콘텐츠로 각색</li>
+      <li>내 계정을 가르치고 → 터진 영상을 찾고 → 5칸으로 뜯고 → 내 공구 콘텐츠로 각색 → 캔바로 카드뉴스 완성</li>
       <li>함량·가격·후기는 AI가 채우지 않는다. 비워 두고 내가 채운다</li>
     </ul>
   </div>
@@ -667,6 +669,42 @@ references/에 넣은 캡처도 같이 봐줘.</div></div>
   <h3>중간에 멈춰도 괜찮아요</h3>
   <p>클로드는 레퍼런스 하나를 <b>파일로 다 쓰고 나서</b> 다음으로 넘어가요. 중간에 멈춰도 <b>끝난 분석은 폴더에 그대로 남아요.</b> 클로드가 "몇 번째부터 남았어요"라고 알려 주면 다음에 이렇게 입력하세요.</p>
   <div class="cp"><div class="hd"><span>이어서 분석</span><button type="button">복사</button></div><div class="bd">남은 레퍼런스 이어서 분석해줘</div></div>
+</section>
+
+<!-- STEP 6 -->
+<section class="sec" id="s6">
+  <div class="sh"><span class="tag">STEP 6</span><h2>캔바 연결해서 내 제품 카드뉴스 만들기</h2></div>
+  <p>STEP 4에서 쓴 8장 원고를 <b>캔바 디자인으로 바로 앉혀요.</b> 레퍼런스에서 빌리는 건 <b>레이아웃(몇 장, 장마다 역할, 글자 위계, 사진 자리)</b>뿐이고, 글과 사진은 전부 내 것이에요.</p>
+  <div class="flow">
+    <div class="box"><div class="e">📐</div><div class="t">레퍼런스 레이아웃</div><div class="s">analysis/ 카드뉴스 분석</div></div><span class="ln"></span>
+    <div class="box"><div class="e">✍️</div><div class="t">내 원고</div><div class="s">plans/ OPEN 8장</div></div><span class="ln"></span>
+    <div class="box"><div class="e">📷</div><div class="t">내 사진·후기</div><div class="s">products/</div></div><span class="ln soft"></span>
+    <div class="box"><div class="e">🎨</div><div class="t">캔바 디자인</div><div class="s">고쳐서 PNG로</div></div>
+  </div>
+
+  <h3>캔바 연결하기 (처음 한 번)</h3>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">설정 → 커넥터 → Canva 연결</div><p>Claude 데스크톱 앱(또는 claude.ai) 설정의 <b>커넥터</b>에서 Canva를 찾아 <b>연결</b>을 누르고, 캔바 계정으로 로그인해 허용해요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">Code 탭에서 연결 확인</div><p>공구 폴더를 연 Code 탭에서 <code>/mcp</code>를 입력해 목록에 canva가 보이면 끝이에요. 안 보이면 앱을 완전히 껐다 켜요.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">캔바에 내 템플릿 하나 만들어 두기</div><p>레퍼런스와 비슷한 <b>4:5(1080×1350) 카드뉴스 템플릿</b>을 하나 골라 내 디자인으로 저장하고, 이름을 <code>오메가3_OPEN_템플릿</code>처럼 붙여요. 내 브랜드 색과 글꼴로 한 번 맞춰 두면 다음 공구부터 그대로 써요.</p></div></div>
+  </div>
+
+  <h3>한 줄로 만들기</h3>
+  <div class="cp"><div class="hd"><span>캔바 카드뉴스 만들기</span><button type="button">복사</button></div><div class="bd">캔바의 '오메가3_OPEN_템플릿'을 복사해서 새 디자인을 만들어줘.
+analysis/의 카드뉴스 분석에 있는 레이아웃(장 수, 장마다 역할, 큰 글자·작은 글자 위계)대로
+plans/의 OPEN 카드뉴스 8장 원고를 한 장씩 넣어줘.
+products/의 제품 사진은 4장에 올려 주고, 숫자나 후기가 없는 칸은 [확인 필요]로 남겨줘.</div></div>
+  <p>클로드가 캔바에 새 디자인을 만들고 <b>링크를 줘요.</b> 원본 템플릿은 그대로 남아요.</p>
+  <div class="co tip"><span class="e">💡</span><div><p><b>템플릿이 아직 없다면</b> "레퍼런스 캡처를 보고 비슷한 레이아웃으로 캔바 카드뉴스 8장 새로 만들어줘"라고 해도 돼요. 다만 매번 결과가 달라져서, 공구마다 같은 톤을 내려면 내 템플릿을 하나 두는 게 좋아요.</p></div></div>
+
+  <h3>마무리는 캔바에서 내가</h3>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">[확인 필요] 칸 채우기</div><p>공구가, 마감 시각, 함량은 상세페이지를 보고 내가 직접 넣어요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">사진·후기 캡처 넣기</div><p>5장 Before/After는 먹이는 장면 사진으로, 6장은 실제 받은 후기 캡처를 원문 그대로 넣어요.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">PNG로 내보내기</div><p>캔바에서 바로 받거나, 클로드에게 시켜도 돼요.</p>
+      <div class="cp"><div class="hd"><span>내보내기</span><button type="button">복사</button></div><div class="bd">방금 만든 캔바 디자인을 PNG로 내보내서 plans/카드뉴스/ 폴더에 저장해줘.</div></div></div></div>
+  </div>
+  <div class="co red"><span class="e">🚫</span><div><p><b>빌리는 건 레이아웃뿐이에요.</b> 레퍼런스의 사진, 문구, 로고, 후기는 넣지 않아요. 올리기 전 마지막 확인은 내가 해요.</p></div></div>
   <div class="co"><span class="e">🛟</span><div><p><b>막혔을 때(자주 나오는 문제)</b>는 바로 아래 FAQ에 정리해 두었어요.</p></div></div>
 
   <h3>한눈에 정리</h3>
@@ -676,6 +714,7 @@ references/에 넣은 캡처도 같이 봐줘.</div></div>
     <div class="rule"><span class="n">3</span><div><div class="t">터진 영상 찾기</div><div class="s">이름란 키워드로 꼬리 물기, 계정 평균 3배 이상 → 승인</div></div></div>
     <div class="rule"><span class="n">4</span><div><div class="t">뜯고 각색하기</div><div class="s">영상 5칸 · 카드뉴스 필수 5요소 → 칸은 그대로, 내용만 내 것으로</div></div></div>
     <div class="rule"><span class="n">5</span><div><div class="t">폴더에 쌓기</div><div class="s">plans/ 한 장 열고, 숫자·후기는 내가 채우고, 올리기 전 내가 검수</div></div></div>
+    <div class="rule"><span class="n">6</span><div><div class="t">캔바로 완성</div><div class="s">캔바 연결 → 내 템플릿에 레퍼런스 레이아웃대로 원고 넣기 → 빈칸 채우고 PNG로 내보내기</div></div></div>
   </div>
 </section>
 
@@ -694,6 +733,8 @@ references/에 넣은 캡처도 같이 봐줘.</div></div>
     <p>"products/에 없는 숫자와 후기는 전부 [확인 필요]로 바꿔줘"라고 하세요. 그리고 products/ 폴더에 상세페이지와 실제 후기가 들어 있는지 확인하세요. 비어 있으면 클로드가 채울 근거가 없어요.</p></details>
   <details class="faq"><summary>광고 규정 점검표를 믿고 올려도 되나요?</summary>
     <p>1차 걸러내기로만 쓰세요. 애매한 표현은 제조사나 건강기능식품 광고 자율심의로 확인하는 게 안전해요.</p></details>
+  <details class="faq"><summary>/mcp에 canva가 안 보여요</summary>
+    <p>설정 → 커넥터에서 Canva가 '연결됨'인지 먼저 보세요. 연결돼 있는데도 없으면 앱을 완전히 종료했다가 다시 열고, Code 탭에서 공구 폴더를 다시 선택하세요.</p></details>
   <details class="faq"><summary>claude.ai 웹에서 하면 안 되나요?</summary>
     <p>스킬 업로드와 분석은 웹에서도 돼요. 다만 폴더에 파일이 쌓이고, 멈췄다 이어서 하기는 데스크톱 앱 Code 탭이 훨씬 편해요.</p></details>
 
