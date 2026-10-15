@@ -1,0 +1,8 @@
+{
+  "name": "pharmacist-course-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "약사 4주 집중 컨설팅 1~4주차 자료 모음",
+  "scripts": { "start": "node server.js", "sync": "node sync.js" },
+  "engines": { "node": ">=18" }
+}

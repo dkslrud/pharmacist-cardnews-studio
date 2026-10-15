@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1주차 · 팔리는 콘텐츠 3단계</title>
+<meta name="description" content="약사 4주 집중 컨설팅 1주차: 알고리즘이 좋아하는 콘텐츠 → 콘텐츠 기획 → 콘텐츠 소재">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EFECE2; --card:#F8F6F0; --line:#D9D6CC; --ink:#1A1A17; --sub:#5F5E58; --mute:#8C8A82;
+  --accent:#E5531F; --accent-soft:#F3D8CB; --accent-pale:#F5E6DE;
+  --blue:#6AA6F0; --blue-bg:#E4E4E1; --green:#5FD08E; --green-bg:#E2E8DA; --yellow:#F0C04A; --yellow-bg:#EEE6D3; --red:#F07862; --red-bg:#F0E2D8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.75;letter-spacing:-0.01em;word-break:keep-all}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 120px}
+a{color:inherit}
+b,strong{font-weight:700;color:var(--ink)}
+p{margin:0 0 14px;color:var(--sub)}
+p b{color:var(--ink)}
+h1{font-size:clamp(40px,7vw,64px);line-height:1.15;margin:0;font-weight:800;letter-spacing:-0.03em;display:flex;align-items:center;gap:20px}
+h1 .ic{font-size:.85em}
+h2{font-size:clamp(26px,4vw,34px);line-height:1.3;margin:72px 0 18px;font-weight:800;letter-spacing:-0.02em}
+h3{font-size:22px;line-height:1.4;margin:44px 0 12px;font-weight:700}
+
+/* top nav */
+.top{position:sticky;top:0;z-index:20;background:rgba(239,236,226,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:900px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.top .in::-webkit-scrollbar{display:none}
+.brand{font-size:13px;font-weight:700;color:var(--mute);white-space:nowrap;margin-right:6px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--sub);font:inherit;font-size:14px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.tab .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--line);color:var(--ink);font-size:12px;margin-right:6px}
+.tab[aria-selected="true"]{border-color:var(--accent);color:var(--ink);background:var(--accent-pale)}
+.tab[aria-selected="true"] .n{background:var(--accent);color:#fff}
+
+/* intro */
+.intro{padding:48px 0 8px}
+.kicker{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px}
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 8px}
+.road{background:var(--card);border:1px solid var(--line);padding:20px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.road:hover{border-color:var(--accent)}
+.road .no{font-size:13px;font-weight:700;color:var(--accent)}
+.road .t{font-size:19px;font-weight:700;margin:4px 0 6px;line-height:1.35}
+.road .d{font-size:14px;color:var(--sub);line-height:1.55}
+
+section.stage{display:none}
+section.stage.on{display:block}
+
+/* callouts */
+.callout{display:flex;gap:18px;align-items:flex-start;padding:24px 28px;margin:22px 0;border-left:4px solid var(--blue);background:var(--blue-bg);color:var(--ink)}
+.callout .e{font-size:26px;line-height:1.2;flex:none}
+.callout p{color:var(--ink);margin:0}
+.callout p + p{margin-top:8px}
+.callout.green{border-color:var(--green);background:var(--green-bg)}
+.callout.yellow{border-color:var(--yellow);background:var(--yellow-bg)}
+.callout.red{border-color:var(--red);background:var(--red-bg)}
+.callout.gray{border-color:#C9C6BC;background:#E3E0D6}
+.callout .lead{font-weight:700}
+
+/* flow boxes with dots */
+.flow{display:flex;align-items:center;margin:28px 0;flex-wrap:nowrap}
+.flow .box{flex:1;background:var(--card);border:1px solid var(--line);padding:22px 12px;text-align:center;min-width:0}
+.flow .box .e{font-size:34px;line-height:1.1;margin-bottom:10px}
+.flow .box .t{font-weight:700;font-size:17px;line-height:1.4}
+.flow .box .s{font-size:14px;color:var(--sub);margin-top:6px;line-height:1.5}
+.flow .link{flex:0 0 34px;height:1px;background:var(--line);position:relative}
+.flow .link::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.flow .link.soft::after{background:var(--accent-soft)}
+.flow .box.hot{background:var(--accent);border-color:var(--accent);color:#fff}
+.flow .box.hot .s{color:#FBE3D8}
+@media (max-width:640px){
+  .flow{flex-direction:column;align-items:stretch}
+  .flow .link{flex:0 0 26px;width:1px;height:26px;margin:0 auto}
+  .roadmap{grid-template-columns:1fr}
+}
+
+/* pills */
+.pills{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px 8px;margin:24px 0}
+.pill{display:flex;flex-direction:column;align-items:center}
+.pill b{display:inline-block;border:1px solid var(--accent);background:var(--accent-soft);border-radius:999px;padding:10px 22px;font-size:17px}
+.pill small{font-size:13px;color:var(--sub);margin-top:6px}
+.arrow{color:var(--accent);font-weight:700;font-size:20px;padding-top:10px}
+
+/* panel */
+.panel{background:var(--card);border:1px solid var(--line);padding:26px;margin:24px 0}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{display:flex;gap:12px;margin:0 0 14px}
+.steps .num{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-size:14px;font-weight:700;margin-top:2px}
+.steps .t{font-weight:700;font-size:19px}
+.steps .s{font-size:15px;color:var(--sub)}
+.dashed{display:inline-block;border:1px dashed var(--accent);color:var(--accent);padding:6px 16px;letter-spacing:.15em;font-size:15px;margin:6px 0 16px}
+.split{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.split .side{border:1px solid var(--line);background:var(--bg);padding:18px}
+.split .side.dim{color:var(--mute)}
+.bar{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:14px;color:var(--sub);letter-spacing:.08em}
+.bar i{display:block;height:20px;background:var(--accent)}
+.loop{display:flex;gap:14px;align-items:flex-start;border-top:1px dashed var(--line);margin-top:20px;padding-top:18px}
+.loop .r{flex:none;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:20px}
+@media (max-width:640px){.split{grid-template-columns:1fr}}
+
+/* tab cards */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.three .col{background:var(--card);border:1px solid var(--line);padding:22px 18px}
+.three .col h4{margin:0 0 14px;font-size:18px;display:flex;gap:8px;align-items:center}
+.three .item{border:1px solid var(--line);background:#FBFAF6;padding:10px 14px;font-size:15px;margin-bottom:8px;line-height:1.5}
+.three .item.first{background:var(--accent-pale);border-color:var(--accent)}
+@media (max-width:720px){.three{grid-template-columns:1fr}}
+
+/* meter */
+.meter{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center;margin:14px 0}
+.meter .l b{display:block;font-size:17px}
+.meter .l small{font-size:13px;color:var(--sub)}
+.cells{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.cells i{display:block;aspect-ratio:46/80;background:#E3E0D6;border:1px solid var(--line)}
+.cells i.on{background:var(--accent);border-color:var(--accent)}
+.cells i.mid{background:#E9A07F;border-color:#E9A07F}
+.legend{font-size:13px;color:var(--sub);display:flex;gap:18px;letter-spacing:.1em;margin-top:6px}
+.legend i{display:inline-block;width:13px;height:13px;vertical-align:-2px;margin-right:6px;background:var(--accent)}
+.legend i.g{background:#E3E0D6;border:1px solid var(--line)}
+@media (max-width:640px){.meter{grid-template-columns:1fr}}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:16px}
+.tbl th{text-align:left;font-weight:500;color:var(--sub);font-size:14px;letter-spacing:.12em;padding:14px 18px;border-bottom:2px solid var(--ink)}
+.tbl td{padding:18px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.tbl td:first-child{color:var(--ink);font-weight:700;width:30%}
+.cmp{width:100%;border:1px solid var(--line);margin:24px 0;background:transparent}
+.cmp .hd{display:grid;grid-template-columns:1fr 1fr;padding:16px 26px;border-bottom:2px solid var(--ink);font-size:14px;color:var(--sub);letter-spacing:.12em}
+.cmp .row{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;padding:18px 26px;border-bottom:1px solid var(--line)}
+.cmp .row:last-child{border-bottom:0}
+.cmp .cat{font-size:13px;color:var(--sub);letter-spacing:.1em}
+.cmp .old{color:var(--mute);text-decoration:line-through;font-size:17px}
+.cmp .ar{color:var(--accent);font-weight:700;font-size:20px;text-align:center}
+.cmp .new{font-weight:700;font-size:18px;line-height:1.45}
+@media (max-width:640px){.cmp .row{grid-template-columns:1fr}.cmp .ar{text-align:left}.cmp .hd{display:none}}
+
+/* numbered question cards */
+.qcard{display:flex;gap:22px;background:var(--card);border:1px solid var(--line);padding:26px 30px;margin:0 0 14px}
+.qcard .sq{flex:none;width:44px;height:44px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:18px}
+.qcard .t{font-weight:700;font-size:19px}
+.qcard .s{color:var(--sub);font-size:16px}
+.qcard .ex{margin-top:10px;font-size:15px;background:var(--accent-pale);padding:10px 14px;color:var(--ink)}
+
+/* inflow diagram */
+.inflow{display:grid;grid-template-columns:1fr 60px 170px 60px 1fr;align-items:center;margin:28px 0}
+.inflow .list{display:flex;flex-direction:column;gap:10px}
+.inflow .ib{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);padding:16px 18px}
+.inflow .ib .e{font-size:28px}
+.inflow .ib .t{font-weight:700;font-size:16px}
+.inflow .ib .s{font-size:14px;color:var(--sub);line-height:1.5}
+.inflow .ln{height:1px;background:var(--line);position:relative}
+.inflow .ln::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.inflow .circle{width:170px;height:170px;border-radius:50%;border:2px solid var(--accent);display:grid;place-items:center;font-weight:700;text-align:center;font-size:17px;padding:16px;line-height:1.4}
+.inflow .out{background:var(--accent);color:#fff;padding:24px 20px;font-weight:700;text-align:center;line-height:1.6;font-size:16px}
+@media (max-width:760px){.inflow{grid-template-columns:1fr}.inflow .ln{width:1px;height:26px;margin:0 auto}.inflow .circle{margin:0 auto}}
+
+/* video grid */
+.vgrid{background:#F6F3EC;border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 0}
+.vid{aspect-ratio:9/13;background:#E8E6DF;padding:12px;display:flex;flex-direction:column;justify-content:space-between;font-size:14px;border:1px solid transparent}
+.vid .p{font-size:13px;color:#4E4D48}
+.vid .h{font-size:13px;line-height:1.45;color:var(--sub)}
+.vid .v{font-weight:700;font-size:16px}
+.vid.hot{background:var(--accent-soft);border-color:var(--accent)}
+.vid.hot .h{color:var(--ink)}
+.connector{width:1px;height:26px;background:var(--line);margin:0 auto;position:relative}
+.connector::after{content:"";position:absolute;bottom:-5px;left:50%;width:11px;height:11px;border-radius:50%;background:var(--accent);transform:translateX(-50%)}
+.verdict{background:var(--accent);color:#fff;text-align:center;font-weight:700;padding:22px;margin:0 0 24px}
+@media (max-width:640px){.vgrid{grid-template-columns:repeat(2,1fr)}}
+
+/* mixing */
+.mix{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0 0}
+.mix .side{border:1px solid #CFCBBF;padding:22px}
+.mix .side.mine{border-color:var(--accent)}
+.mix .lab{font-size:15px;letter-spacing:.15em;color:var(--sub);margin-bottom:14px}
+.mix .mine .lab{color:var(--accent)}
+.mix .blk{background:var(--card);border:1px solid var(--line);padding:16px 20px;margin-bottom:10px}
+.mix .blk .t{font-weight:700;font-size:17px}
+.mix .blk .s{font-size:14px;color:var(--sub)}
+.mix .blk .x{font-size:14px;color:var(--ink);margin-top:6px;background:var(--accent-pale);padding:6px 10px}
+@media (max-width:640px){.mix{grid-template-columns:1fr}}
+
+.kr-us{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.center-box{border:2px solid var(--ink);padding:18px 28px;font-weight:700;width:max-content;max-width:100%;margin:28px auto 0;text-align:center;background:transparent}
+.center-box.or{border-color:var(--accent);border-width:1px;background:var(--card)}
+.krbox{background:var(--card);border:1px solid var(--line);padding:24px;text-align:center}
+.krbox .c{font-size:22px;letter-spacing:.05em}
+.krbox .t{font-weight:700;margin-top:6px}
+.krbox .s{font-size:14px;color:var(--sub)}
+
+.ref{font-size:14px;color:var(--mute);margin-top:-6px}
+.ref a{color:var(--sub)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:80px;border-top:1px solid var(--line);padding-top:24px}
+.pager button{appearance:none;font:inherit;font-size:16px;font-weight:700;background:var(--card);border:1px solid var(--line);padding:14px 20px;cursor:pointer;color:var(--ink)}
+.pager button.next{background:var(--accent);border-color:var(--accent);color:#fff;margin-left:auto}
+ul.tight{margin:0 0 14px;padding-left:22px;color:var(--sub)}
+ul.tight li{margin:4px 0}
+
+@media (max-width:640px){.callout{padding:18px 18px;gap:12px}.callout .e{font-size:22px}.panel{padding:18px}.qcard{padding:20px;gap:14px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div style="background:#141413;color:#EDEAE0;font:600 13px/1 'Pretendard Variable',Pretendard,-apple-system,sans-serif;padding:11px 16px;letter-spacing:.04em"><a href="../index.html" style="color:inherit;text-decoration:none">← 안희경 · 4주 과정 홈</a></div>
+
+<nav class="top" aria-label="1주차 단계">
+  <div class="in" role="tablist">
+    <span class="brand">1주차</span>
+    <button class="tab" role="tab" data-go="s1" aria-selected="false"><span class="n">1</span>알고리즘이 좋아하는 콘텐츠</button>
+    <button class="tab" role="tab" data-go="s2" aria-selected="false"><span class="n">2</span>콘텐츠 기획</button>
+    <button class="tab" role="tab" data-go="s3" aria-selected="false"><span class="n">3</span>콘텐츠 소재</button>
+  </div>
+</nav>
+
+<main class="wrap" id="main">
+
+<!-- ============ INTRO ============ -->
+<header class="intro">
+  <div class="kicker">약사 4주 집중 컨설팅 · 1주차</div>
+  <h1>팔리는 콘텐츠 3단계</h1>
+  <p>공구는 한 제품으로 <b>유입 → 전환 → 리마인드</b>를 끊김 없이 잇는 흐름입니다. 1주차는 그 흐름에 넣을 콘텐츠를 <b>누구에게 보여질지, 무엇을 말할지, 어디서 가져올지</b> 순서로 만듭니다.</p>
+  <div class="roadmap">
+    <button class="road" data-go="s1"><div class="no">1단계</div><div class="t">🎆 알고리즘이 좋아하는 콘텐츠</div><div class="d">내 영상이 엄마들에게 먼저 가도록 계정을 길들이기</div></button>
+    <button class="road" data-go="s2"><div class="no">2단계</div><div class="t">🧩 콘텐츠 기획</div><div class="d">구매 전환 1편과 유입 3편을 짝지어 설계하기</div></button>
+    <button class="road" data-go="s3"><div class="no">3단계</div><div class="t">🔬 콘텐츠 소재</div><div class="d">이미 터진 영상에서 형식을 빌리고 내용은 내 것으로</div></button>
+  </div>
+</header>
+
+<!-- ============ STAGE 1 ============ -->
+<section class="stage" id="s1" data-title="1단계 알고리즘이 좋아하는 콘텐츠">
+  <h1 style="margin-top:56px"><span class="ic">🎆</span>알고리즘 해킹</h1>
+
+  <h2>먼저, 알고리즘은 어떻게 움직일까요?</h2>
+  <div class="panel">
+    <ol class="steps">
+      <li><span class="num">1</span><div><div class="t">영상을 올린다</div></div></li>
+      <li><span class="num">2</span><div><div class="t">자막과 설명글을 읽는다</div><div class="s">이 영상은 무슨 주제인가</div></div></li>
+      <li><span class="num">3</span><div><div class="t">비슷한 주제를 좋아하던 200~500명에게 먼저 보낸다</div><div class="s">시험 뿌리기</div></div></li>
+    </ol>
+    <div class="dashed">끝까지 봤는가?</div>
+    <div class="split">
+      <div class="side">
+        <b>잘 봤다</b>
+        <div class="bar"><span style="padding-left:52px">200~500명</span></div>
+        <div class="bar"><i style="width:24%"></i>2,000</div>
+        <div class="bar"><i style="width:52%"></i>1만</div>
+        <div class="bar"><i style="width:92%"></i>5만</div>
+        <div style="font-size:14px;color:var(--sub)">단계적 확산</div>
+      </div>
+      <div class="side dim">
+        <b style="color:var(--mute)">3초 만에 넘겼다</b>
+        <div class="bar"><i style="width:8%;background:#9A988F"></i>100~300</div>
+        <div style="font-size:14px">여기서 종료</div>
+      </div>
+    </div>
+    <div class="loop"><span class="r">↻</span><div><div>본 사람들의 공통점을 다시 학습한다 → <b>다음 영상은 그 사람들과 비슷한 사람에게</b></div><div style="font-size:14px;color:var(--sub)">이번 영상을 본 사람이 다음 편의 시험 대상을 정한다</div></div></div>
+  </div>
+  <p>중요한 건 <b>첫 200~500명이 누구냐</b>입니다. 알고리즘은 <b>내 계정이 평소 반응한 것</b>을 보고 그 사람들을 고릅니다.</p>
+
+  <h3>레인보우약사 계정으로 보면</h3>
+  <p>조회는 마그네슘(9.7만)·약 상식(5.7만)·비염(5.4만) 같은 <b>성인 건강 주제</b>에서 나왔습니다. 그래서 알고리즘은 이 계정을 "성인 건강 정보를 보는 사람들의 계정"으로 학습했고, 아이 오메가3 영상도 그 사람들에게 먼저 보냈습니다. 공구 타깃인 <b>아이·육아 주제 릴스는 조회 중앙값 858회</b>로, 계정 전체 중앙값(2,168회)의 절반도 안 됩니다.</p>
+  <div class="callout yellow"><span class="e">🔍</span><div><p class="lead">영상이 나빠서가 아니라, 첫 시험 대상이 엄마가 아니었던 겁니다.</p><p>아래 두 가지로 첫 200~500명을 엄마들로 바꿉니다. 자막·설명글에 주제를 분명히 쓰고, 내 계정을 엄마들이 보는 영상으로 길들입니다.</p></div></div>
+
+  <h3>자막과 설명글이 주제를 말해야 합니다</h3>
+  <p>알고리즘은 화면보다 <b>글자</b>로 주제를 판단합니다. 첫 자막과 캡션 첫 줄에 <b>누구의 무슨 고민인지</b>가 들어가야 합니다.</p>
+  <div class="cmp">
+    <div class="hd"><span>❌ 주제가 안 읽히는 첫 줄</span><span>✅ 주제가 읽히는 첫 줄</span></div>
+    <div class="row"><div><div class="cat">오메가3 릴스 · 조회 367</div><div class="old">오메가3는</div></div><div class="ar">→</div><div class="new">만 5세 전 우리 아이, DHA 부족 신호 3개 이상이면 지금 챙기세요</div></div>
+    <div class="row"><div><div class="cat">비타민D 릴스 · 조회 2,596</div><div class="old">비타민D는 비타민이 아니고 호르몬이라고 말을 합니다</div></div><div class="ar">→</div><div class="new">실내에서만 노는 아이, 비타민D 수치 한번 보셨어요?</div></div>
+  </div>
+  <p class="ref">출처: 레인보우약사 공개 게시물 59개(2026-07-10~10-06) 진단</p>
+
+  <h2>내 계정 먹이기 — 세 탭 루틴</h2>
+  <p>먼저 <b>내 손님이 인스타에서 검색할 키워드 3~5개</b>를 적습니다. 레인보우약사의 손님은 30~40대 육아맘입니다.</p>
+  <div class="pills">
+    <span class="pill"><b>아이 영양제</b></span><span class="arrow">→</span>
+    <span class="pill"><b>아이 오메가3</b></span><span class="arrow">→</span>
+    <span class="pill"><b>약사 엄마</b></span><span class="arrow">→</span>
+    <span class="pill"><b>어린이집 면역</b></span><span class="arrow">→</span>
+    <span class="pill"><b>초등 입학 준비</b></span>
+  </div>
+  <p>그 키워드로 검색해 나온 영상들에, 탭마다 아래 동작을 합니다.</p>
+  <div class="three">
+    <div class="col"><h4>🔍 돋보기(검색) 탭</h4><div class="item first">키워드 검색</div><div class="item">영상 클릭</div><div class="item">좋아요</div><div class="item">5초 이상 보기</div><div class="item">새로고침 → 반복</div></div>
+    <div class="col"><h4>🎬 릴스 탭</h4><div class="item first">좋아요</div><div class="item">점 세 개(⋯) → "관심 있음"</div><div class="item">공유·저장</div><div class="item">오래 보기, 끝까지 보기</div></div>
+    <div class="col"><h4>🏠 피드(홈) 탭</h4><div class="item">릴스 클릭</div><div class="item">좋아요</div><div class="item">저장·공유</div></div>
+  </div>
+  <p>이렇게 하면 내 계정이 "저 영상을 좋아하는 계정"이 되고, 내가 올리는 콘텐츠는 <b>저 영상을 보던 엄마들</b>에게 먼저 갑니다.</p>
+  <div class="callout red"><span class="e">⚠️</span><div><p><b>사업 계정으로는 손님이 볼 영상만 봅니다.</b> 탈모·다이어트·연예 영상처럼 내 취향 영상은 개인 계정에서.</p></div></div>
+  <div class="meter">
+    <div class="l"><b style="color:var(--sub)">목표 정확도</b><small>릴스 탭 10개 중 6~7개면 충분</small></div>
+    <div class="cells"><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid" style="opacity:.55"></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="legend"><span><i></i>육아·아이 영양 주제</span><span><i class="g"></i>그 외</span></div>
+
+  <h2>리서치 계정 2개 — 한글용 하나, 영어용 하나</h2>
+  <p>참고할 영상은 <b>별도 리서치 계정</b>에서 모읍니다. 이유는 두 가지입니다.</p>
+  <table class="tbl">
+    <thead><tr><th>이유</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>언어 하나에 계정 하나</td><td>한 계정에 두 언어를 섞으면 알고리즘이 혼란스러워합니다. 한글 릴스와 영어 릴스는 계정을 나눠서 봅니다.</td></tr>
+      <tr><td>한국과 미국을 둘 다 봐야 한다</td><td>국내에서 뜨는 콘텐츠의 상당수는 해외에서 먼저 뜬 것입니다. 미국에서 뜨는 걸 먼저 보면 <b>남들보다 먼저 가져올 수 있습니다.</b> (→ 3단계 콘텐츠 소재에서 이어집니다)</td></tr>
+    </tbody>
+  </table>
+  <div class="center-box">한 주제 (예: 아이 영양제)</div>
+  <div class="connector"></div>
+  <div class="kr-us" style="margin-top:10px">
+    <div class="krbox"><div class="c">KR</div><div class="t">한글용 리서치 계정</div><div class="s">"아이 영양제", "약사 엄마"로 한국에서 뜨는 릴스</div></div>
+    <div class="krbox"><div class="c">US</div><div class="t">영어용 리서치 계정</div><div class="s">"kids vitamins", "pharmacist mom"으로 미국에서 뜨는 릴스 · 한국어 콘텐츠는 넘긴다</div></div>
+  </div>
+  <div class="center-box or">위와 같은 세 탭 루틴</div>
+  <div class="connector"></div>
+  <div class="verdict" style="margin-top:10px">끌리는 영상은 저장 → 레퍼런스 저장함</div>
+
+  <h2>먹이면서 저장하기</h2>
+  <p><b>"우리 공구 제품으로 바꿔도 되겠다"</b> 싶은 영상은 그 자리에서 저장합니다. 이것이 <a href="#s3" data-go="s3" style="color:var(--accent);font-weight:600">3단계 콘텐츠 소재</a>의 재료가 됩니다.</p>
+  <p><b>2주쯤 지나면 릴스 탭이 내 주제로 채워집니다.</b> 그때부터는 저장할 것만 고르면 됩니다.</p>
+  <div class="meter"><div class="l"><b>처음 일주일</b><small>잡다한 영상이 섞여 나온다</small></div><div class="cells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="meter"><div class="l"><b>2주쯤 지나면</b><small>거의 내 주제로만</small></div><div class="cells"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+  <div class="legend"><span><i></i>내 주제 결</span><span><i class="g"></i>그 외</span></div>
+
+  <div class="pager"><button class="next" data-go="s2">다음: 2단계 콘텐츠 기획 →</button></div>
+</section>
+
+<!-- ============ STAGE 2 ============ -->
+<section class="stage" id="s2" data-title="2단계 콘텐츠 기획">
+  <h1 style="margin-top:56px"><span class="ic">🧩</span>콘텐츠 기획</h1>
+
+  <h2>척추 — 손님이 사기까지 지나는 5단계</h2>
+  <p><b>손님은 콘텐츠 한 편 보고 바로 사지 않습니다.</b> 문제를 느끼고, 갖고 싶어지고, 알아보고, 그다음에야 삽니다.</p>
+  <div class="flow">
+    <div class="box"><div class="e">😣</div><div class="t">문제인식</div><div class="s">아이가 생선을 안 먹어요</div></div><span class="link"></span>
+    <div class="box"><div class="e">✨</div><div class="t">욕구</div><div class="s">잘 챙기는 엄마이고 싶다</div></div><span class="link soft"></span>
+    <div class="box"><div class="e">⚖️</div><div class="t">상품 비교</div><div class="s">rTG? 함량? 몇 살부터?</div></div><span class="link"></span>
+    <div class="box"><div class="e">🛒</div><div class="t">구매</div><div class="s">공구 기간·혜택</div></div><span class="link"></span>
+    <div class="box"><div class="e">🎁</div><div class="t">보상</div><div class="s">아이가 간식처럼 먹는다</div></div>
+  </div>
+  <div class="callout green"><span class="e">🔑</span><div><p><b>처음부터 장점을 나열하지 않습니다.</b> "rTG 80%, 개별 포장" 같은 장점은 상품 비교 단계에서만 먹힙니다.</p></div></div>
+
+  <h3>5단계를 두 덩어리로 — 실제 기획은 이 둘로만 봅니다</h3>
+  <div class="flow">
+    <div class="box"><div class="e">🧲</div><div class="t">유입 콘텐츠</div><div class="s">문제인식 · 욕구 — 사람을 데려온다</div></div><span class="link"></span>
+    <div class="box"><div class="e">💳</div><div class="t">구매 전환 콘텐츠</div><div class="s">상품 비교 · 구매 · 보상 — 사기로 결정하게 한다</div></div><span class="link soft"></span>
+    <div class="box"><div class="e">📩</div><div class="t">프로필 링크 · DM · 공구 링크</div></div>
+  </div>
+  <div class="callout yellow"><span class="e">🔍</span><div><p><b>문의 없는 계정 = 유입 콘텐츠만 있는 계정.</b> 둘 다 필요하고, <b>구매 전환을 먼저</b> 정합니다.</p></div></div>
+  <p class="ref">레인보우약사 오메가3 공구의 유입(WHO/WHY) → 전환(WHAT/WHEN/HOW) → 리마인드(WHEN)와 같은 흐름입니다. 리마인드는 구매 전환의 '지금 사야 하는 이유'를 마감 직전에 한 번 더 미는 것입니다.</p>
+
+  <h2>구매 전환 콘텐츠부터 기획</h2>
+  <p>유입 콘텐츠부터 만들면 안 되는 이유는 간단합니다. <b>사람을 데려왔는데 도착할 곳이 없습니다.</b> 도착지를 먼저 지어 놓고 길을 냅니다.</p>
+  <div class="flow">
+    <div class="box"><div class="e">📦</div><div class="t">내 상품</div><div class="s">① 먼저</div></div><span class="link soft"></span>
+    <div class="box"><div class="e">💳</div><div class="t">구매 전환 콘텐츠</div><div class="s">② 도착지</div></div><span class="link"></span>
+    <div class="box"><div class="e">🧲</div><div class="t">유입 콘텐츠</div><div class="s">③ 길</div></div>
+  </div>
+
+  <h3>구매 전환 콘텐츠가 무엇인지부터</h3>
+  <div class="callout"><span class="e">🔑</span><div><p>❌ 상품의 장점을 설명하는 것 → 구매 전환 콘텐츠가 아닙니다.</p><p>✅ <b>구매 전환 콘텐츠 = 문제에 공감한 사람에게 해결 방법을 주는 콘텐츠.</b> 그리고 그 해결 방법이 <b>내 상품</b>이어야 합니다.</p></div></div>
+  <p>그래서 주제는 <b>상품이 아니라 "상품이 필요한 순간"</b>으로 잡습니다.</p>
+  <div class="cmp">
+    <div class="hd"><span>❌ 상품으로 잡은 주제</span><span>✅ 필요한 순간으로 잡은 주제</span></div>
+    <div class="row"><div><div class="cat">아이 오메가3</div><div class="old">저희 오메가3는 rTG 80%입니다</div></div><div class="ar">→</div><div class="new">생선 반찬만 나오면 숟가락 내려놓는 아이, 약사 엄마가 챙기는 1가지</div></div>
+    <div class="row"><div><div class="cat">비타민D</div><div class="old">고함량 비타민D 공구 오픈</div></div><div class="ar">→</div><div class="new">실내에서만 노는 아이, 비타민D 수치 한번 보셨어요?</div></div>
+    <div class="row"><div><div class="cat">탈모 영양제</div><div class="old">저희 탈모 영양제는 성분이 다릅니다</div></div><div class="ar">→</div><div class="new">머리 감을 때 빠지는 양, 이 숫자 넘으면 체크하세요</div></div>
+  </div>
+
+  <h2>세 가지 질문으로 주제 3개 뽑기</h2>
+  <p>내 상품 하나를 놓고 아래 세 질문에 답합니다. 답이 곧 구매 전환 콘텐츠 주제입니다. (예시: 알래스카 오메가 츄 패밀리)</p>
+  <div class="qcard"><span class="sq">1</span><div><div class="t">문제인식</div><div class="s">내 상품을 사는 사람들은 어떤 상황을 겪을 때 사고 싶어질까?</div><div class="ex">아이가 생선을 거부할 때 · 어린이집·초등 입학을 앞두고 · 들기름 먹이면 되는 줄 알았는데 아니라는 걸 들었을 때</div></div></div>
+  <div class="qcard"><span class="sq">2</span><div><div class="t">욕구</div><div class="s">그 사람들은 무엇이 되고 싶어서 사는 걸까?</div><div class="ex">5살 전에 챙길 건 다 챙겨준 엄마 · 약사처럼 기준을 알고 고르는 엄마</div></div></div>
+  <div class="qcard"><span class="sq">3</span><div><div class="t">상품 비교</div><div class="s">사기 전에 뭘 비교하고 뭘 물어볼까? 그 비교에 내가 미리 답을 줄 수 없을까?</div><div class="ex">EPA+DHA 합계는? rTG·TG·EE 중 뭐? 젤리면 당은? 몇 살부터, 하루 몇 개? → DM으로 많이 받은 질문이 곧 QnA 카드</div></div></div>
+
+  <h2>말하는 순서: 내 상품은 결론에</h2>
+  <div class="flow">
+    <div class="box"><div class="e">😣</div><div class="t">문제</div><div class="s">아이가 생선을 안 먹어요</div></div><span class="link"></span>
+    <div class="box"><div class="e">🛠️</div><div class="t">보통 이렇게 해결한다</div><div class="s">방법 · 들기름, 견과류</div></div><span class="link soft"></span>
+    <div class="box"><div class="e">📏</div><div class="t">제대로 하려면 이 조건이 필요하다</div><div class="s">기준 · EPA+DHA 합계, rTG, 산패 관리</div></div><span class="link"></span>
+    <div class="box"><div class="e">📦</div><div class="t">그 조건을 갖춘 게 내 상품</div><div class="s">오메가 츄 패밀리</div></div>
+  </div>
+  <p>내 상품이 첫 문장에 나오면 광고가 되고, 마지막 문장에 나오면 조언이 됩니다.</p>
+  <div class="callout gray"><span class="e">💊</span><div><p><b>약사라서 3번째 칸이 강합니다.</b> "식물성 오메가3는 DHA로 바뀌는 양이 아주 적어요", "'오메가3 1000mg'은 기름 전체 양일 수 있어요. 뒷면 EPA+DHA 합계를 보세요"처럼 기준을 알려주는 순간 신뢰가 생깁니다. 기능성 문구는 상세페이지 인정 문구 그대로 씁니다.</p></div></div>
+
+  <h2>유입 콘텐츠</h2>
+  <p>구매 전환만 올리면 공구 계정이 되어 사람들이 떠납니다.</p>
+  <h3>구매 전환 1개에 유입 3개를 붙인다</h3>
+  <div class="inflow">
+    <div class="list">
+      <div class="ib"><span class="e">😣</span><div><div class="t">유입 1 · 문제인식</div><div class="s">생선 반찬만 나오면 숟가락 내려놓는 날</div></div></div>
+      <div class="ib"><span class="e">❓</span><div><div class="t">유입 2 · 문제인식</div><div class="s">"들기름 먹이니까 오메가3 됐다?" O/X</div></div></div>
+      <div class="ib"><span class="e">✨</span><div><div class="t">유입 3 · 욕구</div><div class="s">서울대 약사 엄마가 5살 전에 알았으면 좋았을 7가지</div></div></div>
+    </div>
+    <span class="ln"></span>
+    <div class="circle">구매 전환 1편</div>
+    <span class="ln"></span>
+    <div class="out">「약사 엄마가 아이 오메가3 고를 때 보는 3가지」<br>→ 해결 방법 = 오메가 츄<br>→ 'DHA' 댓글 · 프로필 링크 · 공구</div>
+  </div>
+  <p>유입 3편이 엄마들을 데려오고, 구매 전환 1편이 공구 링크로 보냅니다.</p>
+  <div class="callout green"><span class="e">📅</span><div><p><b>레인보우약사 공구 업로드 스케줄에 얹으면</b> D-5~D-4 유입 1·2(릴스·O/X 카드뉴스) → D-3 유입 3(5살 전에 알았으면 좋았을 7가지) → D-Day 구매 전환(OPEN 캐러셀) → 마감 D-1 리마인드입니다.</p></div></div>
+
+  <div class="pager"><button data-go="s1">← 1단계</button><button class="next" data-go="s3">다음: 3단계 콘텐츠 소재 →</button></div>
+</section>
+
+<!-- ============ STAGE 3 ============ -->
+<section class="stage" id="s3" data-title="3단계 콘텐츠 소재">
+  <h1 style="margin-top:56px"><span class="ic">🔬</span>콘텐츠 소재</h1>
+  <div class="callout"><span class="e">🔬</span><div><p class="lead">이미 터진 영상에서 형식을 빌리고, 내용만 내 것으로 채웁니다.</p></div></div>
+
+  <h2>콘텐츠 재료 모으기</h2>
+  <h3>1단계 — 검색</h3>
+  <p>핵심 키워드(아이 영양제, 아이 오메가3 등)를 넣으면 노출이 잘되는 계정들이 보입니다. 그 계정의 콘텐츠를 훑어보다가 검색할 키워드가 바닥나면, 그 계정이 <b>이름 옆에 어떤 키워드를 뒀는지</b> 확인해 보세요. 그 키워드로 검색을 넓혀 갑니다.</p>
+  <div class="pills">
+    <span class="pill"><b>핵심 키워드</b><small>아이 영양제, 오메가3…</small></span><span class="arrow">→</span>
+    <span class="pill"><b>잘 노출되는 계정</b><small>콘텐츠 훑어보기</small></span><span class="arrow">→</span>
+    <span class="pill"><b>그 계정의 이름란 키워드</b><small>새 키워드 발견</small></span><span class="arrow">→</span>
+    <span class="pill"><b>확장 검색</b><small>반복</small></span><span class="arrow">→</span>
+    <span class="pill"><b>마지막에 추천 탭</b><small>알고리즘이 밀어준 것</small></span>
+  </div>
+  <p><b>키워드 하나에서 하나 건지고 넘어가지 않습니다.</b> 여러 개씩, 모든 키워드로 반복합니다. 검색을 다 끝낸 <b>마지막에 추천 탭</b>을 봅니다.</p>
+  <p class="ref">레인보우약사 컨설팅에서 찾은 계정: <a href="https://www.instagram.com/eunha__yak/" target="_blank" rel="noopener">@eunha__yak</a>(오메가3 공구 6장 케이스), <a href="https://www.instagram.com/reel/DX_6kC4JfUq/" target="_blank" rel="noopener">@ok._mommy</a>(육아 정보 릴스)</p>
+
+  <h3>2단계 — 잘된 영상과 안 된 영상을 비교한다</h3>
+  <p>잘된 콘텐츠와 잘 안 된 콘텐츠를 비교해 가면서, <b>어떤 요소로 바이럴됐는지</b> 판단합니다. 아래는 레인보우약사 계정의 실제 릴스입니다.</p>
+  <div class="vgrid">
+    <div class="vid hot"><span class="p">▶</span><span class="h">🚨마그네슘 부족 신호🚨 3개 이상 해당 된다면</span><span class="v">9.7만</span></div>
+    <div class="vid"><span class="p">▶</span><span class="h">오메가3는</span><span class="v">367</span></div>
+    <div class="vid hot"><span class="p">▶</span><span class="h">약국 베스트 질문 "이거랑 같이 먹어도 되요?"</span><span class="v">5.7만</span></div>
+    <div class="vid"><span class="p">▶</span><span class="h">약국에서 일하다 보면</span><span class="v">224</span></div>
+    <div class="vid"><span class="p">▶</span><span class="h">모공 관리, 이것만은 꼭 하세요!</span><span class="v">800</span></div>
+    <div class="vid hot"><span class="p">▶</span><span class="h">오늘도 훌쩍훌쩍 비염 때문에 고생하고 계신가요?</span><span class="v">5.4만</span></div>
+    <div class="vid"><span class="p">▶</span><span class="h">아이들 방학이면 돌밥돌밥</span><span class="v">338</span></div>
+    <div class="vid hot"><span class="p">▶</span><span class="h">머리카락이 후두둑 빠지는 계절이 돌아왔습니다</span><span class="v">4.7만</span></div>
+  </div>
+  <div class="connector"></div>
+  <div class="verdict" style="margin-top:10px">잘된 영상끼리만 같은 요소 = 바이럴 이유</div>
+  <p>잘된 4편은 모두 <b>"내 얘기인가?"를 첫 줄에서 묻습니다</b>(자가진단, 약국에서 실제 받는 질문, 지금 계절의 증상). 안 된 4편은 <b>주제어나 혼잣말로 시작</b>합니다. 댓글 키워드 CTA가 있는 릴스는 조회 중앙값 4,172회로, 없는 릴스(1,676회)의 2.5배였습니다.</p>
+  <div class="callout gray"><span class="e">🧠</span><div><p><b>보이는 만큼 뜯을 수 있습니다.</b> 안 채워지는 칸이 내가 아직 못 보는 부분입니다.</p></div></div>
+
+  <h3>남의 계정에서도 똑같이</h3>
+  <p>레인보우약사 컨설팅에서 찾은 육아 릴스 3편은 서로 다른 계정인데, 잘된 이유가 같았습니다.</p>
+  <table class="tbl">
+    <thead><tr><th>레퍼런스 · 조회</th><th>첫 줄</th></tr></thead>
+    <tbody>
+      <tr><td>A · 21.8만</td><td>"36개월 전에 알면 좋았을 생활 면역 기준 10가지" → <b>월령 + 기준 N가지</b></td></tr>
+      <tr><td>B · 9.9만</td><td>"첫째 6살이 되기 전, 알았다면 좋았을 것들" → <b>첫째 후회담 (Before vs After)</b></td></tr>
+      <tr><td>C · 12.6만</td><td>"첫째 땐 몰랐던 생후 1000일까지 벌어지는 일 10가지" → <b>시기별 정보 (호기심 갭)</b></td></tr>
+    </tbody>
+  </table>
+  <p>공통 요소: <b>"아이가 ○살 되기 전" + "알았다면 좋았을" + N가지.</b> 엄마의 후회와 시기 불안을 건드립니다.</p>
+
+  <h2>믹싱 — 형식은 빌리고 내용은 내 것으로</h2>
+  <p>여러 레퍼런스에서 <b>뜬 이유에 해당하는 칸만 가져와 한 편으로 합칩니다.</b> 이것이 믹싱입니다.</p>
+  <div class="mix">
+    <div class="side">
+      <div class="lab">빌리는 것 · 형식</div>
+      <div class="blk"><div class="t">레퍼런스 A</div><div class="s">후킹</div><div class="x">"○개월 전에 알면 좋았을"</div></div>
+      <div class="blk"><div class="t">레퍼런스 B</div><div class="s">콘텐츠 포맷</div><div class="x">첫째 땐 vs 지금은</div></div>
+      <div class="blk"><div class="t">레퍼런스 C</div><div class="s">원고 구조</div><div class="x">시기별 사실 N가지</div></div>
+    </div>
+    <div class="side mine">
+      <div class="lab">채우는 것 · 내용</div>
+      <div class="blk"><div class="t">본문 논리</div><div class="s">주장 · 근거</div><div class="x">만 5세 무렵 뇌는 어른의 90% 가까이, DHA는 몸에서 거의 못 만든다</div></div>
+      <div class="blk"><div class="t">내 손님 이야기</div><div class="s">사례 · 경험</div><div class="x">약국에서 받는 "들기름 먹이면 되죠?" 질문, 첫째 키울 때 내 경험</div></div>
+      <div class="blk"><div class="t">CTA</div><div class="s">내 퍼널에 맞게</div><div class="x">'DHA' 댓글 → 정리본 DM → 공구 오픈 알림</div></div>
+    </div>
+  </div>
+  <div class="connector"></div>
+  <div class="verdict" style="margin-top:10px">완성본 1편 · 서울대 약사 엄마가 5년 전에 알았으면 좋았을 '두뇌 영양' 기준 7가지</div>
+  <p class="ref">레인보우약사 공구 유입 릴스의 각색 대본 A가 바로 이 믹싱의 결과입니다.</p>
+
+  <div class="callout green"><span class="e">🪝</span><div><p class="lead">훅갈이 — 가장 가성비 높은 믹싱</p><p>반응이 식은 소재도 <b>훅만 바꾸면</b> 다시 봅니다. 두 달이면 보는 사람이 거의 다 바뀝니다.</p><p>예: "오메가3는"(조회 367) → <b>"우리 아이 DHA 부족 신호, 3개 이상이면 지금 챙기세요"</b> · 9.7만이 나온 '마그네슘 부족 신호' 형식을 아이 버전으로.</p></div></div>
+
+  <div class="callout red"><span class="e">🚫</span><div><p><b>빌리는 건 형식뿐입니다.</b> 남의 문구·사진·후기는 가져오지 않고, 질병 예방·치료 표현이나 지어낸 후기는 쓰지 않습니다.</p></div></div>
+
+  <div class="pager"><button data-go="s2">← 2단계</button><button class="next" data-go="s1">처음으로 ↺</button></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  // ---- 단계 탭 ----
+  const stages = ['s1','s2','s3'];
+  function show(id, scroll){
+    if(!stages.includes(id)) id = null;
+    document.querySelectorAll('section.stage').forEach(s => s.classList.toggle('on', s.id === id));
+    document.querySelector('.intro').style.display = id ? 'none' : '';
+    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.go === id)));
+    if (scroll !== false) window.scrollTo({top:0});
+  }
+  document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]');
+    if(!g) return;
+    e.preventDefault();
+    history.pushState(null, '', '#' + g.dataset.go);
+    show(g.dataset.go);
+  });
+  window.addEventListener('popstate', () => show(location.hash.slice(1)));
+  show(location.hash.slice(1), false);
+})();
+</script>
+</body>
+</html>

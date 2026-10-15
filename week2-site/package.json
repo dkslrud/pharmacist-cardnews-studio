@@ -1,0 +1,8 @@
+{
+  "name": "pharmacist-week2-content",
+  "version": "1.0.0",
+  "private": true,
+  "description": "약사 4주 집중 컨설팅 2주차: 클로드 코드로 알고리즘이 좋아하는 콘텐츠 만들기",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
