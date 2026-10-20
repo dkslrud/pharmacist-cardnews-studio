@@ -1,13 +1,17 @@
-// 1·2주차 사이트를 과정 홈 아래로 복사: node sync.js
-// week1-site/public → public/week1, week2-site/public → public/week2
-// 각 페이지 맨 위에 "← 4주 과정 홈" 바를 넣고, 2주차에는 "← 1주차로 돌아가기" 버튼도 넣는다.
+// 1~4주차 사이트를 과정 홈 아래로 복사: node sync.js
+// weekN-site/public → public/weekN
+// 각 페이지 맨 위에 "← 4주 과정 홈" 바를 넣고, 2주차부터는 "← 이전 주차로 돌아가기" 버튼도 넣는다.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const WEEKS = { week1: 'week1-site/public', week2: 'week2-site/public' };
-// 이전 주차로 돌아가는 버튼 (2주차 → 1주차)
-const PREV = { week2: { href: '../week1/index.html', label: '← 1주차로 돌아가기' } };
+const WEEKS = { week1: 'week1-site/public', week2: 'week2-site/public', week3: 'week3-site/public', week4: 'week4-site/public' };
+// 이전 주차로 돌아가는 버튼
+const PREV = {
+  week2: { href: '../week1/index.html', label: '← 1주차로 돌아가기' },
+  week3: { href: '../week2/index.html', label: '← 2주차로 돌아가기' },
+  week4: { href: '../week3/index.html', label: '← 3주차로 돌아가기' },
+};
 const LINK = 'color:inherit;text-decoration:none';
 const bar = (dest) => {
   const prev = PREV[dest]

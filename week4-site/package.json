@@ -1,0 +1,8 @@
+{
+  "name": "pharmacist-week4-content",
+  "version": "1.0.0",
+  "private": true,
+  "description": "약사 4주 집중 컨설팅 4주차: 내 계정 데이터로 잘된 것을 반복하고 브랜드로 남기기",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
