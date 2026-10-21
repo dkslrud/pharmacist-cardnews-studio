@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3주차 · 제작과 첫 게시</title>
+<meta name="description" content="약사 4주 집중 컨설팅 3주차: 기획안을 릴스·카드뉴스로 만들어 올리고 첫 데이터로 배우기">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EFECE2; --card:#F7F4EC; --card2:#E4E1D6; --line:#D6D2C6; --ink:#1A1A17; --sub:#5F5E58; --mute:#8C8A82;
+  --accent:#E5531F; --accent-soft:#F1C9B6; --accent-pale:#F2E2D6;
+  --blue:#6AA6F0; --blue-bg:#E2E2DE; --green:#5FD08E; --green-bg:#E1E8DA; --yellow:#F0C04A; --yellow-bg:#EEE6D3; --red:#F07862; --red-bg:#F0E0D6;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.8;letter-spacing:-0.01em;word-break:keep-all}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 140px}
+a{color:inherit}
+a.lk{color:var(--accent);text-decoration:none;border-bottom:2px solid var(--accent);font-weight:600}
+b,strong{font-weight:700;color:var(--ink)}
+p{margin:0 0 16px;color:var(--sub)}
+code{font-family:var(--mono);font-size:.86em;background:var(--card2);padding:2px 8px;letter-spacing:.02em;color:var(--ink)}
+
+/* top nav */
+.top{position:sticky;top:0;z-index:20;background:rgba(239,236,226,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:900px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.top .in::-webkit-scrollbar{display:none}
+.top .brand{font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--mute);white-space:nowrap;margin-right:8px}
+.top a{text-decoration:none;font-size:14px;font-weight:600;color:var(--sub);padding:6px 12px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+.top a.on{border-color:var(--accent);color:var(--ink);background:var(--accent-pale)}
+
+/* hero */
+.hero{padding:64px 0 10px}
+.kicker{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--accent)}
+.kicker::before{content:"";width:12px;height:12px;background:var(--accent);display:inline-block}
+h1{font-size:clamp(36px,6.4vw,62px);line-height:1.22;margin:18px 0 0;font-weight:800;letter-spacing:-0.035em}
+.date{font-family:var(--mono);font-size:13px;letter-spacing:.25em;color:var(--mute);margin:26px 0 44px}
+.tldr{border:1.5px solid var(--ink);background:var(--card2);padding:30px 36px;margin:0 0 48px}
+.tldr .h{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--sub);margin-bottom:20px}
+.tldr .h::before{content:"";width:13px;height:13px;background:var(--accent)}
+.tldr ul{list-style:none;margin:0;padding:0}
+.tldr li{position:relative;padding-left:30px;margin:0 0 14px;font-size:18px;line-height:1.6;color:var(--ink)}
+.tldr li:last-child{margin:0}
+.tldr li::before{content:"";position:absolute;left:0;top:.5em;width:12px;height:12px;background:var(--accent)}
+.lead-big{font-size:24px;line-height:1.65;font-weight:700;color:var(--ink);margin:0 0 30px;letter-spacing:-0.02em}
+hr.thin{border:0;border-top:1px solid var(--line);margin:36px 0}
+
+/* section headers */
+.sec{margin-top:110px;scroll-margin-top:70px}
+.sh{display:flex;align-items:flex-start;gap:24px;border-bottom:1.5px solid var(--ink);padding-bottom:24px;margin-bottom:30px;position:relative}
+.sh .tag{flex:none;background:var(--accent);color:#fff;font-family:var(--mono);font-size:14px;letter-spacing:.3em;padding:10px 16px;line-height:1;margin-top:8px}
+.sh .tag.sq{width:46px;height:46px;display:grid;place-items:center;padding:0;letter-spacing:0;font-size:16px}
+.sh h2{font-size:clamp(26px,4vw,36px);line-height:1.35;margin:0;font-weight:800;letter-spacing:-0.025em;flex:1}
+.sh .time{font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--mute);white-space:nowrap;margin-top:14px}
+.sh .time::before{content:"⏱ ";letter-spacing:0}
+.intro-it{font-style:italic;color:var(--sub);font-size:19px;margin:0 0 30px}
+h3{font-size:23px;line-height:1.45;margin:52px 0 14px;font-weight:800;letter-spacing:-0.02em}
+@media (max-width:640px){.sh{gap:14px;flex-wrap:wrap}.sh .time{width:100%;margin-top:0}}
+
+/* flow */
+.flow{display:flex;align-items:center;margin:30px 0}
+.flow .box{flex:1;background:var(--card);border:1px solid var(--line);padding:22px 10px;text-align:center;min-width:0}
+.flow .box .e{font-size:30px;line-height:1.1;margin-bottom:12px}
+.flow .box .t{font-weight:800;font-size:17px;line-height:1.4}
+.flow .box .s{font-size:14px;color:var(--sub);margin-top:6px;line-height:1.5}
+.flow .ln{flex:0 0 30px;height:1px;background:var(--line);position:relative}
+.flow .ln::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.flow .ln.soft::after{background:var(--accent-soft)}
+@media (max-width:680px){.flow{flex-direction:column;align-items:stretch}.flow .ln{flex:0 0 22px;width:1px;height:22px;margin:0 auto}}
+
+/* callouts */
+.co{display:flex;gap:18px;align-items:flex-start;padding:24px 30px;margin:24px 0;border-left:4px solid #C9C6BC;background:var(--card2);color:var(--ink)}
+.co .e{font-size:24px;line-height:1.3;flex:none}
+.co p{color:var(--ink);margin:0;font-size:17px;line-height:1.75}
+.co p + p{margin-top:8px}
+.co.tip{border-color:var(--yellow);background:var(--yellow-bg)}
+.co.warn{border-color:var(--yellow);background:var(--yellow-bg)}
+.co.red{border-color:var(--red);background:var(--red-bg)}
+.co.green{border-color:var(--green);background:var(--green-bg)}
+.co.blue{border-color:var(--blue);background:var(--blue-bg)}
+.co.accent{border-color:var(--accent);background:var(--accent-pale)}
+@media (max-width:640px){.co{padding:18px;gap:12px}}
+
+/* checklist */
+.check{border:1px solid var(--line);background:var(--bg);padding:24px 30px;margin:24px 0}
+.check .bar{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--sub);margin-bottom:12px}
+.check .bar .track{flex:1;height:5px;background:var(--line);position:relative}
+.check .bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:0;transition:width .25s}
+.check label{display:flex;gap:16px;align-items:flex-start;padding:14px 0;cursor:pointer;font-size:18px;line-height:1.6;color:var(--ink)}
+.check input{flex:none;width:24px;height:24px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.check label small{display:block;font-size:14px;color:var(--sub)}
+.check label.done span{color:var(--mute);text-decoration:line-through}
+
+/* step timeline */
+.steps{position:relative;margin:30px 0}
+.st{position:relative;display:grid;grid-template-columns:58px 1fr;gap:22px;padding-bottom:44px}
+.st::before{content:"";position:absolute;left:28px;top:58px;bottom:0;width:1px;background:var(--line)}
+.st:last-child::before{display:none}
+.st .n{width:58px;height:58px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:18px;background:var(--bg)}
+.st .t{font-size:21px;font-weight:800;line-height:1.45;margin:12px 0 8px;letter-spacing:-0.02em}
+.st .b p{margin:0 0 10px}
+.st ol{margin:6px 0 10px;padding-left:22px;color:var(--sub)}
+.st ol li{margin:6px 0}
+@media (max-width:640px){.st{grid-template-columns:40px 1fr;gap:14px}.st .n{width:40px;height:40px;font-size:15px}.st::before{left:20px;top:40px}.st .t{margin-top:6px;font-size:19px}}
+
+/* mock window */
+.win{border:1.5px solid #3A3934;background:#FBFAF6;margin:18px 0 6px;overflow:hidden;font-size:13px;line-height:1.5;color:#2A2A26}
+.win .bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#E9E6DD;border-bottom:1px solid var(--line)}
+.win .bar i{width:10px;height:10px;border-radius:50%;background:#E66A5A;display:inline-block}
+.win .bar i:nth-child(2){background:#E8B84A}.win .bar i:nth-child(3){background:#69C26B}
+.win .bar span{margin-left:10px;font-size:12px;color:var(--sub)}
+.win .body{display:grid;grid-template-columns:170px 1fr;min-height:220px}
+.win .side{background:#F1EEE6;border-right:1px solid var(--line);padding:12px 10px;font-size:12.5px;color:var(--sub)}
+.win .side div{padding:5px 8px;margin-bottom:2px}
+.win .side .on{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:700}
+.win .main{padding:18px 20px;position:relative}
+.win .pill{display:inline-block;border:1px solid var(--line);background:#fff;padding:4px 12px;font-size:12.5px;margin:0 6px 8px 0}
+.win .pill.hl{border:2px solid #F0436A;box-shadow:0 0 0 3px rgba(240,67,106,.15)}
+.win .mark{display:inline-block;background:#F0436A;color:#fff;font-weight:700;font-size:12px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.win .row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ECE9E1;padding:8px 2px}
+.win .input{border:1px solid var(--line);background:#fff;padding:12px 14px;margin-top:10px;color:var(--sub)}
+.win .msg{background:#F1EEE6;padding:10px 14px;margin:8px 0;max-width:86%}
+.win .msg.me{background:#fff;border:1px solid var(--line);margin-left:auto}
+.win .file{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:#fff;padding:6px 10px;font-family:var(--mono);font-size:12px;margin-bottom:6px}
+.win .tree2{font-family:var(--mono);font-size:12.5px;white-space:pre;line-height:1.8}
+.cap{font-size:13px;color:var(--mute);margin:4px 0 0}
+@media (max-width:640px){.win .body{grid-template-columns:1fr}.win .side{display:none}}
+
+/* copy box */
+.cp{border:1px solid #C9C5B8;background:var(--card2);margin:20px 0}
+.cp .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 24px;border-bottom:1px solid #C9C5B8}
+.cp .hd span{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--sub)}
+.cp .hd button{appearance:none;font:inherit;font-size:15px;font-weight:600;background:transparent;border:1.5px solid var(--ink);padding:8px 18px;cursor:pointer;color:var(--ink)}
+.cp .hd button.ok{background:var(--accent);border-color:var(--accent);color:#fff}
+.cp .bd{padding:20px 24px;font-size:17px;line-height:1.8;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* rules */
+.rules{display:grid;gap:14px;margin:24px 0}
+.rule{display:flex;gap:22px;align-items:flex-start;background:var(--card);border:1px solid var(--line);padding:26px 28px}
+.rule .n{flex:none;width:46px;height:46px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:17px}
+.rule .t{font-weight:800;font-size:19px;line-height:1.4}
+.rule .s{font-size:16px;color:var(--sub);margin-top:4px}
+.rule.fade .n{background:#E9875F}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:16px}
+.tbl th{text-align:left;font-weight:500;color:var(--sub);font-size:13px;letter-spacing:.2em;padding:14px 16px;border-bottom:1.5px solid var(--ink);font-family:var(--mono)}
+.tbl td{padding:16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub);overflow-wrap:anywhere}
+.tbl td.k{color:var(--ink);font-weight:700;width:28%}
+.tbl td.c{width:44px;text-align:center;color:var(--ink);font-weight:700}
+.tscroll{overflow-x:auto}
+
+/* evidence tags */
+.ev{display:inline-block;font-family:var(--mono);font-size:13px;padding:1px 8px;margin-right:4px;white-space:nowrap}
+.ev.o{background:#DCE6F4;color:#4B79B8}
+.ev.m{background:#DDEEDD;color:#3F9A5C}
+.ev.i{background:#F4E6C8;color:#B88A1E}
+.ev.h{background:#F6D9D1;color:#D45A43}
+
+/* phone mock */
+.ana{display:grid;grid-template-columns:330px 1fr;gap:40px;align-items:center;margin:30px 0}
+.phone{position:relative;border:1.5px solid #3A3934;border-radius:26px;background:#2B2A26;aspect-ratio:9/16;overflow:visible;padding:0;max-width:330px}
+.phone .scr{position:absolute;inset:10px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#5D5A52 0%,#3B3A35 60%,#2B2A26 100%);color:#fff}
+.phone .title{position:absolute;left:14px;right:14px;top:18px;text-align:center;font-weight:800;font-size:15px;line-height:1.35}
+.phone .title em{font-style:normal;color:#B8F06A}
+.phone .q{position:absolute;left:16px;right:16px;top:40%;text-align:center;font-weight:700;font-size:14px;background:rgba(0,0,0,.35);padding:8px}
+.phone .nm{position:absolute;left:16px;top:56%;font-size:11px;background:#fff;color:#2B2A26;padding:2px 8px;font-weight:700}
+.phone .tl{position:absolute;left:12px;right:12px;bottom:58px;height:6px;background:rgba(255,255,255,.25)}
+.phone .tl i{position:absolute;top:0;bottom:0;background:#fff}
+.phone .cta{position:absolute;left:14px;right:60px;bottom:18px;font-size:12px;background:var(--accent);padding:6px 10px;font-weight:700}
+.phone .acts{position:absolute;right:12px;bottom:70px;display:flex;flex-direction:column;gap:12px;font-size:16px;opacity:.85}
+.mk{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);z-index:2}
+.legend2{list-style:none;padding:0;margin:0}
+.legend2 li{display:flex;gap:14px;align-items:baseline;margin:0 0 18px;font-size:18px;color:var(--ink)}
+.legend2 li b{display:inline-grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);font-size:13px}
+.legend2 li small{display:block;font-size:14px;color:var(--sub)}
+@media (max-width:760px){.ana{grid-template-columns:1fr}.phone{margin:0 auto;width:min(300px,80vw)}}
+
+/* carousel mock */
+.car{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin:30px 0 10px;position:relative}
+.car .sl{min-width:0;overflow-wrap:anywhere;aspect-ratio:4/5;background:var(--card);border:1px solid var(--line);position:relative;padding:8px;font-size:11px;line-height:1.35;color:var(--sub)}
+.car .sl b{display:block;font-size:12px;color:var(--ink);margin-top:14px}
+.car .sl.must{border-color:var(--accent);background:#FBF0E8}
+.car .sl .mk{width:24px;height:24px;font-size:12px;top:-10px;right:-4px}
+@media (max-width:760px){.car{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* must list */
+.must{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.must .m{background:var(--card);border:1px solid var(--accent);padding:18px 14px}
+.must .m .e{font-size:26px;line-height:1.2}
+.must .m .t{font-weight:800;font-size:17px;margin:8px 0 4px}
+.must .m .s{font-size:14px;color:var(--sub);line-height:1.55}
+.must .m .x{font-size:13px;color:var(--ink);background:var(--accent-pale);padding:6px 8px;margin-top:10px;line-height:1.5}
+@media (max-width:860px){.must{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.must{grid-template-columns:1fr}}
+
+/* script table */
+.script{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;min-width:600px}
+.script th{text-align:left;font-weight:500;color:var(--sub);font-size:12px;letter-spacing:.2em;padding:10px 12px;border-bottom:1.5px solid var(--ink);font-family:var(--mono)}
+.script td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.script td:first-child{white-space:nowrap;color:var(--ink);font-family:var(--mono);font-size:13px}
+.script td.say{color:var(--ink)}
+.script .r{display:inline-block;font-size:12px;font-weight:700;background:var(--accent-pale);color:var(--accent);padding:1px 8px;white-space:nowrap}
+
+/* slides example */
+.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+.slide{aspect-ratio:4/5;background:var(--card);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.5;color:var(--sub)}
+.slide .no{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.slide .role{font-size:12px;font-weight:700;color:var(--accent)}
+.slide .t{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35}
+.slide.must{border-color:var(--accent);background:#FBF0E8}
+@media (max-width:720px){.slides{grid-template-columns:repeat(2,1fr)}}
+
+/* refs */
+.refs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:24px 0}
+.rc{background:var(--card);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.rc .tp{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.rc .who{font-size:13px;color:var(--sub);font-weight:600}
+.rc .num{font-size:22px;font-weight:800;color:var(--accent);white-space:nowrap}
+.rc .num small{font-size:12px;color:var(--sub);font-weight:600;margin-left:3px}
+.rc .hook{font-size:16px;font-weight:700;line-height:1.45}
+.rc .take{font-size:14px;background:var(--accent-pale);padding:7px 11px;color:var(--ink)}
+.rc a{font-size:13px;color:var(--sub);margin-top:auto}
+.rc.dim{opacity:.72}.rc.dim .num{color:var(--mute)}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.th{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.th img{width:100%;aspect-ratio:271/420;object-fit:cover;display:block;background:#ddd}
+.th .bx{padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.th .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.th .k{font-weight:800;font-size:15px}
+.th .num{font-weight:800;color:var(--accent);font-size:18px;white-space:nowrap}
+.th .f{font-size:13.5px;color:var(--sub);line-height:1.5}
+.th .f b{color:var(--ink)}
+.th a{font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){.thumbs{grid-template-columns:1fr 1fr}.thumbs .th:last-child{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}}
+.phone .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media (max-width:720px){.refs{grid-template-columns:1fr}}
+
+/* tree */
+.tree{background:#24231F;color:#EDEAE0;font-family:var(--mono);font-size:14.5px;line-height:1.9;padding:22px 26px;margin:24px 0;overflow-x:auto;white-space:pre}
+.tree .d{color:#F3B08F;font-weight:700}
+.tree .c{color:#9C998E}
+
+/* md preview */
+.md{background:#FBFAF6;border:1px solid var(--line);margin:20px 0}
+.md .fn{font-family:var(--mono);font-size:13px;font-weight:700;padding:10px 18px;border-bottom:1px solid var(--line);background:#E8E5DC;display:flex;justify-content:space-between}
+.md .fn span{font-weight:400;color:var(--sub)}
+.md .ct{padding:16px 20px;font-size:15px;line-height:1.8;color:var(--sub);white-space:pre-wrap}
+.md .ct b{color:var(--ink)}
+
+/* Q flow */
+.qf{display:flex;align-items:center;margin:26px 0}
+.qf .q{flex:1;background:var(--card);border:1px solid var(--line);padding:20px 10px;text-align:center;min-width:0}
+.qf .q .k{font-weight:800;font-size:18px}
+.qf .q .s{font-size:14px;color:var(--sub);margin-top:4px;line-height:1.45}
+.qf .ln{flex:0 0 26px;height:1px;background:var(--line);position:relative}
+.qf .ln::after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+@media (max-width:680px){.qf{flex-direction:column;align-items:stretch}.qf .ln{flex:0 0 18px;width:1px;height:18px;margin:0 auto}}
+
+/* summary */
+.sum .rule:nth-child(4) .n{background:#EA7448}
+.sum .rule:nth-child(5) .n{background:#EC8B60}
+.sum .rule:nth-child(6){opacity:.7}
+.sum .rule:nth-child(6) .n{background:#EDA27F}
+
+/* faq */
+details.faq{border-bottom:1px solid var(--line);padding:4px 0}
+details.faq summary{cursor:pointer;list-style:none;font-weight:700;font-size:18px;padding:16px 36px 16px 0;position:relative}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";position:absolute;right:6px;top:12px;font-size:24px;color:var(--accent);font-weight:400}
+details.faq[open] summary::after{content:"−"}
+details.faq p{font-size:16px;margin:0 0 16px}
+
+.dl{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1.5px solid var(--ink);background:var(--card);padding:22px 26px;margin:24px 0;flex-wrap:wrap}
+.dl .k{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--accent)}
+.dl .t{font-weight:800;font-size:18px;margin-top:4px}
+.dl a{background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:14px 24px;white-space:nowrap}
+.foot{margin-top:100px;font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:20px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="목차">
+  <div class="in">
+    <span class="brand">3주차</span>
+    <a href="#why">왜</a>
+    <a href="#ready">준비</a>
+    <a href="#s1">STEP 1 릴스</a>
+    <a href="#s2">STEP 2 카드뉴스</a>
+    <a href="#s3">STEP 3 올리기</a>
+    <a href="#s4">STEP 4 첫 데이터</a>
+    <a href="#s5">STEP 5 영미권</a>
+    <a href="#task">과제</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<header class="hero">
+  <div class="kicker">약사 4주 집중 컨설팅 · 3주차</div>
+  <h1>제작과 첫 게시 — 일단 올리고, 데이터로 배운다</h1>
+  <div class="date">3주차</div>
+
+  <div class="tldr">
+    <div class="h">핵심 요약 · TL;DR</div>
+    <ul>
+      <li>2주차 plans/ 기획안을 실제 릴스 1편 + 카드뉴스 1편으로 만들어 올린다</li>
+      <li>완벽한 1편보다 올린 1편. 고칠 곳은 데이터가 알려 준다</li>
+      <li>게시 48시간 뒤 인사이트 캡처를 클로드에게 주고 "어느 칸이 막혔는지" 진단받는다</li>
+      <li>영어권에서 먼저 뜬 영상을 한 편 더 찾아 다음 기획 재료로 쌓는다</li>
+    </ul>
+  </div>
+
+  <p class="lead-big">기획안 열기 → 촬영 컷 리스트 → 캔바로 카드뉴스 마무리 → 캡션·댓글 키워드 붙여 게시 → 48시간 뒤 인사이트로 진단. 이번 주는 이 한 바퀴를 직접 돌려 봐요.</p>
+
+  <div class="flow">
+    <div class="box"><div class="e">🎬</div><div class="t">릴스 찍기</div><div class="s">컷 리스트대로</div></div><span class="ln"></span>
+    <div class="box"><div class="e">🎨</div><div class="t">카드뉴스 마무리</div><div class="s">캔바 + 검수</div></div><span class="ln"></span>
+    <div class="box"><div class="e">📤</div><div class="t">올리기</div><div class="s">캡션 · 댓글 키워드</div></div><span class="ln"></span>
+    <div class="box"><div class="e">📊</div><div class="t">첫 데이터</div><div class="s">48시간 뒤 진단</div></div><span class="ln soft"></span>
+    <div class="box"><div class="e">🌎</div><div class="t">다음 재료</div><div class="s">영미권 레퍼런스</div></div>
+  </div>
+</header>
+
+<!-- 0 -->
+<section class="sec" id="why">
+  <div class="sh"><span class="tag sq">0</span><h2>왜 "일단 올리기"인가요? (2주차에서 이어서)</h2></div>
+  <p>2주차에는 클로드가 터진 영상을 뜯어서 <b>내 공구 기획안</b>을 폴더에 쌓아 줬어요. 그런데 기획안은 올리기 전까지 아무것도 알려 주지 않아요.</p>
+  <p>알고리즘은 <b>올린 영상에 대한 사람들의 반응</b>으로만 말해요. 첫 200~500명이 끝까지 봤는지, 저장했는지, 댓글을 남겼는지. 그래서 3주차의 기준은 하나예요. <b>"잘 만들었나"가 아니라 "올렸나, 그리고 무엇을 배웠나."</b></p>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>2주차 · 기획</th><th>3주차 · 제작과 게시</th></tr></thead>
+    <tbody>
+      <tr><td class="k">릴스 대본 (plans/)</td><td>촬영 <b>컷 리스트</b>로 바꿔 찍고 편집 (STEP 1)</td></tr>
+      <tr><td class="k">OPEN 카드뉴스 8장 원고 · 캔바 디자인</td><td>빈칸 채우고 <b>올리기 전 검수</b> (STEP 2)</td></tr>
+      <tr><td class="k">캡션 + 댓글 키워드 초안</td><td>공구 일정에 맞춰 <b>실제로 게시</b> (STEP 3)</td></tr>
+      <tr><td class="k">광고 규정 점검표</td><td>게시 48시간 뒤 <b>인사이트로 진단</b> (STEP 4)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="co tip"><span class="e">💡</span><div><p><b>첫 게시물은 실험이에요.</b> 조회수가 낮아도 실패가 아니라 데이터예요. 어느 칸에서 사람들이 떠났는지 알면 다음 편은 그 칸만 고치면 돼요.</p></div></div>
+</section>
+
+<!-- ready -->
+<section class="sec" id="ready">
+  <div class="sh"><span class="tag sq">✓</span><h2>시작 전 체크</h2><span class="time">30초</span></div>
+  <div class="check" id="checklist">
+    <div class="bar">준비 <span id="cnt">0 / 5</span><span class="track"><span class="fill" id="fill"></span></span></div>
+    <label><input type="checkbox"><span>2주차 공구 폴더의 plans/ 기획안<small>릴스 대본 · 카드뉴스 원고 · 캡션이 들어 있어요</small></span></label>
+    <label><input type="checkbox"><span>캔바 연결 + 2주차 STEP 6에서 만든 카드뉴스 디자인<small>아직 없다면 2주차 STEP 6부터</small></span></label>
+    <label><input type="checkbox"><span>촬영할 휴대폰 + 제품 실물<small>세로(9:16)로 찍어요</small></span></label>
+    <label><input type="checkbox"><span>인스타 프로페셔널(비즈니스·크리에이터) 계정<small>그래야 인사이트가 보여요</small></span></label>
+    <label><input type="checkbox"><span>공구 일정 (오픈일 · 마감일)<small>예: 10/12~18 아이 오메가3</small></span></label>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section class="sec" id="s1">
+  <div class="sh"><span class="tag">STEP 1</span><h2>릴스 찍기 — 대본을 컷 리스트로</h2></div>
+  <p>대본을 보면서 찍으면 말이 길어지고 컷이 흐려져요. 먼저 클로드에게 <b>찍을 장면 목록</b>으로 바꿔 달라고 해요.</p>
+  <div class="cp"><div class="hd"><span>컷 리스트 만들기</span><button type="button">복사</button></div><div class="bd">plans/의 릴스 대본을 촬영 컷 리스트로 바꿔줘.
+컷마다 화면(무엇을 찍는지) · 말할 문장 · 화면 자막 · 길이(초)를 표로 정리하고,
+첫 컷 자막에는 "누구의 무슨 고민인지"가 바로 보이게 해줘. plans/에 저장해줘.</div></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>#</th><th>화면</th><th>자막</th><th>길이</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td class="k">생선 반찬 앞에서 숟가락 내려놓는 손</td><td><b>생선만 나오면 숟가락 내려놓는 아이</b></td><td>2초</td></tr>
+      <tr><td class="c">2</td><td class="k">약사 엄마 얼굴, 카메라 정면</td><td>약사 엄마는 이렇게 챙겨요</td><td>3초</td></tr>
+      <tr><td class="c">3</td><td class="k">제품 뒷면 EPA+DHA 합계 클로즈업</td><td>뒷면 이 숫자부터 보세요</td><td>4초</td></tr>
+      <tr><td class="c">…</td><td class="k">…</td><td>…</td><td>…</td></tr>
+      <tr><td class="c">끝</td><td class="k">아이가 간식처럼 먹는 장면</td><td>"DHA" 댓글 주시면 정리본 보내드려요</td><td>3초</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">레인보우약사 예시. 클로드가 실제로 만든 표는 컷 수와 문장이 기획안에 따라 달라요.</p>
+
+  <h3>찍을 때 지킬 것 3가지</h3>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">첫 2초에 고민이 보이게</div><p>1주차에서 본 것처럼 알고리즘은 <b>자막과 캡션 글자</b>로 주제를 읽어요. 첫 컷 자막에 "누구의 무슨 고민"이 들어가야 엄마들에게 먼저 가요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">한 컷에 한 문장</div><p>문장이 길어지면 컷을 나눠요. 컷이 바뀌는 순간이 끝까지 보게 만드는 장치예요.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">얼굴 한 컷은 꼭</div><p>약사가 직접 말하는 컷 하나가 신뢰를 만들어요. 길 필요 없어요. 3초면 충분해요.</p></div></div>
+  </div>
+  <div class="co"><span class="e">✂️</span><div><p><b>편집은 인스타 릴스 편집기나 캡컷으로.</b> 자막 문장은 컷 리스트에서 그대로 복사해 붙이면 돼요. 배경 음악은 인스타 앱 안의 음원을 쓰면 저작권 걱정이 없어요.</p></div></div>
+</section>
+
+<!-- STEP 2 -->
+<section class="sec" id="s2">
+  <div class="sh"><span class="tag">STEP 2</span><h2>카드뉴스 마무리 — 올리기 전 검수</h2></div>
+  <p>2주차 STEP 6에서 캔바로 만든 OPEN 카드뉴스를 열어요. 빈칸을 채운 뒤, <b>올리기 전에 클로드에게 한 번 더 읽혀요.</b></p>
+  <div class="cp"><div class="hd"><span>올리기 전 검수</span><button type="button">복사</button></div><div class="bd">캔바의 OPEN 카드뉴스 디자인 글자를 장마다 읽어서 아래 3가지를 표로 알려줘.
+1. 아직 남아 있는 [확인 필요]
+2. products/와 다른 숫자(함량 · 가격 · 마감일)
+3. 질병 예방·치료처럼 들리는 표현과 바꿀 문장</div></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>장</th><th>걸린 곳</th><th>고칠 것</th></tr></thead>
+    <tbody>
+      <tr><td class="c">07</td><td class="k">공구가 [확인 필요]</td><td>상세페이지 공구가로 채우기</td></tr>
+      <tr><td class="c">08</td><td class="k">"10/18 마감"인데 products/는 10/18 23:59</td><td>마감 시각까지 적기</td></tr>
+      <tr><td class="c">03</td><td class="k">"두뇌 발달을 확실히"</td><td>"두뇌 발달에 도움을 줄 수 있음"(인정 문구 그대로)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">예시 결과예요. 클로드의 검수는 1차 걸러내기이고, 마지막 확인은 내가 해요.</p>
+  <div class="co red"><span class="e">⚖️</span><div><p><b>후기는 실제 받은 캡처를 원문 그대로.</b> 맛·먹이기 편함·아이 반응처럼 효과를 약속하지 않는 후기를 골라요. 애매한 표현은 제조사나 건강기능식품 광고 자율심의로 확인해요.</p></div></div>
+</section>
+
+<!-- STEP 3 -->
+<section class="sec" id="s3">
+  <div class="sh"><span class="tag">STEP 3</span><h2>올리기 — 캡션 · 댓글 키워드 · 시간</h2></div>
+  <p>캡션은 2주차 기획안에 초안이 있어요. 올리기 직전에 세 가지만 확인해요.</p>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">캡션 첫 줄 = 자막 첫 줄과 같은 주제</div><p>"오메가3는"처럼 주제어로 시작하지 말고, "생선 안 먹는 아이, 약사 엄마가 챙기는 1가지"처럼 <b>누구의 무슨 고민</b>으로 시작해요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">댓글 키워드 하나</div><p>"DHA 댓글 주시면 정리본 DM 드려요"처럼 <b>한 단어</b>로. 1주차 진단에서 댓글 키워드가 있는 릴스는 없는 릴스보다 조회 중앙값이 2.5배였어요.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">내 팔로워가 많이 보는 시간</div><p>인스타 앱 → 프로페셔널 대시보드 → 팔로워 → <b>가장 활발한 시간</b>을 보고, 그 시간 30분 전쯤 올려요.</p></div></div>
+  </div>
+  <div class="cp"><div class="hd"><span>캡션 마무리</span><button type="button">복사</button></div><div class="bd">plans/의 캡션 초안을 올릴 수 있게 다듬어줘.
+첫 줄은 릴스 첫 자막과 같은 고민으로, 댓글 키워드는 "DHA" 하나로,
+해시태그는 내 타깃이 검색할 말로 5개 이내로 해줘.</div></div>
+
+  <h3>공구 일정에 얹으면</h3>
+  <div class="qf">
+    <div class="q"><div class="k">D-5~D-4</div><div class="s">유입 릴스 (STEP 1)</div></div><span class="ln"></span>
+    <div class="q"><div class="k">D-3</div><div class="s">유입 카드뉴스·O/X</div></div><span class="ln"></span>
+    <div class="q"><div class="k">D-Day</div><div class="s">OPEN 카드뉴스 (STEP 2)</div></div><span class="ln"></span>
+    <div class="q"><div class="k">D+2</div><div class="s">첫 데이터 진단 (STEP 4)</div></div><span class="ln"></span>
+    <div class="q"><div class="k">마감 D-1</div><div class="s">리마인드</div></div>
+  </div>
+  <p>1주차 업로드 스케줄 그대로예요. 이번 주에는 최소 <b>릴스 1편 + 카드뉴스 1편</b>만 올려도 충분해요.</p>
+</section>
+
+<!-- STEP 4 -->
+<section class="sec" id="s4">
+  <div class="sh"><span class="tag">STEP 4</span><h2>첫 데이터 읽기 — 48시간 뒤 진단</h2></div>
+  <p>게시하고 <b>48시간</b>이 지나면 첫 시험 뿌리기가 거의 끝나요. 게시물 아래 <b>인사이트 보기</b>를 열어 화면을 캡처해요.</p>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">인사이트 캡처를 insights/ 폴더에</div><p>공구 폴더에 <code>insights/</code> 폴더를 만들고 캡처를 넣어요. 릴스는 조회·도달·시청 시간이 보이는 화면, 카드뉴스는 도달·저장·공유가 보이는 화면이면 돼요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">한 줄로 진단 받기</div>
+      <div class="cp"><div class="hd"><span>첫 데이터 진단</span><button type="button">복사</button></div><div class="bd">insights/의 인사이트 캡처를 읽어서 진단해줘.
+아래 표 기준으로 어느 칸에서 사람들이 떠났는지 찾고,
+다음 편에서 딱 하나만 고친다면 무엇을 고칠지 알려줘. analysis/에 저장해줘.</div></div></div></div>
+  </div>
+
+  <h3>숫자가 말해 주는 것</h3>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>이렇게 나오면</th><th>막힌 칸</th><th>다음 편에서 고칠 것</th></tr></thead>
+    <tbody>
+      <tr><td class="k">도달 자체가 적다 (200~500명에서 멈춤)</td><td>첫 시험 대상</td><td>첫 자막·캡션 첫 줄에 <b>누구의 무슨 고민</b>. 세 탭 루틴 계속하기 (1주차)</td></tr>
+      <tr><td class="k">비팔로워 비율이 낮다</td><td>확산</td><td>팔로워만 보는 말투인지 확인. 처음 보는 사람도 알아듣게</td></tr>
+      <tr><td class="k">초반에 많이 넘긴다 (건너뛰기 비율이 높음)</td><td>훅 · 초반 3초</td><td>첫 컷을 고민 장면으로. 훅만 바꿔 다시 올리기(훅갈이)</td></tr>
+      <tr><td class="k">끝까지 보는데 저장·공유가 적다</td><td>지속 장치 · 정보 가치</td><td>"3가지", "체크리스트"처럼 <b>저장할 이유</b> 넣기</td></tr>
+      <tr><td class="k">저장은 많은데 댓글·DM이 없다</td><td>마무리 · CTA</td><td>댓글 키워드를 <b>한 단어</b>로, 받을 것(정리본)을 분명히</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">항목 이름은 인스타 앱 버전에 따라 조금 달라요. 2주차에서 레퍼런스를 뜯던 5칸(구성 · 훅 · 초반 3초 · 지속 장치 · 마무리)을 이번엔 내 게시물에 대 보는 거예요.</p>
+  <div class="co accent"><span class="e">🎯</span><div><p><b>한 번에 하나만 고쳐요.</b> 훅과 CTA를 같이 바꾸면 무엇 때문에 좋아졌는지 알 수 없어요. 4주차에서는 이 진단을 쌓아서 "잘된 걸 반복하는 시스템"을 만들어요.</p></div></div>
+</section>
+
+<!-- STEP 5 -->
+<section class="sec" id="s5">
+  <div class="sh"><span class="tag">STEP 5</span><h2>다음 재료 — 영미권에서 먼저 뜬 영상</h2></div>
+  <p>1주차에 리서치 계정을 한글용·영어용 두 개로 나눈 이유, 기억나시죠? 국내에서 뜨는 형식의 상당수는 <b>미국에서 먼저 떠요.</b> 다음 기획 재료는 거기서 한 편 더 가져와요.</p>
+  <div class="cp"><div class="hd"><span>영미권 레퍼런스 찾기</span><button type="button">복사</button></div><div class="bd">영어권 인스타에서 "kids omega 3", "pharmacist mom", "picky eater"로 최근 터진 릴스를 찾아줘.
+계정 평균보다 3배 이상 조회된 것만 3개 골라 5칸으로 분석하고,
+그중 하나를 한국 엄마 버전 내 공구 대본으로 각색해서 plans/에 저장해줘.</div></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>빌려 오는 것</th><th>바꾸는 것</th></tr></thead>
+    <tbody>
+      <tr><td class="k">형식 (구성 · 훅 패턴 · 컷 리듬)</td><td>말투, 사례, 제품 기준은 <b>한국 엄마와 내 상품</b>으로</td></tr>
+      <tr><td class="k">"POV:", "Things I wish I knew" 같은 훅 틀</td><td>"약사 엄마가 5살 전에 알았으면 좋았을"처럼 우리말로</td></tr>
+    </tbody>
+  </table></div>
+  <div class="co red"><span class="e">🚫</span><div><p><b>미국 영상의 효능 표현은 그대로 옮기지 않아요.</b> 미국과 한국은 건강기능식품 광고 기준이 달라요. 기능성 문구는 언제나 상세페이지 인정 문구 그대로예요.</p></div></div>
+</section>
+
+<!-- task -->
+<section class="sec" id="task">
+  <div class="sh"><span class="tag sq">✎</span><h2>이번 주 과제</h2></div>
+  <div class="rules sum">
+    <div class="rule"><span class="n">1</span><div><div class="t">릴스 1편 게시</div><div class="s">컷 리스트대로 찍고, 첫 자막에 고민, 댓글 키워드 하나</div></div></div>
+    <div class="rule"><span class="n">2</span><div><div class="t">카드뉴스 1편 게시</div><div class="s">캔바 디자인 + 올리기 전 검수 표 확인</div></div></div>
+    <div class="rule"><span class="n">3</span><div><div class="t">48시간 뒤 인사이트 캡처</div><div class="s">insights/에 넣고 진단 받기 → 다음 편에서 고칠 것 하나</div></div></div>
+    <div class="rule"><span class="n">4</span><div><div class="t">영미권 레퍼런스 1편</div><div class="s">분석 + 한국 엄마 버전 대본을 plans/에</div></div></div>
+    <div class="rule"><span class="n">5</span><div><div class="t">4주차에 가져올 것</div><div class="s">analysis/의 진단 파일과 게시물 링크</div></div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sh"><span class="tag sq">?</span><h2>자주 나오는 문제</h2></div>
+  <details class="faq"><summary>인사이트가 안 보여요</summary>
+    <p>개인 계정은 인사이트가 없어요. 설정 → 계정 유형 및 도구 → 프로페셔널 계정으로 전환하세요. 전환 전에 올린 게시물은 데이터가 일부만 보일 수 있어요.</p></details>
+  <details class="faq"><summary>조회수가 200에서 멈췄어요</summary>
+    <p>첫 시험 대상에서 반응이 없었다는 뜻이에요. 영상이 나빠서라기보다 첫 자막·캡션이 주제를 말하지 못했거나, 계정이 아직 엄마들에게 길들지 않은 경우가 많아요. 1주차 세 탭 루틴을 계속하고, 다음 편은 훅만 바꿔 보세요.</p></details>
+  <details class="faq"><summary>클로드가 캡처 숫자를 잘못 읽었어요</summary>
+    <p>캡처가 흐리거나 잘렸을 때 그래요. 숫자가 잘 보이게 다시 캡처하거나, 중요한 숫자는 "도달 1,240 / 저장 38"처럼 직접 적어 주세요.</p></details>
+  <details class="faq"><summary>얼굴 나오는 게 부담돼요</summary>
+    <p>손과 제품, 약국 진열대만으로도 찍을 수 있어요. 다만 약사 본인의 목소리나 손글씨처럼 "사람"이 느껴지는 요소 하나는 넣는 게 신뢰에 좋아요.</p></details>
+  <details class="faq"><summary>한 번 올린 걸 다시 올려도 되나요?</summary>
+    <p>훅만 바꿔 다시 올리는 건 좋은 방법이에요(훅갈이). 같은 영상을 그대로 다시 올리는 건 피하고, 첫 컷과 자막을 바꿔 새 게시물로 올려요.</p></details>
+
+  <div class="foot">약사 4주 집중 컨설팅 · 3주차 · 예시 계정 레인보우약사(@rainbow_yak) · 숫자 예시는 1주차 공개 게시물 진단(2026-10-07) 기준</div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  // 복사 버튼
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.cp .hd button');
+    if(!b) return;
+    var text = b.closest('.cp').querySelector('.bd').innerText;
+    var done = function(){ b.textContent = '복사됨'; b.classList.add('ok'); setTimeout(function(){ b.textContent = '복사'; b.classList.remove('ok'); }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+  });
+  // 시작 전 체크
+  var box = document.getElementById('checklist');
+  var inputs = box.querySelectorAll('input');
+  var KEY = 'week3_ready';
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || '[]'); inputs.forEach(function(el, i){ el.checked = !!saved[i]; }); } catch(_) {}
+  function update(){
+    var n = 0; inputs.forEach(function(el){ if(el.checked) n++; el.closest('label').classList.toggle('done', el.checked); });
+    document.getElementById('cnt').textContent = n + ' / ' + inputs.length;
+    document.getElementById('fill').style.width = (n / inputs.length * 100) + '%';
+    try { localStorage.setItem(KEY, JSON.stringify(Array.prototype.map.call(inputs, function(el){ return el.checked; }))); } catch(_) {}
+  }
+  inputs.forEach(function(el){ el.addEventListener('change', update); });
+  update();
+  // 목차 표시
+  var links = document.querySelectorAll('.top a');
+  var secs = Array.prototype.map.call(links, function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120, idx = -1;
+    secs.forEach(function(s, i){ if (s && s.offsetTop <= y) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('on', i === idx); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

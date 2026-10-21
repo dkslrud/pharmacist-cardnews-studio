@@ -1,0 +1,8 @@
+{
+  "name": "pharmacist-week3-content",
+  "version": "1.0.0",
+  "private": true,
+  "description": "약사 4주 집중 컨설팅 3주차: 기획안을 릴스·카드뉴스로 만들어 올리고 첫 데이터로 배우기",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

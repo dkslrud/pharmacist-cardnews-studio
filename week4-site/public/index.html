@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4주차 · 데이터 반복과 브랜드</title>
+<meta name="description" content="약사 4주 집중 컨설팅 4주차: 내 계정 데이터로 잘된 것을 반복하고 브랜드로 남기기">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#EFECE2; --card:#F7F4EC; --card2:#E4E1D6; --line:#D6D2C6; --ink:#1A1A17; --sub:#5F5E58; --mute:#8C8A82;
+  --accent:#E5531F; --accent-soft:#F1C9B6; --accent-pale:#F2E2D6;
+  --blue:#6AA6F0; --blue-bg:#E2E2DE; --green:#5FD08E; --green-bg:#E1E8DA; --yellow:#F0C04A; --yellow-bg:#EEE6D3; --red:#F07862; --red-bg:#F0E0D6;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.8;letter-spacing:-0.01em;word-break:keep-all}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 140px}
+a{color:inherit}
+a.lk{color:var(--accent);text-decoration:none;border-bottom:2px solid var(--accent);font-weight:600}
+b,strong{font-weight:700;color:var(--ink)}
+p{margin:0 0 16px;color:var(--sub)}
+code{font-family:var(--mono);font-size:.86em;background:var(--card2);padding:2px 8px;letter-spacing:.02em;color:var(--ink)}
+
+/* top nav */
+.top{position:sticky;top:0;z-index:20;background:rgba(239,236,226,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:900px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.top .in::-webkit-scrollbar{display:none}
+.top .brand{font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--mute);white-space:nowrap;margin-right:8px}
+.top a{text-decoration:none;font-size:14px;font-weight:600;color:var(--sub);padding:6px 12px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+.top a.on{border-color:var(--accent);color:var(--ink);background:var(--accent-pale)}
+
+/* hero */
+.hero{padding:64px 0 10px}
+.kicker{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--accent)}
+.kicker::before{content:"";width:12px;height:12px;background:var(--accent);display:inline-block}
+h1{font-size:clamp(36px,6.4vw,62px);line-height:1.22;margin:18px 0 0;font-weight:800;letter-spacing:-0.035em}
+.date{font-family:var(--mono);font-size:13px;letter-spacing:.25em;color:var(--mute);margin:26px 0 44px}
+.tldr{border:1.5px solid var(--ink);background:var(--card2);padding:30px 36px;margin:0 0 48px}
+.tldr .h{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--sub);margin-bottom:20px}
+.tldr .h::before{content:"";width:13px;height:13px;background:var(--accent)}
+.tldr ul{list-style:none;margin:0;padding:0}
+.tldr li{position:relative;padding-left:30px;margin:0 0 14px;font-size:18px;line-height:1.6;color:var(--ink)}
+.tldr li:last-child{margin:0}
+.tldr li::before{content:"";position:absolute;left:0;top:.5em;width:12px;height:12px;background:var(--accent)}
+.lead-big{font-size:24px;line-height:1.65;font-weight:700;color:var(--ink);margin:0 0 30px;letter-spacing:-0.02em}
+hr.thin{border:0;border-top:1px solid var(--line);margin:36px 0}
+
+/* section headers */
+.sec{margin-top:110px;scroll-margin-top:70px}
+.sh{display:flex;align-items:flex-start;gap:24px;border-bottom:1.5px solid var(--ink);padding-bottom:24px;margin-bottom:30px;position:relative}
+.sh .tag{flex:none;background:var(--accent);color:#fff;font-family:var(--mono);font-size:14px;letter-spacing:.3em;padding:10px 16px;line-height:1;margin-top:8px}
+.sh .tag.sq{width:46px;height:46px;display:grid;place-items:center;padding:0;letter-spacing:0;font-size:16px}
+.sh h2{font-size:clamp(26px,4vw,36px);line-height:1.35;margin:0;font-weight:800;letter-spacing:-0.025em;flex:1}
+.sh .time{font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--mute);white-space:nowrap;margin-top:14px}
+.sh .time::before{content:"⏱ ";letter-spacing:0}
+.intro-it{font-style:italic;color:var(--sub);font-size:19px;margin:0 0 30px}
+h3{font-size:23px;line-height:1.45;margin:52px 0 14px;font-weight:800;letter-spacing:-0.02em}
+@media (max-width:640px){.sh{gap:14px;flex-wrap:wrap}.sh .time{width:100%;margin-top:0}}
+
+/* flow */
+.flow{display:flex;align-items:center;margin:30px 0}
+.flow .box{flex:1;background:var(--card);border:1px solid var(--line);padding:22px 10px;text-align:center;min-width:0}
+.flow .box .e{font-size:30px;line-height:1.1;margin-bottom:12px}
+.flow .box .t{font-weight:800;font-size:17px;line-height:1.4}
+.flow .box .s{font-size:14px;color:var(--sub);margin-top:6px;line-height:1.5}
+.flow .ln{flex:0 0 30px;height:1px;background:var(--line);position:relative}
+.flow .ln::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+.flow .ln.soft::after{background:var(--accent-soft)}
+@media (max-width:680px){.flow{flex-direction:column;align-items:stretch}.flow .ln{flex:0 0 22px;width:1px;height:22px;margin:0 auto}}
+
+/* callouts */
+.co{display:flex;gap:18px;align-items:flex-start;padding:24px 30px;margin:24px 0;border-left:4px solid #C9C6BC;background:var(--card2);color:var(--ink)}
+.co .e{font-size:24px;line-height:1.3;flex:none}
+.co p{color:var(--ink);margin:0;font-size:17px;line-height:1.75}
+.co p + p{margin-top:8px}
+.co.tip{border-color:var(--yellow);background:var(--yellow-bg)}
+.co.warn{border-color:var(--yellow);background:var(--yellow-bg)}
+.co.red{border-color:var(--red);background:var(--red-bg)}
+.co.green{border-color:var(--green);background:var(--green-bg)}
+.co.blue{border-color:var(--blue);background:var(--blue-bg)}
+.co.accent{border-color:var(--accent);background:var(--accent-pale)}
+@media (max-width:640px){.co{padding:18px;gap:12px}}
+
+/* checklist */
+.check{border:1px solid var(--line);background:var(--bg);padding:24px 30px;margin:24px 0}
+.check .bar{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--sub);margin-bottom:12px}
+.check .bar .track{flex:1;height:5px;background:var(--line);position:relative}
+.check .bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:0;transition:width .25s}
+.check label{display:flex;gap:16px;align-items:flex-start;padding:14px 0;cursor:pointer;font-size:18px;line-height:1.6;color:var(--ink)}
+.check input{flex:none;width:24px;height:24px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.check label small{display:block;font-size:14px;color:var(--sub)}
+.check label.done span{color:var(--mute);text-decoration:line-through}
+
+/* step timeline */
+.steps{position:relative;margin:30px 0}
+.st{position:relative;display:grid;grid-template-columns:58px 1fr;gap:22px;padding-bottom:44px}
+.st::before{content:"";position:absolute;left:28px;top:58px;bottom:0;width:1px;background:var(--line)}
+.st:last-child::before{display:none}
+.st .n{width:58px;height:58px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:18px;background:var(--bg)}
+.st .t{font-size:21px;font-weight:800;line-height:1.45;margin:12px 0 8px;letter-spacing:-0.02em}
+.st .b p{margin:0 0 10px}
+.st ol{margin:6px 0 10px;padding-left:22px;color:var(--sub)}
+.st ol li{margin:6px 0}
+@media (max-width:640px){.st{grid-template-columns:40px 1fr;gap:14px}.st .n{width:40px;height:40px;font-size:15px}.st::before{left:20px;top:40px}.st .t{margin-top:6px;font-size:19px}}
+
+/* mock window */
+.win{border:1.5px solid #3A3934;background:#FBFAF6;margin:18px 0 6px;overflow:hidden;font-size:13px;line-height:1.5;color:#2A2A26}
+.win .bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#E9E6DD;border-bottom:1px solid var(--line)}
+.win .bar i{width:10px;height:10px;border-radius:50%;background:#E66A5A;display:inline-block}
+.win .bar i:nth-child(2){background:#E8B84A}.win .bar i:nth-child(3){background:#69C26B}
+.win .bar span{margin-left:10px;font-size:12px;color:var(--sub)}
+.win .body{display:grid;grid-template-columns:170px 1fr;min-height:220px}
+.win .side{background:#F1EEE6;border-right:1px solid var(--line);padding:12px 10px;font-size:12.5px;color:var(--sub)}
+.win .side div{padding:5px 8px;margin-bottom:2px}
+.win .side .on{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:700}
+.win .main{padding:18px 20px;position:relative}
+.win .pill{display:inline-block;border:1px solid var(--line);background:#fff;padding:4px 12px;font-size:12.5px;margin:0 6px 8px 0}
+.win .pill.hl{border:2px solid #F0436A;box-shadow:0 0 0 3px rgba(240,67,106,.15)}
+.win .mark{display:inline-block;background:#F0436A;color:#fff;font-weight:700;font-size:12px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.win .row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ECE9E1;padding:8px 2px}
+.win .input{border:1px solid var(--line);background:#fff;padding:12px 14px;margin-top:10px;color:var(--sub)}
+.win .msg{background:#F1EEE6;padding:10px 14px;margin:8px 0;max-width:86%}
+.win .msg.me{background:#fff;border:1px solid var(--line);margin-left:auto}
+.win .file{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:#fff;padding:6px 10px;font-family:var(--mono);font-size:12px;margin-bottom:6px}
+.win .tree2{font-family:var(--mono);font-size:12.5px;white-space:pre;line-height:1.8}
+.cap{font-size:13px;color:var(--mute);margin:4px 0 0}
+@media (max-width:640px){.win .body{grid-template-columns:1fr}.win .side{display:none}}
+
+/* copy box */
+.cp{border:1px solid #C9C5B8;background:var(--card2);margin:20px 0}
+.cp .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 24px;border-bottom:1px solid #C9C5B8}
+.cp .hd span{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--sub)}
+.cp .hd button{appearance:none;font:inherit;font-size:15px;font-weight:600;background:transparent;border:1.5px solid var(--ink);padding:8px 18px;cursor:pointer;color:var(--ink)}
+.cp .hd button.ok{background:var(--accent);border-color:var(--accent);color:#fff}
+.cp .bd{padding:20px 24px;font-size:17px;line-height:1.8;color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* rules */
+.rules{display:grid;gap:14px;margin:24px 0}
+.rule{display:flex;gap:22px;align-items:flex-start;background:var(--card);border:1px solid var(--line);padding:26px 28px}
+.rule .n{flex:none;width:46px;height:46px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:17px}
+.rule .t{font-weight:800;font-size:19px;line-height:1.4}
+.rule .s{font-size:16px;color:var(--sub);margin-top:4px}
+.rule.fade .n{background:#E9875F}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;margin:24px 0;font-size:16px}
+.tbl th{text-align:left;font-weight:500;color:var(--sub);font-size:13px;letter-spacing:.2em;padding:14px 16px;border-bottom:1.5px solid var(--ink);font-family:var(--mono)}
+.tbl td{padding:16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub);overflow-wrap:anywhere}
+.tbl td.k{color:var(--ink);font-weight:700;width:28%}
+.tbl td.c{width:44px;text-align:center;color:var(--ink);font-weight:700}
+.tscroll{overflow-x:auto}
+
+/* evidence tags */
+.ev{display:inline-block;font-family:var(--mono);font-size:13px;padding:1px 8px;margin-right:4px;white-space:nowrap}
+.ev.o{background:#DCE6F4;color:#4B79B8}
+.ev.m{background:#DDEEDD;color:#3F9A5C}
+.ev.i{background:#F4E6C8;color:#B88A1E}
+.ev.h{background:#F6D9D1;color:#D45A43}
+
+/* phone mock */
+.ana{display:grid;grid-template-columns:330px 1fr;gap:40px;align-items:center;margin:30px 0}
+.phone{position:relative;border:1.5px solid #3A3934;border-radius:26px;background:#2B2A26;aspect-ratio:9/16;overflow:visible;padding:0;max-width:330px}
+.phone .scr{position:absolute;inset:10px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#5D5A52 0%,#3B3A35 60%,#2B2A26 100%);color:#fff}
+.phone .title{position:absolute;left:14px;right:14px;top:18px;text-align:center;font-weight:800;font-size:15px;line-height:1.35}
+.phone .title em{font-style:normal;color:#B8F06A}
+.phone .q{position:absolute;left:16px;right:16px;top:40%;text-align:center;font-weight:700;font-size:14px;background:rgba(0,0,0,.35);padding:8px}
+.phone .nm{position:absolute;left:16px;top:56%;font-size:11px;background:#fff;color:#2B2A26;padding:2px 8px;font-weight:700}
+.phone .tl{position:absolute;left:12px;right:12px;bottom:58px;height:6px;background:rgba(255,255,255,.25)}
+.phone .tl i{position:absolute;top:0;bottom:0;background:#fff}
+.phone .cta{position:absolute;left:14px;right:60px;bottom:18px;font-size:12px;background:var(--accent);padding:6px 10px;font-weight:700}
+.phone .acts{position:absolute;right:12px;bottom:70px;display:flex;flex-direction:column;gap:12px;font-size:16px;opacity:.85}
+.mk{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);z-index:2}
+.legend2{list-style:none;padding:0;margin:0}
+.legend2 li{display:flex;gap:14px;align-items:baseline;margin:0 0 18px;font-size:18px;color:var(--ink)}
+.legend2 li b{display:inline-grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);font-size:13px}
+.legend2 li small{display:block;font-size:14px;color:var(--sub)}
+@media (max-width:760px){.ana{grid-template-columns:1fr}.phone{margin:0 auto;width:min(300px,80vw)}}
+
+/* carousel mock */
+.car{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin:30px 0 10px;position:relative}
+.car .sl{min-width:0;overflow-wrap:anywhere;aspect-ratio:4/5;background:var(--card);border:1px solid var(--line);position:relative;padding:8px;font-size:11px;line-height:1.35;color:var(--sub)}
+.car .sl b{display:block;font-size:12px;color:var(--ink);margin-top:14px}
+.car .sl.must{border-color:var(--accent);background:#FBF0E8}
+.car .sl .mk{width:24px;height:24px;font-size:12px;top:-10px;right:-4px}
+@media (max-width:760px){.car{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* must list */
+.must{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.must .m{background:var(--card);border:1px solid var(--accent);padding:18px 14px}
+.must .m .e{font-size:26px;line-height:1.2}
+.must .m .t{font-weight:800;font-size:17px;margin:8px 0 4px}
+.must .m .s{font-size:14px;color:var(--sub);line-height:1.55}
+.must .m .x{font-size:13px;color:var(--ink);background:var(--accent-pale);padding:6px 8px;margin-top:10px;line-height:1.5}
+@media (max-width:860px){.must{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.must{grid-template-columns:1fr}}
+
+/* script table */
+.script{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;min-width:600px}
+.script th{text-align:left;font-weight:500;color:var(--sub);font-size:12px;letter-spacing:.2em;padding:10px 12px;border-bottom:1.5px solid var(--ink);font-family:var(--mono)}
+.script td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.script td:first-child{white-space:nowrap;color:var(--ink);font-family:var(--mono);font-size:13px}
+.script td.say{color:var(--ink)}
+.script .r{display:inline-block;font-size:12px;font-weight:700;background:var(--accent-pale);color:var(--accent);padding:1px 8px;white-space:nowrap}
+
+/* slides example */
+.slides{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+.slide{aspect-ratio:4/5;background:var(--card);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:1.5;color:var(--sub)}
+.slide .no{font-family:var(--mono);font-size:11px;color:var(--mute)}
+.slide .role{font-size:12px;font-weight:700;color:var(--accent)}
+.slide .t{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35}
+.slide.must{border-color:var(--accent);background:#FBF0E8}
+@media (max-width:720px){.slides{grid-template-columns:repeat(2,1fr)}}
+
+/* refs */
+.refs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:24px 0}
+.rc{background:var(--card);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.rc .tp{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.rc .who{font-size:13px;color:var(--sub);font-weight:600}
+.rc .num{font-size:22px;font-weight:800;color:var(--accent);white-space:nowrap}
+.rc .num small{font-size:12px;color:var(--sub);font-weight:600;margin-left:3px}
+.rc .hook{font-size:16px;font-weight:700;line-height:1.45}
+.rc .take{font-size:14px;background:var(--accent-pale);padding:7px 11px;color:var(--ink)}
+.rc a{font-size:13px;color:var(--sub);margin-top:auto}
+.rc.dim{opacity:.72}.rc.dim .num{color:var(--mute)}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.th{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.th img{width:100%;aspect-ratio:271/420;object-fit:cover;display:block;background:#ddd}
+.th .bx{padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.th .tp{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.th .k{font-weight:800;font-size:15px}
+.th .num{font-weight:800;color:var(--accent);font-size:18px;white-space:nowrap}
+.th .f{font-size:13.5px;color:var(--sub);line-height:1.5}
+.th .f b{color:var(--ink)}
+.th a{font-size:12.5px;color:var(--sub)}
+@media (max-width:640px){.thumbs{grid-template-columns:1fr 1fr}.thumbs .th:last-child{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}}
+.phone .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media (max-width:720px){.refs{grid-template-columns:1fr}}
+
+/* tree */
+.tree{background:#24231F;color:#EDEAE0;font-family:var(--mono);font-size:14.5px;line-height:1.9;padding:22px 26px;margin:24px 0;overflow-x:auto;white-space:pre}
+.tree .d{color:#F3B08F;font-weight:700}
+.tree .c{color:#9C998E}
+
+/* md preview */
+.md{background:#FBFAF6;border:1px solid var(--line);margin:20px 0}
+.md .fn{font-family:var(--mono);font-size:13px;font-weight:700;padding:10px 18px;border-bottom:1px solid var(--line);background:#E8E5DC;display:flex;justify-content:space-between}
+.md .fn span{font-weight:400;color:var(--sub)}
+.md .ct{padding:16px 20px;font-size:15px;line-height:1.8;color:var(--sub);white-space:pre-wrap}
+.md .ct b{color:var(--ink)}
+
+/* Q flow */
+.qf{display:flex;align-items:center;margin:26px 0}
+.qf .q{flex:1;background:var(--card);border:1px solid var(--line);padding:20px 10px;text-align:center;min-width:0}
+.qf .q .k{font-weight:800;font-size:18px}
+.qf .q .s{font-size:14px;color:var(--sub);margin-top:4px;line-height:1.45}
+.qf .ln{flex:0 0 26px;height:1px;background:var(--line);position:relative}
+.qf .ln::after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+@media (max-width:680px){.qf{flex-direction:column;align-items:stretch}.qf .ln{flex:0 0 18px;width:1px;height:18px;margin:0 auto}}
+
+/* summary */
+.sum .rule:nth-child(4) .n{background:#EA7448}
+.sum .rule:nth-child(5) .n{background:#EC8B60}
+.sum .rule:nth-child(6){opacity:.7}
+.sum .rule:nth-child(6) .n{background:#EDA27F}
+
+/* faq */
+details.faq{border-bottom:1px solid var(--line);padding:4px 0}
+details.faq summary{cursor:pointer;list-style:none;font-weight:700;font-size:18px;padding:16px 36px 16px 0;position:relative}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";position:absolute;right:6px;top:12px;font-size:24px;color:var(--accent);font-weight:400}
+details.faq[open] summary::after{content:"−"}
+details.faq p{font-size:16px;margin:0 0 16px}
+
+.dl{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1.5px solid var(--ink);background:var(--card);padding:22px 26px;margin:24px 0;flex-wrap:wrap}
+.dl .k{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--accent)}
+.dl .t{font-weight:800;font-size:18px;margin-top:4px}
+.dl a{background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:14px 24px;white-space:nowrap}
+.foot{margin-top:100px;font-size:13px;color:var(--mute);border-top:1px solid var(--line);padding-top:20px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="목차">
+  <div class="in">
+    <span class="brand">4주차</span>
+    <a href="#why">왜</a>
+    <a href="#ready">준비</a>
+    <a href="#s1">STEP 1 성적표</a>
+    <a href="#s2">STEP 2 반복</a>
+    <a href="#s3">STEP 3 캘린더</a>
+    <a href="#s4">STEP 4 루틴</a>
+    <a href="#s5">STEP 5 브랜드</a>
+    <a href="#done">수료</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<header class="hero">
+  <div class="kicker">약사 4주 집중 컨설팅 · 4주차</div>
+  <h1>데이터로 반복하고, 내 브랜드로 남긴다</h1>
+  <div class="date">4주차 · 수료</div>
+
+  <div class="tldr">
+    <div class="h">핵심 요약 · TL;DR</div>
+    <ul>
+      <li>내 계정 게시물을 Apify로 모아 잘된 것과 안 된 것을 나란히 놓는다</li>
+      <li>잘된 1편은 훅갈이 · 포맷 복제 · 시리즈화로 3편이 된다</li>
+      <li>다음 공구까지 한 달 캘린더를 유입 3 : 전환 1로 짠다</li>
+      <li>매주 월요일 한 줄로 도는 루틴과, 다시 찾아오게 하는 프로필을 만든다</li>
+    </ul>
+  </div>
+
+  <p class="lead-big">한 번 터진 건 운이에요. 반복되면 시스템이에요. 마지막 주는 3주차에 올린 게시물의 데이터로 "나에게 통하는 것"을 찾고, 그걸 매주 반복되는 구조로 만들어요.</p>
+
+  <div class="flow">
+    <div class="box"><div class="e">📈</div><div class="t">성적표</div><div class="s">잘된 것 · 안 된 것</div></div><span class="ln"></span>
+    <div class="box"><div class="e">🔁</div><div class="t">반복</div><div class="s">1편 → 3편</div></div><span class="ln"></span>
+    <div class="box"><div class="e">🗓️</div><div class="t">캘린더</div><div class="s">한 달 · 3:1</div></div><span class="ln"></span>
+    <div class="box"><div class="e">⏱️</div><div class="t">주간 루틴</div><div class="s">월요일 한 줄</div></div><span class="ln soft"></span>
+    <div class="box"><div class="e">🏷️</div><div class="t">브랜드</div><div class="s">프로필 · 고정 게시물</div></div>
+  </div>
+</header>
+
+<!-- 0 -->
+<section class="sec" id="why">
+  <div class="sh"><span class="tag sq">0</span><h2>왜 "반복"인가요? (3주차에서 이어서)</h2></div>
+  <p>3주차에는 처음으로 올리고, 48시간 뒤 데이터로 <b>어느 칸이 막혔는지</b> 진단받았어요. 그런데 게시물 한 편의 숫자는 운이 섞여 있어요. 같은 패턴이 두세 번 통해야 "나에게 통하는 것"이라고 말할 수 있어요.</p>
+  <p>그래서 4주차의 기준은 이거예요. <b>잘된 건 이유를 찾아 반복하고, 안 된 건 한 칸만 고쳐 다시 올린다.</b> 그리고 그걸 내가 매주 할 수 있는 크기로 줄인다.</p>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>3주차 · 첫 게시</th><th>4주차 · 반복과 브랜드</th></tr></thead>
+    <tbody>
+      <tr><td class="k">게시물 1편의 인사이트 진단</td><td>계정 전체를 모아 <b>잘된 것 vs 안 된 것</b> 비교 (STEP 1)</td></tr>
+      <tr><td class="k">"다음 편에서 고칠 것 하나"</td><td>잘된 1편을 <b>3편으로</b> 늘리기 (STEP 2)</td></tr>
+      <tr><td class="k">공구 1회 업로드 스케줄</td><td>다음 공구까지 <b>한 달 캘린더</b> (STEP 3)</td></tr>
+      <tr><td class="k">그때그때 클로드에게 부탁</td><td>월요일 한 줄로 도는 <b>주간 루틴</b> (STEP 4)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="co tip"><span class="e">💡</span><div><p><b>게시물이 아직 적어도 괜찮아요.</b> 3주차에 올린 2편과 그 전 게시물로 시작해요. 이번 주에 만드는 구조는 게시물이 쌓일수록 더 정확해져요.</p></div></div>
+</section>
+
+<!-- ready -->
+<section class="sec" id="ready">
+  <div class="sh"><span class="tag sq">✓</span><h2>시작 전 체크</h2><span class="time">30초</span></div>
+  <div class="check" id="checklist">
+    <div class="bar">준비 <span id="cnt">0 / 5</span><span class="track"><span class="fill" id="fill"></span></span></div>
+    <label><input type="checkbox"><span>3주차 analysis/ 진단 파일과 게시물 링크<small>insights/ 캡처도 같이</small></span></label>
+    <label><input type="checkbox"><span>Apify 연결 (2주차 세팅 ②)<small>/mcp에 apify가 보이면 OK</small></span></label>
+    <label><input type="checkbox"><span>내 계정 아이디<small>예: @rainbow_yak</small></span></label>
+    <label><input type="checkbox"><span>다음 공구 제품과 날짜<small>정해지지 않았다면 "한 달 뒤"로</small></span></label>
+    <label><input type="checkbox"><span>지금 프로필 화면 캡처<small>STEP 5에서 클로드에게 보여 줘요</small></span></label>
+  </div>
+</section>
+
+<!-- STEP 1 -->
+<section class="sec" id="s1">
+  <div class="sh"><span class="tag">STEP 1</span><h2>내 계정 성적표 — 잘된 것 vs 안 된 것</h2></div>
+  <p>2주차에 남의 터진 영상을 모았던 Apify를, 이번엔 <b>내 계정</b>에 써요. 숫자를 한 표에 모으면 감으로는 안 보이던 패턴이 보여요.</p>
+  <div class="cp"><div class="hd"><span>내 계정 성적표</span><button type="button">복사</button></div><div class="bd">Apify로 내 인스타 계정 @내아이디 의 최근 게시물 30개를 모아줘.
+조회·좋아요·댓글·저장(보이는 것만)을 표로 정리하고, 계정 중앙값을 같이 적어줘.
+중앙값보다 잘된 상위 3개와 안 된 하위 3개를 골라 첫 줄(훅) · 형식 · 주제 · 댓글 키워드 유무를 비교하고,
+"나에게 통하는 패턴" 3가지를 한 줄씩 정리해서 analysis/에 저장해줘.</div></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th></th><th>첫 줄</th><th>형식</th><th>조회</th></tr></thead>
+    <tbody>
+      <tr><td class="c">상위</td><td class="k">"생선만 나오면 숟가락 내려놓는 아이"</td><td>고민 장면 + 약사 얼굴</td><td><b>중앙값 3.1배</b></td></tr>
+      <tr><td class="c">상위</td><td class="k">"약국에서 제일 많이 받는 질문"</td><td>Q&amp;A 카드뉴스</td><td><b>2.4배</b></td></tr>
+      <tr><td class="c">하위</td><td class="k">"오메가3 이야기"</td><td>제품 소개</td><td>0.4배</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">레인보우약사 예시예요. 저장 수는 내 계정 데이터라도 Apify로는 안 보일 수 있어요. 그럴 땐 3주차 insights/ 캡처를 같이 주면 돼요.</p>
+  <div class="co accent"><span class="e">🎯</span><div><p><b>"나에게 통하는 패턴"은 문장으로 남겨요.</b> 예: "첫 줄이 엄마의 구체적인 장면일 때 잘된다", "제품명으로 시작하면 안 된다". 이 세 줄이 STEP 2~4의 기준이 돼요.</p></div></div>
+</section>
+
+<!-- STEP 2 -->
+<section class="sec" id="s2">
+  <div class="sh"><span class="tag">STEP 2</span><h2>반복 3가지 — 잘된 1편을 3편으로</h2></div>
+  <p>새 아이디어를 찾는 것보다 <b>이미 통한 것을 변주하는 게</b> 훨씬 빠르고 확실해요. 상위 1편으로 세 가지를 만들어요.</p>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">훅갈이 — 내용은 그대로, 첫 3초만 새로</div><p>1주차에서 본 가장 가성비 좋은 방법이에요. 반응이 식은 소재도 훅만 바꾸면 다시 봐요. 하위 게시물에도 써요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">포맷 복제 — 형식은 그대로, 주제만 새로</div><p>"생선 안 먹는 아이"가 통했다면 "채소 안 먹는 아이", "유산균 안 먹는 아이"로. 다음 공구 제품에 바로 붙여요.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">시리즈화 — 번호를 붙여 다음 편을 기다리게</div><p>"약사 엄마의 영양 기준 ①②③"처럼 묶으면 한 편을 본 사람이 프로필로 들어와 나머지를 찾아봐요.</p></div></div>
+  </div>
+  <div class="cp"><div class="hd"><span>1편 → 3편</span><button type="button">복사</button></div><div class="bd">analysis/의 성적표에서 상위 1위 게시물로 아래 3편을 기획해줘.
+1. 훅갈이: 같은 내용, 첫 자막과 캡션 첫 줄만 3가지 버전
+2. 포맷 복제: 같은 형식으로 다음 공구 제품(products/) 버전
+3. 시리즈화: ①②③ 세 편의 제목과 각 편의 한 줄 요약
+"나에게 통하는 패턴" 3가지를 지키고, 각 기획안은 plans/에 저장해줘.</div></div>
+  <div class="co red"><span class="e">🚫</span><div><p><b>같은 영상을 그대로 다시 올리지 않아요.</b> 첫 컷과 자막을 바꿔 새 게시물로 올려요. 반복은 형식의 반복이지, 복사가 아니에요.</p></div></div>
+</section>
+
+<!-- STEP 3 -->
+<section class="sec" id="s3">
+  <div class="sh"><span class="tag">STEP 3</span><h2>한 달 콘텐츠 캘린더 — 유입 3 : 전환 1</h2></div>
+  <p>공구 직전에만 올리면 계정이 "공구 계정"이 돼서 사람들이 떠나요. 공구가 없는 주에도 <b>유입 콘텐츠</b>로 다음 손님을 데려와요.</p>
+  <div class="cp"><div class="hd"><span>한 달 캘린더</span><button type="button">복사</button></div><div class="bd">다음 공구(products/의 제품, 오픈일 ○/○)까지 4주 콘텐츠 캘린더를 표로 짜줘.
+주 3편, 유입 3 : 구매 전환 1 비율로. 공구 주간은 D-5~D-4 유입, D-3 유입, D-Day 전환, 마감 D-1 리마인드.
+plans/에 이미 있는 기획안을 먼저 배치하고, 빈 칸에는 "나에게 통하는 패턴"에 맞는 주제를 넣어줘.
+calendar.md로 저장해줘.</div></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>주</th><th>월</th><th>수</th><th>금</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td class="k">유입 · 훅갈이 (STEP 2-1)</td><td>유입 · 시리즈 ①</td><td>유입 · 약국 Q&amp;A</td></tr>
+      <tr><td class="c">2</td><td class="k">유입 · 시리즈 ②</td><td>유입 · 영미권 각색 (3주차)</td><td>전환 · 지난 공구 후기 정리</td></tr>
+      <tr><td class="c">3</td><td class="k">유입 · 시리즈 ③</td><td>유입 · 포맷 복제 (STEP 2-2)</td><td>유입 · 체크리스트 카드뉴스</td></tr>
+      <tr><td class="c">4</td><td class="k">D-5 유입 릴스</td><td>D-3 유입 O/X</td><td><b>D-Day OPEN</b> → 마감 D-1 리마인드</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">예시예요. 주 3편이 버거우면 주 2편으로 줄여도 비율(유입 3 : 전환 1)만 지키면 돼요.</p>
+</section>
+
+<!-- STEP 4 -->
+<section class="sec" id="s4">
+  <div class="sh"><span class="tag">STEP 4</span><h2>주간 루틴 — 월요일 한 줄</h2></div>
+  <p>매주 같은 부탁을 길게 쓸 필요 없어요. 공구 폴더의 <code>CLAUDE.md</code>에 <b>주간 루틴</b>을 한 번 적어 두면, 월요일마다 한 줄로 돌릴 수 있어요.</p>
+  <div class="cp"><div class="hd"><span>주간 루틴 저장</span><button type="button">복사</button></div><div class="bd">CLAUDE.md에 "주간 루틴" 섹션을 추가해줘. 내가 "주간 루틴"이라고 하면 아래 순서로 해줘.
+1. 지난주 게시물 성적을 Apify로 모아 analysis/성적표에 한 줄씩 추가
+2. 잘된 1편, 안 된 1편과 그 이유를 3줄로 요약
+3. calendar.md의 이번 주 3편 기획안을 plans/에 만들기 (안 된 편은 한 칸만 고친 버전)
+4. 광고 규정 점검표로 확인하고 [확인 필요]만 모아서 알려주기</div></div>
+  <div class="flow">
+    <div class="box"><div class="e">☕</div><div class="t">월요일</div><div class="s">"주간 루틴"</div></div><span class="ln"></span>
+    <div class="box"><div class="e">📋</div><div class="t">확인</div><div class="s">[확인 필요]만</div></div><span class="ln"></span>
+    <div class="box"><div class="e">🎬</div><div class="t">화~금</div><div class="s">찍고 · 캔바 · 올리기</div></div><span class="ln soft"></span>
+    <div class="box"><div class="e">📊</div><div class="t">다음 월요일</div><div class="s">다시 한 바퀴</div></div>
+  </div>
+  <div class="co tip"><span class="e">💡</span><div><p><b>사람이 할 일은 세 가지만 남겨요.</b> 확인, 촬영, 올리기. 나머지(모으기 · 비교 · 기획 초안 · 점검)는 루틴이 해요.</p></div></div>
+</section>
+
+<!-- STEP 5 -->
+<section class="sec" id="s5">
+  <div class="sh"><span class="tag">STEP 5</span><h2>브랜드 — 다시 찾아오게 하는 프로필</h2></div>
+  <p>게시물 한 편이 손님을 데려오면, 손님은 <b>프로필</b>을 보고 팔로우할지 정해요. 1주차의 "누구에게 보여질지"가 프로필에서도 똑같이 보여야 해요.</p>
+  <div class="steps">
+    <div class="st"><div class="n">1</div><div class="b"><div class="t">이름란 · 소개 한 줄</div><p>이름란은 검색에 걸려요. "레인보우약사 | 아이 영양 약사 엄마"처럼 <b>누구를 돕는 약사인지</b> 키워드를 넣어요.</p></div></div>
+    <div class="st"><div class="n">2</div><div class="b"><div class="t">고정 게시물 3개</div><p>처음 온 사람이 보는 세 칸이에요. <b>나를 소개하는 1편 · 가장 잘된 유입 1편 · 진행 중인 공구 1편</b>으로.</p></div></div>
+    <div class="st"><div class="n">3</div><div class="b"><div class="t">하이라이트 · 링크</div><p>하이라이트는 "공구 후기 · 약사 기준 · 문의 방법"처럼 손님의 질문 순서대로. 링크는 지금 진행 중인 공구 하나만.</p></div></div>
+  </div>
+  <div class="cp"><div class="hd"><span>프로필 점검</span><button type="button">복사</button></div><div class="bd">내 프로필 캡처(profile.png)를 보고 처음 온 엄마 입장에서 점검해줘.
+이름란 · 소개 · 고정 게시물 3개 · 하이라이트 · 링크를 표로 보고,
+"나에게 통하는 패턴"과 맞게 고칠 문장을 각각 2가지씩 제안해줘.</div></div>
+  <div class="co red"><span class="e">⚖️</span><div><p><b>프로필에도 광고 기준은 같아요.</b> "면역 지키는 약사"처럼 질병 예방·치료로 들리는 말 대신, "아이 영양을 기준으로 고르는 약사"처럼 내가 하는 일을 적어요.</p></div></div>
+</section>
+
+<!-- done -->
+<section class="sec" id="done">
+  <div class="sh"><span class="tag sq">🎓</span><h2>4주를 한 장으로 — 수료</h2></div>
+  <div class="tscroll"><table class="tbl">
+    <thead><tr><th>주차</th><th>질문</th><th>남는 것</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td class="k">누구에게 · 무엇을 · 어디서</td><td>알고리즘 · 기획 · 소재, 팔리는 콘텐츠 3단계</td></tr>
+      <tr><td class="c">2</td><td class="k">어떻게 빠르게 기획할까</td><td>클로드 코드 공구 폴더 · 터진 영상 분석 · 캔바 카드뉴스</td></tr>
+      <tr><td class="c">3</td><td class="k">올리면 무엇을 배울까</td><td>첫 게시 · 48시간 진단 · 영미권 재료</td></tr>
+      <tr><td class="c">4</td><td class="k">어떻게 계속할까</td><td>성적표 · 반복 3가지 · 한 달 캘린더 · 주간 루틴 · 프로필</td></tr>
+    </tbody>
+  </table></div>
+  <h3>한눈에 정리</h3>
+  <div class="rules sum">
+    <div class="rule"><span class="n">1</span><div><div class="t">성적표 저장</div><div class="s">상위 3 · 하위 3 비교와 "나에게 통하는 패턴" 3줄</div></div></div>
+    <div class="rule"><span class="n">2</span><div><div class="t">1편 → 3편</div><div class="s">훅갈이 · 포맷 복제 · 시리즈화 기획안</div></div></div>
+    <div class="rule"><span class="n">3</span><div><div class="t">calendar.md</div><div class="s">다음 공구까지 4주, 유입 3 : 전환 1</div></div></div>
+    <div class="rule"><span class="n">4</span><div><div class="t">CLAUDE.md 주간 루틴</div><div class="s">월요일 "주간 루틴" 한 줄</div></div></div>
+    <div class="rule"><span class="n">5</span><div><div class="t">프로필 고치기</div><div class="s">이름란 키워드 · 고정 게시물 3개 · 링크 하나</div></div></div>
+  </div>
+  <div class="co accent"><span class="e">🌱</span><div><p><b>수료 뒤에도 공구 폴더는 계속 자라요.</b> 매주 성적표 한 줄, 기획안 세 편이 쌓이면 다음 달의 클로드는 지금보다 내 계정을 더 잘 알아요.</p></div></div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sh"><span class="tag sq">?</span><h2>자주 나오는 문제</h2></div>
+  <details class="faq"><summary>게시물이 10개도 안 돼요</summary>
+    <p>그래도 시작해요. 상위·하위를 2개씩만 비교하고, 패턴은 "가설"로 적어 두세요. 매주 루틴이 성적표를 채우면서 가설이 맞는지 확인돼요.</p></details>
+  <details class="faq"><summary>Apify가 내 계정 숫자를 못 가져와요</summary>
+    <p>비공개 계정이거나 아이디 오타인 경우가 많아요. 공개 계정인지 확인하고, 저장·공유처럼 공개되지 않는 숫자는 인사이트 캡처를 insights/에 넣어 같이 주세요.</p></details>
+  <details class="faq"><summary>주 3편은 너무 많아요</summary>
+    <p>주 2편도 괜찮아요. 줄일 땐 유입을 줄이지 말고 리마인드처럼 짧은 것을 스토리로 돌려요. 중요한 건 편수보다 매주 끊기지 않는 거예요.</p></details>
+  <details class="faq"><summary>"주간 루틴"이라고 해도 클로드가 몰라요</summary>
+    <p>공구 폴더에서 클로드를 열었는지 확인하세요. CLAUDE.md는 그 폴더에서 열 때만 읽혀요. 안 되면 "CLAUDE.md의 주간 루틴대로 해줘"라고 말해 보세요.</p></details>
+  <details class="faq"><summary>공구가 없는 달에는요?</summary>
+    <p>유입 콘텐츠만 올려도 돼요. 오히려 그 달에 쌓인 팔로워가 다음 공구의 첫 200~500명이 돼요.</p></details>
+
+  <div class="foot">약사 4주 집중 컨설팅 · 4주차 · 예시 계정 레인보우약사(@rainbow_yak) · 표의 배수는 설명용 예시예요</div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  // 복사 버튼
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.cp .hd button');
+    if(!b) return;
+    var text = b.closest('.cp').querySelector('.bd').innerText;
+    var done = function(){ b.textContent = '복사됨'; b.classList.add('ok'); setTimeout(function(){ b.textContent = '복사'; b.classList.remove('ok'); }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+  });
+  // 시작 전 체크
+  var box = document.getElementById('checklist');
+  var inputs = box.querySelectorAll('input');
+  var KEY = 'week4_ready';
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || '[]'); inputs.forEach(function(el, i){ el.checked = !!saved[i]; }); } catch(_) {}
+  function update(){
+    var n = 0; inputs.forEach(function(el){ if(el.checked) n++; el.closest('label').classList.toggle('done', el.checked); });
+    document.getElementById('cnt').textContent = n + ' / ' + inputs.length;
+    document.getElementById('fill').style.width = (n / inputs.length * 100) + '%';
+    try { localStorage.setItem(KEY, JSON.stringify(Array.prototype.map.call(inputs, function(el){ return el.checked; }))); } catch(_) {}
+  }
+  inputs.forEach(function(el){ el.addEventListener('change', update); });
+  update();
+  // 목차 표시
+  var links = document.querySelectorAll('.top a');
+  var secs = Array.prototype.map.call(links, function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120, idx = -1;
+    secs.forEach(function(s, i){ if (s && s.offsetTop <= y) idx = i; });
+    links.forEach(function(a, i){ a.classList.toggle('on', i === idx); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
