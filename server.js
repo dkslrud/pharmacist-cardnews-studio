@@ -13,6 +13,7 @@ try {
 
 const { handle } = require('./lib/core');
 const { canvaHandle } = require('./lib/canva');
+const { dashHandle } = require('./lib/dashboard');
 const PUB = path.join(__dirname, 'public');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
@@ -35,6 +36,19 @@ http.createServer(async (req, res) => {
     res.writeHead(r.code, { ...headers, 'content-type': 'application/json; charset=utf-8' });
     return res.end(JSON.stringify(r.json));
   }
+  const dash = url.pathname.match(/^\/api\/dashboard\/([a-z]+)$/);
+  if (dash) {
+    let raw = '';
+    for await (const c of req) raw += c;
+    let body = {};
+    try { body = raw ? JSON.parse(raw) : {}; } catch { /* 빈 본문 */ }
+    const { code, json } = await dashHandle({
+      action: dash[1], method: req.method, query: Object.fromEntries(url.searchParams), body,
+      password: req.headers['x-app-password'], authorization: req.headers.authorization,
+    });
+    res.writeHead(code, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
+    return res.end(JSON.stringify(json));
+  }
   const api = url.pathname.match(/^\/api\/(config|analyze|compose|revise)$/);
   if (api) {
     let raw = '';
@@ -45,7 +59,7 @@ http.createServer(async (req, res) => {
     res.writeHead(code, { 'content-type': 'application/json; charset=utf-8' });
     return res.end(JSON.stringify(json));
   }
-  const file = path.join(PUB, url.pathname === '/' ? 'index.html' : path.normalize(url.pathname));
+  const file = path.join(PUB, url.pathname === '/' ? 'index.html' : url.pathname === '/dashboard' ? 'dashboard.html' : path.normalize(url.pathname));
   if (!file.startsWith(PUB) || !fs.existsSync(file)) { res.writeHead(404); return res.end('not found'); }
   res.writeHead(200, { 'content-type': TYPES[path.extname(file)] || 'application/octet-stream' });
   fs.createReadStream(file).pipe(res);

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>업무 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f4ef; --card: #ffffff; --line: #e3e4dc; --field: #f2f3ee;
+    --ink: #1d2320; --muted: #66706a; --brand: #0d6b4f; --brand-soft: #e1efe9; --err: #b42318;
+    --task: #6b4fbb; --task-bg: #ece8f8; --gb: #0d6b4f; --gb-bg: #dcefe6; --g: #1f5fbf; --g-bg: #e0ebfa;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Noto Sans KR', system-ui, sans-serif; font-size: 15px; line-height: 1.55; }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 80px; }
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  h1 { font-size: 26px; margin: 0; }
+  header p { margin: 2px 0 0; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .chip { font-size: 12px; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--muted); }
+  .chip.ok { color: var(--ok, #0d6b4f); border-color: #b9dccd; background: var(--brand-soft); }
+  .chip.bad { color: var(--err); border-color: #f0c4be; background: #fdeeec; }
+  .btn { background: var(--brand); color: #fff; border: 0; border-radius: 10px; padding: 9px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+  .btn[disabled] { opacity: .6; cursor: wait; }
+  .btn.ghost { background: transparent; color: var(--brand); border: 1px solid var(--brand); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; margin-bottom: 16px; }
+  .grid .card { margin-bottom: 0; }
+  .card h2 { font-size: 17px; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .empty { color: var(--muted); font-size: 14px; padding: 6px 0; }
+  .err { color: var(--err); font-size: 14px; }
+  ul.list { list-style: none; margin: 0; padding: 0; }
+  ul.list li { padding: 8px 0; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: baseline; }
+  ul.list li:first-child { border-top: 0; }
+  .time { min-width: 46px; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .tag { font-size: 11px; padding: 1px 7px; border-radius: 6px; font-weight: 700; white-space: nowrap; }
+  .tag.task { background: var(--task-bg); color: var(--task); }
+  .tag.groupbuy { background: var(--gb-bg); color: var(--gb); }
+  .tag.google { background: var(--g-bg); color: var(--g); }
+  .tag.late { background: #fdeeec; color: var(--err); }
+  a { color: inherit; text-decoration-color: var(--line); }
+  .brief .head { background: var(--brand-soft); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-weight: 500; }
+  .brief h3 { font-size: 14px; margin: 14px 0 4px; color: var(--muted); }
+  .brief .row { padding: 5px 0; display: flex; gap: 8px; }
+  .brief .row::before { content: '•'; color: var(--muted); }
+  .brief .row.todo::before { content: '☐'; }
+  .ms { display: grid; grid-template-columns: 78px 74px 1fr; gap: 8px; padding: 9px 0; border-top: 1px solid var(--line); align-items: baseline; }
+  .ms:first-child { border-top: 0; }
+  .ms .d { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ms.today { background: #fff8e1; margin: 0 -10px; padding: 9px 10px; border-radius: 8px; }
+  .kind { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; text-align: center; }
+  .kind.홍보 { background: #fff0d6; color: #8a5a00; } .kind.오픈 { background: var(--gb-bg); color: var(--gb); } .kind.마감 { background: #fdeeec; color: var(--err); }
+  .cal-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .cal-top h2 { margin: 0; min-width: 130px; }
+  .filters { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .filters label { display: flex; gap: 5px; align-items: center; cursor: pointer; }
+  .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+  .cal > div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 96px; padding: 4px; font-size: 12px; }
+  .cal .dow { min-height: 0; text-align: center; background: var(--field); color: var(--muted); font-weight: 700; padding: 6px 0; }
+  .cal .day { cursor: pointer; }
+  .cal .day.out { background: #fafaf7; color: #aeb4af; }
+  .cal .day.sel { outline: 2px solid var(--brand); outline-offset: -2px; }
+  .cal .num { font-weight: 700; margin-bottom: 2px; }
+  .cal .day.today .num { background: var(--brand); color: #fff; border-radius: 99px; display: inline-block; padding: 0 7px; }
+  .ev { display: block; border-radius: 4px; padding: 1px 5px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; }
+  .ev.task { background: var(--task-bg); color: var(--task); } .ev.groupbuy { background: var(--gb-bg); color: var(--gb); } .ev.google { background: var(--g-bg); color: var(--g); }
+  .more { color: var(--muted); font-size: 11px; padding-left: 4px; }
+  @media (max-width: 700px) { .cal > div { min-height: 62px; } .ev { font-size: 0; height: 6px; padding: 0; } .filters { margin-left: 0; } }
+  .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .col { background: var(--field); border-radius: 12px; padding: 12px; }
+  .col h3 { font-size: 14px; margin: 0 0 8px; display: flex; justify-content: space-between; }
+  .t { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; font-size: 13.5px; display: block; color: inherit; text-decoration: none; }
+  .t small { display: block; color: var(--muted); }
+  .pw { display: none; margin: 0 0 16px; gap: 8px; }
+  .pw input { font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .guide { font-size: 13px; color: var(--muted); background: var(--field); border-radius: 10px; padding: 10px 14px; margin-top: 8px; }
+  .guide code { background: #fff; padding: 0 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>🗂️ 업무 대시보드</h1>
+      <p id="sub">불러오는 중…</p>
+    </div>
+    <div class="chips">
+      <span class="chip" id="cNotion">노션</span>
+      <span class="chip" id="cGoogle">구글 캘린더</span>
+      <span class="chip" id="cGpt">GPT 오전 9시</span>
+      <button class="btn ghost" id="reload">새로고침</button>
+    </div>
+  </header>
+
+  <form class="pw" id="pwForm"><input type="password" id="pw" placeholder="접속 비밀번호"><button class="btn">확인</button></form>
+  <div id="guide"></div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>📍 오늘 <span class="muted" id="todayLabel"></span></h2>
+      <div id="today"></div>
+    </section>
+    <section class="card brief">
+      <h2>🤖 오늘의 업무 <button class="btn ghost" id="mkBrief">GPT로 지금 작성</button></h2>
+      <div id="brief"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>🛒 이번주 중요한 공동구매 일정 <span class="muted" id="weekLabel"></span></h2>
+    <div id="ms"></div>
+    <div id="gbs"></div>
+  </section>
+
+  <section class="card">
+    <div class="cal-top">
+      <button class="btn ghost" id="prev">‹</button>
+      <h2 id="monthLabel"></h2>
+      <button class="btn ghost" id="next">›</button>
+      <button class="btn ghost" id="goToday">오늘</button>
+      <div class="filters">
+        <label><input type="checkbox" data-src="google" checked> <span class="tag google">구글 캘린더</span></label>
+        <label><input type="checkbox" data-src="task" checked> <span class="tag task">노션 할 일</span></label>
+        <label><input type="checkbox" data-src="groupbuy" checked> <span class="tag groupbuy">공동구매</span></label>
+      </div>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div id="dayList" style="margin-top:14px"></div>
+  </section>
+
+  <section class="card">
+    <h2>✅ 할 일 현황</h2>
+    <div class="board" id="board"></div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+const pad = n => String(n).padStart(2, '0');
+const addDays = (s, n) => new Date(new Date(s + 'T00:00:00Z').getTime() + n * 864e5).toISOString().slice(0, 10);
+const md = s => `${+s.slice(5, 7)}/${+s.slice(8, 10)}(${DOW[new Date(s + 'T00:00:00Z').getUTCDay()]})`;
+const store = { get: k => { try { return localStorage.getItem(k) || ''; } catch { return ''; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* 저장 불가 */ } } };
+
+let cfg = {}, today = '', month = '', selDay = '', data = null;
+const hidden = new Set();
+
+async function api(action, opts = {}) {
+  const r = await fetch('/api/dashboard/' + action, {
+    method: opts.body ? 'POST' : 'GET',
+    headers: { 'content-type': 'application/json', 'x-app-password': store.get('dash_pw') },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { $('pwForm').style.display = 'flex'; throw new Error(j.error || '비밀번호가 필요해요.'); }
+  if (!r.ok) throw new Error(j.error || `오류 (${r.status})`);
+  return j;
+}
+
+function range() {
+  const first = new Date(month + '-01T00:00:00Z');
+  const from = addDays(month + '-01', -first.getUTCDay());
+  const last = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0));
+  const to = addDays(last.toISOString().slice(0, 10), 6 - last.getUTCDay());
+  return { from, to };
+}
+
+function evHtml(e, full) {
+  const t = e.time ? e.time + ' ' : '';
+  const label = esc(t + e.title);
+  return e.url && full ? `<a class="ev ${e.source}" href="${esc(e.url)}" target="_blank" rel="noopener">${label}</a>` : `<span class="ev ${e.source}" title="${label}">${label}</span>`;
+}
+const srcName = { google: '구글', task: '노션 할 일', groupbuy: '공동구매' };
+
+function renderCal() {
+  const { from, to } = range();
+  const evs = (data?.events || []).filter(e => !hidden.has(e.source));
+  const [y, m] = month.split('-');
+  $('monthLabel').textContent = `${y}년 ${+m}월`;
+  let html = DOW.map(d => `<div class="dow">${d}</div>`).join('');
+  for (let d = from; d <= to; d = addDays(d, 1)) {
+    const list = evs.filter(e => e.start <= d && e.end >= d);
+    const shown = list.slice(0, 3);
+    html += `<div class="day${d.slice(0, 7) !== month ? ' out' : ''}${d === today ? ' today' : ''}${d === selDay ? ' sel' : ''}" data-d="${d}"><div class="num">${+d.slice(8)}</div>${shown.map(e => evHtml(e, false)).join('')}${list.length > 3 ? `<div class="more">+${list.length - 3}건</div>` : ''}</div>`;
+  }
+  $('cal').innerHTML = html;
+  const day = selDay || today;
+  const list = evs.filter(e => e.start <= day && e.end >= day);
+  $('dayList').innerHTML = `<div class="muted" style="margin-bottom:4px"><b>${md(day)}</b> 일정 ${list.length}건</div>` + (list.length
+    ? `<ul class="list">${list.map(e => `<li><span class="time">${esc(e.time || '종일')}</span><span class="tag ${e.source}">${srcName[e.source]}</span><span>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>` : esc(e.title)}${e.note ? ` <span class="muted">${esc(e.note)}</span>` : ''}</span></li>`).join('')}</ul>`
+    : '<div class="empty">일정이 없어요.</div>');
+}
+
+function renderToday() {
+  $('todayLabel').textContent = md(today);
+  const evs = data.events.filter(e => e.start <= today && e.end >= today);
+  const late = data.tasks.filter(t => t.due && t.due < today);
+  const rows = [
+    ...late.map(t => `<li><span class="time">지남</span><span class="tag late">${md(t.due)}</span><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc((t.client ? `[${t.client}] ` : '') + t.title)}</a></li>`),
+    ...evs.map(e => `<li><span class="time">${esc(e.time || '종일')}</span><span class="tag ${e.source}">${srcName[e.source]}</span><span>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>` : esc(e.title)}</span></li>`),
+  ];
+  $('today').innerHTML = rows.length ? `<ul class="list">${rows.join('')}</ul>` : '<div class="empty">오늘 예정된 일정과 마감이 없어요 🎉</div>';
+}
+
+function renderWeek() {
+  $('weekLabel').textContent = `${md(data.week.start)} ~ ${md(data.week.end)}`;
+  $('ms').innerHTML = data.milestones.length
+    ? data.milestones.map(m => `<div class="ms${m.date === today ? ' today' : ''}"><span class="d">${md(m.date)}</span><span class="kind ${m.kind.slice(0, 2)}">${m.kind}</span><span><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.gb)}</a> <span class="muted">${esc([m.pharmacist, m.stage && '준비 ' + m.stage].filter(Boolean).join(' · '))}</span>${m.todo ? `<div class="muted">❓ 확인 필요: ${esc(m.todo)}</div>` : ''}</span></div>`).join('')
+    : '<div class="empty">이번주 홍보 시작·오픈·마감 일정이 없어요.</div>';
+  $('gbs').innerHTML = data.groupbuys.length
+    ? `<div class="muted" style="margin:14px 0 4px">이번주 진행 중인 공구</div><ul class="list">${data.groupbuys.map(g => `<li><span class="tag groupbuy">${esc(g.pharmacist || '공구')}</span><span><a href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.title)}</a> <span class="muted">${md(g.saleStart)}~${md(g.saleEnd || g.saleStart)}${g.checklist != null ? ' · 체크리스트 ' + Math.round(g.checklist * 100) + '%' : ''}</span></span></li>`).join('')}</ul>` : '';
+}
+
+function renderBoard() {
+  const cols = ['할 일', '진행 중', '회신 대기'];
+  const rank = { '🔴 높음': 0, '🟡 보통': 1, '⚪ 낮음': 2 };
+  $('board').innerHTML = cols.map(c => {
+    const ts = data.tasks.filter(t => t.status === c).sort((a, b) => (a.due || '9').localeCompare(b.due || '9') || (rank[a.priority] ?? 3) - (rank[b.priority] ?? 3));
+    return `<div class="col"><h3>${c}<span class="muted">${ts.length}</span></h3>${ts.slice(0, 12).map(t => `<a class="t" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.title)}<small>${esc([t.client, t.priority, t.due && '마감 ' + md(t.due)].filter(Boolean).join(' · '))}</small></a>`).join('') || '<div class="empty">없음</div>'}${ts.length > 12 ? `<div class="muted">외 ${ts.length - 12}건</div>` : ''}</div>`;
+  }).join('');
+}
+
+async function loadBrief() {
+  if (!cfg.notion) { $('brief').innerHTML = '<div class="empty">노션을 연결하면 매일 아침 작성된 업무가 여기에 보여요.</div>'; return; }
+  try {
+    const b = await api('brief');
+    if (!b.exists) { $('brief').innerHTML = `<div class="empty">오늘의 업무가 아직 없어요. 매일 오전 9시에 자동으로 작성돼요.${cfg.openai ? '' : ' (OPENAI_API_KEY 설정 필요)'}</div>`; return; }
+    let html = '', sec = false;
+    for (const x of b.blocks) {
+      if (x.type === 'callout') html += `<div class="head">${esc(x.text)}</div>`;
+      else if (x.type === 'heading_2') html += `<h3>${esc(x.text)}</h3>`;
+      else if (x.type === 'to_do') html += `<div class="row todo">${esc(x.text)}</div>`;
+      else if (x.type === 'bulleted_list_item') html += `<div class="row">${esc(x.text)}</div>`;
+      else html += `<div class="muted" style="margin-top:6px">${esc(x.text)}</div>`;
+    }
+    $('brief').innerHTML = html + `<div style="margin-top:10px"><a class="muted" href="${esc(b.url)}" target="_blank" rel="noopener">노션에서 열기 ↗</a></div>`;
+  } catch (e) { $('brief').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+function renderStatus() {
+  const chip = (id, ok, text) => { const el = $(id); el.className = 'chip ' + (ok ? 'ok' : 'bad'); el.textContent = text; };
+  const n = data.sources.notion, g = data.sources.google;
+  chip('cNotion', n === 'ok', n === 'ok' ? '노션 연결됨' : n === 'off' ? '노션 미연결' : '노션 오류');
+  chip('cGoogle', g === 'ok', g === 'ok' ? '구글 캘린더 연결됨' : g === 'off' ? '구글 캘린더 미연결' : '구글 오류');
+  chip('cGpt', cfg.openai && cfg.cronReady, cfg.openai && cfg.cronReady ? 'GPT 매일 오전 9시' : 'GPT 미설정');
+  const miss = [];
+  if (n === 'off') miss.push('<code>NOTION_TOKEN</code>');
+  else if (n !== 'ok') miss.push(`노션: ${esc(n)} (허브 페이지에 통합을 연결했는지 확인)`);
+  if (g === 'off') miss.push('<code>GOOGLE_CLIENT_ID</code> · <code>GOOGLE_CLIENT_SECRET</code> · <code>GOOGLE_REFRESH_TOKEN</code>');
+  else if (g !== 'ok') miss.push(`구글: ${esc(g)}`);
+  if (!cfg.openai) miss.push('<code>OPENAI_API_KEY</code>');
+  if (!cfg.cronReady) miss.push('<code>CRON_SECRET</code>');
+  $('guide').innerHTML = miss.length ? `<div class="guide">연결이 더 필요해요 → ${miss.join(' / ')} (README의 "업무 대시보드" 참고)</div>` : '';
+}
+
+async function load() {
+  $('sub').textContent = '불러오는 중…';
+  try {
+    cfg = await fetch('/api/dashboard/config').then(r => r.json());
+    if (cfg.needsPassword) $('pwForm').style.display = store.get('dash_pw') ? 'none' : 'flex';
+    const { from, to } = month ? range() : { from: '', to: '' };
+    data = await api('data' + (from ? `?from=${from}&to=${to}` : ''));
+    today = data.today;
+    if (!month) { month = today.slice(0, 7); return load(); }
+    $('sub').textContent = `${md(today)} · 노션 + 구글 캘린더 일정을 한 곳에서`;
+    renderStatus(); renderToday(); renderWeek(); renderBoard(); renderCal();
+    loadBrief();
+  } catch (e) { $('sub').textContent = e.message; }
+}
+async function loadMonthOnly() {
+  const { from, to } = range();
+  try { data = await api(`data?from=${from}&to=${to}`); renderCal(); } catch (e) { $('sub').textContent = e.message; }
+}
+const shift = n => { const d = new Date(month + '-01T00:00:00Z'); d.setUTCMonth(d.getUTCMonth() + n); month = d.toISOString().slice(0, 7); loadMonthOnly(); };
+
+$('prev').onclick = () => shift(-1);
+$('next').onclick = () => shift(1);
+$('goToday').onclick = () => { month = today.slice(0, 7); selDay = today; loadMonthOnly(); };
+$('reload').onclick = load;
+$('cal').onclick = e => { const d = e.target.closest('.day'); if (d) { selDay = d.dataset.d; renderCal(); } };
+document.querySelectorAll('.filters input').forEach(i => i.onchange = () => { i.checked ? hidden.delete(i.dataset.src) : hidden.add(i.dataset.src); renderCal(); });
+$('pwForm').onsubmit = e => { e.preventDefault(); store.set('dash_pw', $('pw').value); $('pwForm').style.display = 'none'; load(); };
+$('mkBrief').onclick = async () => {
+  const b = $('mkBrief'); b.disabled = true; b.textContent = '작성 중…';
+  try { await api('brief', { body: { force: true } }); await loadBrief(); } catch (e) { $('brief').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  b.disabled = false; b.textContent = 'GPT로 지금 작성';
+};
+load();
+</script>
+</body>
+</html>
