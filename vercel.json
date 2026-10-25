@@ -3,6 +3,9 @@
     "api/analyze.js": { "maxDuration": 300 },
     "api/compose.js": { "maxDuration": 300 },
     "api/revise.js": { "maxDuration": 300 },
-    "api/canva/[action].js": { "maxDuration": 120 }
-  }
+    "api/canva/[action].js": { "maxDuration": 120 },
+    "api/dashboard/[action].js": { "maxDuration": 120 }
+  },
+  "rewrites": [{ "source": "/dashboard", "destination": "/dashboard.html" }],
+  "crons": [{ "path": "/api/dashboard/cron", "schedule": "0 0 * * *" }]
 }

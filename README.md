@@ -33,3 +33,16 @@ Vercel 프로젝트 `pharmacist-cardnews-studio`가 이 저장소의 `main`에 �
 - 필요한 권한(scope): `design:content:write`
 - 리디렉션 주소: Canva 개발자 포털에 `https://<배포 주소>/api/canva/callback` 를 URL 1(기본)로 등록. 앱은 기본 주소를 쓰고, 다른 주소를 쓰려면 `CANVA_REDIRECT_URI`를 설정 (로컬은 `http://127.0.0.1:3000/api/canva/callback`)
 - `CANVA_CLIENT_ID`, `CANVA_CLIENT_SECRET`가 없으면 Canva 버튼은 숨겨지고 기존 지시문 복사만 보입니다.
+
+## 업무 대시보드 (`/dashboard`)
+노션 '프리랜서 업무 허브'(✅ 할 일 · 📦 공동구매 일정)와 구글 캘린더를 한 화면에서 보는 대시보드입니다.
+- **통합 캘린더**: 구글 캘린더 일정 + 노션 할 일 마감 + 공동구매(판매기간·홍보 시작)를 월 달력에 겹쳐 보여줍니다. 구글에 이미 `✅ 할 일명`으로 올라간 노션 할 일은 중복 표시하지 않습니다.
+- **오늘의 업무 (GPT)**: 매일 오전 9시(KST)에 Vercel Cron이 `/api/dashboard/cron`을 호출 → 노션 할 일·구글 일정·이번주 공구 일정을 GPT가 정리해 노션 '📋 일일 업무 브리핑' 아래에 `📋 오늘의 업무 YYYY-MM-DD` 페이지로 기록합니다. 대시보드의 "GPT로 지금 작성" 버튼으로 수동 작성도 가능합니다.
+- **이번주 공동구매 일정 기록**: 같은 위치에 `🛒 이번주 공동구매 일정 월~일` 페이지를 주마다 1건 기록하고, 대시보드에는 홍보 시작·오픈·마감 날짜와 '확인 필요' 항목을 보여줍니다.
+
+### 설정 (Vercel 환경 변수, `.env.example` 참고)
+1. **노션**: notion.so/my-integrations 에서 통합을 만들어 `NOTION_TOKEN`에 넣고, '프리랜서 업무 허브' 페이지 → ⋯ → 연결에서 그 통합을 추가합니다 (하위 DB 포함).
+2. **구글 캘린더**: Google Cloud에서 OAuth 클라이언트를 만들고(`GOOGLE_CLIENT_ID/SECRET`), `https://www.googleapis.com/auth/calendar.readonly` 권한으로 한 번 로그인해 받은 refresh token을 `GOOGLE_REFRESH_TOKEN`에 넣습니다 (OAuth Playground에서 본인 클라이언트로 발급 가능).
+3. **GPT**: `OPENAI_API_KEY` (모델은 `OPENAI_MODEL`, 기본 `gpt-4.1`).
+4. **Cron 인증**: 임의의 긴 문자열을 `CRON_SECRET`에 넣습니다. `vercel.json`의 `crons`(`0 0 * * *` = 한국 09:00)가 자동 등록됩니다. Hobby 요금제는 지정 시각 기준 1시간 안에서 실행될 수 있어요.
+- 로컬 실행: `node server.js` → http://localhost:3000/dashboard
